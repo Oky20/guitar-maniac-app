@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 3500,
         messages: [{ role: 'user', content: prompt }],
       }),
@@ -56,6 +56,7 @@ export default async function handler(req, res) {
     if (!upstream.ok) {
       return res.status(upstream.status).json({
         error: data?.error?.message || `Anthropic API error ${upstream.status}`,
+        detail: data,
       });
     }
 
