@@ -1445,7 +1445,7 @@ Isi dengan data AKURAT sesuai lagu. Tablature harus bisa dimainkan.`;
     renderAnalysis(parsed,url);
 
   }catch(e){
-    result.innerHTML=`<div style="padding:18px;color:#c66;font-size:.78rem;border:1px solid #5a1a1a;background:#130000;">⚠️ ${escHtml(e.message)}<br><br><span style="color:#664;">Kalau error "API key not configured": pastikan environment variable <strong style="color:#886;">ANTHROPIC_API_KEY</strong> sudah di-set di Vercel dashboard.</span></div>`;
+    result.innerHTML=`<div style="padding:18px;color:#c66;font-size:.78rem;border:1px solid #5a1a1a;background:#130000;">⚠️ ${escHtml(e.message)}</div>`;
     result.classList.add('show');
   }finally{
     btn.disabled=false;loading.classList.remove('show');
