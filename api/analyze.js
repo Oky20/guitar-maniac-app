@@ -1,17 +1,23 @@
-export default async function handler(req, res) {
-  // Only allow POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '1mb',
+    },
+  },
+};
 
-  // CORS headers — allow your Vercel domain and localhost for dev
+export default async function handler(req, res) {
+  // CORS — harus di awal sebelum method check supaya OPTIONS juga kena
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -19,13 +25,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API key not configured on server' });
   }
 
-  try {
-    const { prompt } = req.body;
-    if (!prompt) {
-      return res.status(400).json({ error: 'Missing prompt in request body' });
-    }
+  // Body bisa berupa string (belum di-parse) atau object (sudah di-parse)
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch (_) {}
+  }
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const prompt = body?.prompt;
+  if (!prompt) {
+    return res.status(400).json({ error: 'Missing prompt in request body' });
+  }
+
+  try {
+    const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,14 +51,14 @@ export default async function handler(req, res) {
       }),
     });
 
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      return res.status(response.status).json({
-        error: errData?.error?.message || `Anthropic API error ${response.status}`,
+    const data = await upstream.json();
+
+    if (!upstream.ok) {
+      return res.status(upstream.status).json({
+        error: data?.error?.message || `Anthropic API error ${upstream.status}`,
       });
     }
 
-    const data = await response.json();
     return res.status(200).json(data);
 
   } catch (err) {
