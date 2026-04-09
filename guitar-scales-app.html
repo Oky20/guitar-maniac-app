@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRETBOARD — Guitar Scale Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--gold:#c9a84c;--gold2:#f0d080;--amber:#e8843a;--cream:#f5f0e8;--muted:#666;--fret:#2a2a2a;--root:#c9a84c;--tone:#4a8fc4;--sp:#7ab87a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--cream);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden;}
+header{border-bottom:1px solid #222;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);z-index:100;gap:14px;flex-wrap:wrap;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:6px;color:var(--gold);text-shadow:0 0 30px rgba(201,168,76,.3);}
+.logo span{color:var(--amber);}
+nav{display:flex;gap:5px;flex-wrap:wrap;}
+nav button{background:transparent;border:1px solid #333;color:var(--muted);font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;padding:6px 13px;cursor:pointer;transition:all .2s;}
+nav button:hover,nav button.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.05);}
+main{display:none;padding:32px 28px;max-width:1500px;margin:0 auto;animation:fadeIn .4s ease;}
+main.active{display:block;}
+.hero{padding:48px 28px 32px;max-width:1500px;margin:0 auto;border-bottom:1px solid #1a1a1a;display:none;}
+.hero.active{display:block;animation:fadeIn .5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.section-eyebrow{font-size:.58rem;letter-spacing:4px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:3px;color:var(--cream);line-height:1;margin-bottom:10px;}
+.section-desc{font-family:'Crimson Pro',serif;font-size:1.05rem;color:var(--muted);max-width:600px;line-height:1.7;margin-bottom:28px;font-style:italic;}
+/* KEY SELECTOR */
+.key-selector-wrap{background:var(--bg2);border:1px solid #222;padding:16px 18px;margin-bottom:22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ks-label{font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);white-space:nowrap;}
+.key-grid{display:flex;gap:3px;flex-wrap:wrap;}
+.key-btn{background:var(--bg3);border:1px solid #333;color:var(--muted);padding:5px 10px;font-family:'Space Mono',monospace;font-size:.65rem;cursor:pointer;transition:all .15s;min-width:34px;text-align:center;}
+.key-btn:hover{border-color:var(--gold);color:var(--gold);}
+.key-btn.selected{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
+/* FILTER */
+.filter-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-btn{background:transparent;border:1px solid #333;color:var(--muted);font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:#555;color:#888;}
+.filter-btn.on{border-color:var(--amber);color:var(--amber);background:rgba(232,132,58,.08);}
+/* SCALE CARDS */
+.scales-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;margin-bottom:6px;}
+.scale-card{background:var(--bg2);border:1px solid #1e1e1e;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.scale-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);opacity:0;transition:opacity .2s;}
+.scale-card:hover{background:var(--bg3);border-color:#333;transform:translateY(-1px);}
+.scale-card:hover::before,.scale-card.active::before{opacity:1;}
+.scale-card.active{background:var(--bg3);border-color:var(--gold);}
+.card-tag{font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px;display:flex;gap:4px;flex-wrap:wrap;}
+.tag-pill{background:rgba(232,132,58,.1);border:1px solid rgba(232,132,58,.2);padding:2px 6px;}
+.card-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--cream);margin-bottom:3px;}
+.card-formula{font-size:.62rem;color:var(--gold);letter-spacing:1px;margin-bottom:6px;font-weight:700;}
+.card-desc{font-family:'Crimson Pro',serif;font-size:.88rem;color:var(--muted);line-height:1.5;}
+/* DETAIL */
+.detail-panel{background:var(--bg2);border:1px solid #333;padding:28px;margin-top:3px;display:none;animation:fadeIn .3s ease;}
+.detail-panel.open{display:block;}
+.detail-grid{display:grid;grid-template-columns:380px 1fr;gap:28px;}
+.detail-title{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:3px;color:var(--gold);margin-bottom:3px;}
+.detail-subtitle{font-family:'Crimson Pro',serif;font-style:italic;color:var(--muted);font-size:.92rem;margin-bottom:18px;}
+.info-block{margin-bottom:16px;}
+.info-label{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+.info-content{font-family:'Crimson Pro',serif;font-size:.92rem;line-height:1.6;color:#ccc;}
+.usage-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+.usage-chip{background:rgba(255,255,255,.04);border:1px solid #333;padding:3px 10px;font-size:.6rem;letter-spacing:1px;color:#aaa;}
+/* FRETBOARD */
+.fretboard-wrap{background:#0c0b07;border:1px solid #2a2a1a;padding:12px 8px;overflow-x:auto;margin-bottom:14px;}
+.fretboard-scroll{display:inline-flex;flex-direction:column;min-width:100%;}
+.fretboard-label{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
+.fb-header{display:flex;padding-left:30px;margin-bottom:2px;}
+.fb-fret-num{min-width:36px;text-align:center;font-size:.48rem;color:#3a3a3a;flex-shrink:0;}
+.fb-fret-num.marker{color:#555;}
+.fb-fret-num.dbl{color:var(--gold);font-weight:700;}
+.string-row{display:flex;align-items:center;height:36px;}
+.string-name{width:30px;font-size:.6rem;color:var(--gold);text-align:center;font-weight:700;flex-shrink:0;}
+.fret-cell{min-width:36px;height:100%;display:flex;align-items:center;justify-content:center;position:relative;border-right:2px solid #252515;flex-shrink:0;}
+.fret-cell.nut{border-right:5px solid #665540;}
+.fret-cell::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,#4a3a20,#6a5030,#4a3a20,transparent);}
+.fret-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:700;z-index:1;}
+.fret-dot.root{background:var(--root);color:#000;box-shadow:0 0 8px rgba(201,168,76,.6);}
+.fret-dot.tone{background:var(--tone);color:#fff;}
+.pos-marker-row{display:flex;padding-left:30px;margin-top:3px;}
+.pm-cell{min-width:36px;display:flex;justify-content:center;align-items:center;height:12px;flex-shrink:0;}
+/* MEMO */
+.memo-box{background:#0c0c08;border-left:3px solid var(--gold);padding:12px 14px;margin-top:10px;}
+.memo-title{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.memo-text{font-family:'Crimson Pro',serif;font-size:.88rem;color:#bbb;line-height:1.6;}
+/* FORMULA VISUAL */
+.formula-visual{display:flex;gap:3px;flex-wrap:wrap;margin:8px 0;}
+.fv-block{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.fv-note{background:var(--bg3);border:1px solid #333;padding:4px 7px;font-size:.68rem;font-weight:700;color:var(--cream);min-width:28px;text-align:center;}
+.fv-note.root-note{background:var(--gold);color:#000;border-color:var(--gold);}
+.fv-interval{font-size:.48rem;color:var(--muted);text-align:center;}
+.fv-arrow{display:flex;align-items:center;padding-top:3px;color:#333;font-size:.75rem;}
+/* ARPEGGIO */
+.fret-dot.arp{background:#9b59b6;color:#fff;box-shadow:0 0 8px rgba(155,89,182,.5);}
+.legend-dot.a{background:#9b59b6;}
+/* STRING TUNING DIAGRAM */
+.string-tuning-diagram{background:#0c0b07;border:1px solid #2a2a1a;padding:14px 16px;margin:12px 0;}
+.std-row{display:flex;align-items:center;gap:0;margin-bottom:3px;}
+.std-sname{width:22px;font-size:.62rem;color:var(--gold);font-weight:700;text-align:center;flex-shrink:0;}
+.std-seg{height:28px;display:flex;align-items:center;justify-content:center;position:relative;border-right:2px solid #252515;flex-shrink:0;}
+.std-seg::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,#4a3a20,#6a5030,#4a3a20,transparent);}
+.std-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;z-index:1;}
+.std-dot.norm{background:var(--tone);color:#fff;}
+.std-dot.comp{background:#e8843a;color:#000;}
+.std-fnum{font-size:.48rem;color:#444;text-align:center;width:32px;flex-shrink:0;}
+.std-gap-label{font-size:.55rem;color:#444;padding:0 6px;white-space:nowrap;}
+/* COMPARE */
+.compare-table{width:100%;border-collapse:collapse;font-size:.7rem;}
+.compare-table th{text-align:left;padding:8px 11px;background:var(--bg3);color:var(--amber);font-size:.56rem;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #333;}
+.compare-table td{padding:8px 11px;border-bottom:1px solid #1a1a1a;color:#bbb;vertical-align:top;}
+.compare-table tr:hover td{background:rgba(255,255,255,.02);}
+.formula-cell{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--gold);}
+/* TABS */
+.tab-nav{display:flex;border-bottom:1px solid #222;margin-bottom:22px;}
+.tab-btn{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;padding:10px 16px;cursor:pointer;margin-bottom:-1px;transition:all .2s;}
+.tab-btn:hover{color:#888;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .3s ease;}
+/* GENERAL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.card-box{background:var(--bg2);border:1px solid #222;padding:22px;}
+.card-box-title{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+.tip-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid #161616;align-items:flex-start;}
+.tip-icon{color:var(--gold);font-size:.88rem;min-width:16px;margin-top:2px;}
+.tip-title{color:var(--cream);font-size:.7rem;font-weight:700;letter-spacing:1px;margin-bottom:3px;}
+.tip-body{font-family:'Crimson Pro',serif;font-size:.88rem;color:#999;line-height:1.55;}
+.step-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid #1a1a1a;align-items:flex-start;}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--amber);line-height:1;min-width:22px;}
+.step-text{font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;line-height:1.6;}
+.step-text strong{color:var(--cream);}
+.chord-row{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #181818;flex-wrap:wrap;}
+.chord-name{font-weight:700;color:var(--gold);min-width:82px;font-size:.72rem;}
+.scale-suggestions{display:flex;gap:4px;flex-wrap:wrap;}
+.scale-tag{font-size:.58rem;padding:2px 8px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);color:var(--gold);}
+.divider{height:1px;background:#1a1a1a;margin:28px 0;}
+.comp-subtitle{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--cream);margin-bottom:5px;padding-bottom:6px;border-bottom:1px solid #222;}
+/* BACKING TRACKS */
+.bt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-bottom:28px;}
+.bt-card{background:var(--bg2);border:1px solid #222;padding:18px;transition:border-color .2s;}
+.bt-card:hover{border-color:#333;}
+.bt-tag{font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+.bt-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;color:var(--cream);margin-bottom:4px;}
+.bt-desc{font-family:'Crimson Pro',serif;font-size:.82rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.bt-scales{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+.bt-scale-chip{font-size:.56rem;padding:2px 8px;background:rgba(74,143,196,.1);border:1px solid rgba(74,143,196,.25);color:var(--tone);}
+.bt-scale-chip.primary{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.3);color:var(--gold);}
+.yt-link{display:inline-flex;align-items:center;gap:5px;background:#130000;border:1px solid #4a0000;color:#ff5050;font-size:.58rem;letter-spacing:1px;padding:5px 11px;text-decoration:none;transition:all .2s;margin-top:8px;}
+.yt-link:hover{background:#200000;border-color:#c00;}
+/* NGULIK */
+.ngulik-wrap{max-width:840px;}
+.ngulik-input-area{background:var(--bg2);border:1px solid #333;padding:24px;margin-bottom:16px;}
+.ngulik-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;color:var(--gold);margin-bottom:4px;}
+.ngulik-subtitle{font-family:'Crimson Pro',serif;color:var(--muted);font-style:italic;margin-bottom:18px;font-size:.9rem;}
+.input-row{display:flex;gap:8px;margin-bottom:10px;}
+.url-input{flex:1;background:var(--bg3);border:1px solid #333;color:var(--cream);font-family:'Space Mono',monospace;font-size:.72rem;padding:11px 13px;outline:none;transition:border-color .2s;}
+.url-input:focus{border-color:var(--gold);}
+.url-input::placeholder{color:#444;}
+.analyze-btn{background:var(--gold);color:#000;border:none;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;font-weight:700;transition:all .2s;white-space:nowrap;}
+.analyze-btn:hover{background:var(--gold2);}
+.analyze-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
+.song-meta-input{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.meta-input{background:var(--bg3);border:1px solid #333;color:var(--cream);font-family:'Space Mono',monospace;font-size:.7rem;padding:9px 11px;outline:none;transition:border-color .2s;width:100%;}
+.meta-input:focus{border-color:var(--gold);}
+.meta-label{font-size:.53rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.sample-btn{background:var(--bg3);border:1px solid #333;color:#aaa;font-size:.58rem;padding:4px 10px;cursor:pointer;transition:all .2s;font-family:'Space Mono',monospace;}
+.sample-btn:hover{border-color:var(--gold);color:var(--gold);}
+/* RESULT */
+.analysis-result{background:var(--bg2);border:1px solid #2a2a2a;padding:26px;animation:fadeIn .4s ease;display:none;}
+.analysis-result.show{display:block;}
+.result-song-title{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:var(--cream);margin-bottom:2px;}
+.result-artist{font-family:'Crimson Pro',serif;font-style:italic;color:var(--muted);margin-bottom:16px;font-size:.9rem;}
+.result-section{margin-bottom:18px;}
+.result-section-title{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #1e1e1e;}
+.chord-prog-display{display:flex;flex-wrap:wrap;gap:5px;}
+.chord-bubble{background:var(--bg3);border:1px solid #333;padding:7px 13px;font-size:.75rem;font-weight:700;color:var(--cream);}
+.scale-recommend{display:flex;flex-direction:column;gap:7px;}
+.scale-rec-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--bg3);border:1px solid #222;}
+.scale-rec-rank{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#2a2a2a;line-height:1;min-width:26px;}
+.scale-rec-name{font-weight:700;color:var(--gold);font-size:.78rem;margin-bottom:2px;}
+.scale-rec-why{font-family:'Crimson Pro',serif;font-size:.83rem;color:#999;line-height:1.5;}
+.tab-notation{background:#080a08;border:1px solid #1a2a1a;padding:14px;overflow-x:auto;font-family:'Space Mono',monospace;font-size:.78rem;line-height:2;color:#7ab87a;white-space:pre;}
+/* LOADING */
+.ai-loading{display:none;align-items:center;gap:11px;padding:18px;color:var(--muted);font-size:.72rem;}
+.ai-loading.show{display:flex;}
+.loader{width:18px;height:18px;border:2px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* HERO */
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,5rem);letter-spacing:4px;line-height:.95;margin-bottom:16px;}
+.hero-title .line2{color:var(--gold);}
+.hero-body{font-family:'Crimson Pro',serif;font-size:1.05rem;color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:24px;font-style:italic;}
+.hero-cta{display:flex;gap:9px;flex-wrap:wrap;}
+.cta-btn{background:var(--gold);color:#000;border:none;padding:12px 24px;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:700;transition:all .2s;}
+.cta-btn:hover{background:var(--gold2);transform:translateY(-1px);}
+.cta-btn.secondary{background:transparent;color:var(--cream);border:1px solid #444;}
+.cta-btn.secondary:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:24px;margin-top:40px;flex-wrap:wrap;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);letter-spacing:2px;line-height:1;}
+.stat-label{font-size:.55rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+/* PRACTICE */
+.practice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:14px;}
+.practice-card{background:var(--bg2);padding:16px;border:1px solid #1e1e1e;}
+.practice-num{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:#1e1e1e;line-height:1;margin-bottom:5px;}
+.practice-title{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.practice-body{font-family:'Crimson Pro',serif;font-size:.85rem;color:#888;line-height:1.5;}
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:.58rem;color:var(--muted);}
+.legend-dot{width:11px;height:11px;border-radius:50%;}
+.legend-dot.r{background:var(--root);}
+.legend-dot.t{background:var(--tone);}
+/* TRAINING PLAN */
+.plan-onboard{max-width:680px;margin:0 auto;}
+.onboard-step{display:none;animation:fadeIn .3s ease;}
+.onboard-step.active{display:block;}
+.onboard-q{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--cream);margin-bottom:6px;}
+.onboard-sub{font-family:'Crimson Pro',serif;color:var(--muted);font-style:italic;margin-bottom:20px;font-size:.95rem;}
+.option-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.opt-btn{background:var(--bg2);border:1px solid #333;color:#aaa;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:1px;padding:10px 16px;cursor:pointer;transition:all .2s;text-align:left;}
+.opt-btn:hover{border-color:var(--gold);color:var(--gold);}
+.opt-btn.selected{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--gold);}
+.opt-btn.multi.selected{background:rgba(74,143,196,.12);border-color:var(--tone);color:var(--tone);}
+.onboard-nav{display:flex;gap:10px;margin-top:8px;}
+.onboard-next{background:var(--gold);color:#000;border:none;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;padding:11px 24px;cursor:pointer;font-weight:700;transition:all .2s;}
+.onboard-next:hover{background:var(--gold2);}
+.onboard-back{background:transparent;border:1px solid #333;color:#666;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;padding:11px 18px;cursor:pointer;}
+.onboard-back:hover{border-color:#555;color:#888;}
+.progress-bar{height:2px;background:#1a1a1a;margin-bottom:28px;}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease;}
+/* PLAN VIEW */
+.plan-view{display:none;}
+.plan-view.active{display:block;}
+.week-header{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+.week-badge{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--gold);letter-spacing:3px;line-height:1;}
+.week-theme{font-family:'Crimson Pro',serif;font-style:italic;color:var(--muted);font-size:1rem;}
+.day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-bottom:24px;}
+.day-card{background:var(--bg2);border:1px solid #222;padding:18px;position:relative;transition:border-color .2s;}
+.day-card.today{border-color:var(--gold);}
+.day-card.done{border-color:#1e3a1e;background:#0c120c;}
+.day-card.rest{border-color:#1a1a1a;opacity:.6;}
+.day-label{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;}
+.day-label.today-lbl{color:var(--gold);}
+.day-label.done-lbl{color:var(--sp);}
+.day-label.rest-lbl{color:#444;}
+.day-label.upcoming-lbl{color:var(--amber);}
+.day-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;color:var(--cream);margin-bottom:10px;}
+.day-card.done .day-title{color:#3a6a3a;}
+.block-list{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.block-item{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;background:var(--bg3);font-size:.65rem;}
+.block-type{font-size:.5rem;letter-spacing:2px;text-transform:uppercase;padding:2px 6px;white-space:nowrap;margin-top:1px;flex-shrink:0;}
+.block-type.warmup{background:rgba(122,184,122,.12);color:var(--sp);border:1px solid rgba(122,184,122,.2);}
+.block-type.review{background:rgba(232,132,58,.1);color:var(--amber);border:1px solid rgba(232,132,58,.2);}
+.block-type.focus{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+.block-type.combine{background:rgba(155,89,182,.12);color:#c39bd3;border:1px solid rgba(155,89,182,.25);}
+.block-type.apply{background:rgba(74,143,196,.12);color:var(--tone);border:1px solid rgba(74,143,196,.2);}
+.block-type.free{background:rgba(255,255,255,.04);color:#666;border:1px solid #2a2a2a;}
+.block-desc{font-family:'Crimson Pro',serif;font-size:.82rem;color:#bbb;line-height:1.5;flex:1;}
+.block-dur{font-size:.56rem;color:#555;white-space:nowrap;margin-top:2px;flex-shrink:0;}
+.done-btn{width:100%;background:transparent;border:1px solid #2a3a2a;color:#3a5a3a;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;padding:8px;cursor:pointer;transition:all .2s;}
+.done-btn:hover{border-color:var(--sp);color:var(--sp);}
+.day-card.done .done-btn{background:#0a1a0a;border-color:#2a4a2a;color:#3a6a3a;cursor:default;}
+.streak-bar{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid #222;padding:14px 18px;margin-bottom:20px;flex-wrap:wrap;}
+.streak-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);letter-spacing:2px;line-height:1;}
+.streak-label{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.streak-dots{display:flex;gap:4px;flex-wrap:wrap;}
+.streak-dot{width:10px;height:10px;border-radius:50%;}
+.streak-dot.hit{background:var(--gold);}
+.streak-dot.miss{background:#222;}
+.streak-dot.today{background:var(--amber);box-shadow:0 0 6px rgba(232,132,58,.5);}
+.plan-meta{font-size:.58rem;letter-spacing:2px;color:#444;text-transform:uppercase;}
+.week-nav{display:flex;gap:8px;align-items:center;margin-bottom:20px;}
+.week-nav-btn{background:transparent;border:1px solid #333;color:#666;font-family:'Space Mono',monospace;font-size:.58rem;padding:6px 12px;cursor:pointer;transition:all .2s;}
+.week-nav-btn:hover{border-color:#555;color:#888;}
+.week-nav-btn:disabled{opacity:.3;cursor:default;}
+.reset-plan-btn{background:transparent;border:1px solid #3a1a1a;color:#664444;font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:1px;padding:5px 10px;cursor:pointer;margin-left:auto;}
+.reset-plan-btn:hover{border-color:#c66;color:#c66;}
+@media(max-width:600px){.day-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">FRET<span>BOARD</span></div>
+  <nav>
+    <button class="active" onclick="showPage('home')">Home</button>
+    <button onclick="showPage('scales')">Scales</button>
+    <button onclick="showPage('improv')">Improvisasi</button>
+    <button onclick="showPage('ngulik')">🔍 Ngulik Lagu</button>
+    <button onclick="showPage('rhythm')">🥁 Rhythm</button>
+    <button onclick="showPage('composition')">Komposisi</button>
+    <button onclick="showPage('plan')">📅 Training Plan</button>
+    <button onclick="showPage('practice')">Latihan</button>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div class="hero active" id="page-home">
+  <div class="section-eyebrow">Guitar Mastery System — v2.0</div>
+  <h1 class="hero-title">KUASAI<br><span class="line2">FRETBOARD.</span></h1>
+  <p class="hero-body">Dari scale dasar sampai jazz fusion. Full 24-fret, semua kunci, dan AI song analyzer untuk ngulik lagu favoritmu.</p>
+  <div class="hero-cta">
+    <button class="cta-btn" onclick="showPage('scales')">Belajar Scale</button>
+    <button class="cta-btn secondary" onclick="showPage('ngulik')">🔍 Ngulik Lagu AI</button>
+    <button class="cta-btn secondary" onclick="showPage('improv')">Backing Tracks</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">24</div><div class="stat-label">Scale & Mode</div></div>
+    <div class="stat"><div class="stat-num">24</div><div class="stat-label">Fret Penuh</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Pilihan Kunci</div></div>
+    <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Song Analyzer</div></div>
+  </div>
+</div>
+
+<!-- SCALES -->
+<main id="page-scales">
+  <div class="section-eyebrow">Panduan Lengkap</div>
+  <h2 class="section-title">SCALE & MODE</h2>
+  <p class="section-desc">Pilih kunci di bawah, klik scale apapun dan lihat posisinya di full 24-fret. Ganti kunci kapanpun untuk transposisi otomatis.</p>
+  <div class="key-selector-wrap">
+    <span class="ks-label">Kunci :</span>
+    <div class="key-grid" id="keyGrid"></div>
+    <span style="font-size:.56rem;color:#3a3a3a;margin-left:8px;">← fretboard akan otomatis menyesuaikan</span>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('what',event)">Apa itu Scale?</button>
+    <button class="tab-btn" onclick="switchTab('catalog',event)">Katalog Scale</button>
+    <button class="tab-btn" onclick="switchTab('compare',event)">Perbandingan</button>
+  </div>
+  <div class="tab-panel active" id="tab-what">
+    <div class="two-col">
+      <div>
+        <div class="card-box" style="margin-bottom:12px;">
+          <div class="card-box-title">APA ITU SCALE?</div>
+          <p style="font-family:'Crimson Pro',serif;color:#bbb;line-height:1.8;font-size:.97rem;">Scale adalah <strong style="color:var(--cream)">kumpulan nada yang dipilih</strong> dari 12 nada dalam satu oktaf. Setiap scale punya <strong style="color:var(--gold)">interval formula</strong> ditulis dalam <strong style="color:var(--gold)">W</strong> (Whole=2 fret) dan <strong style="color:var(--amber)">H</strong> (Half=1 fret) yang menciptakan karakter uniknya.</p>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">CARA MENGHAFAL SCALE</div>
+          <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Hafal interval dulu.</strong> "W-W-H-W-W-W-H" berlaku di semua key — lebih powerful dari menghafal diagram posisi jari.</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Latih semua scale dari kunci yang sama</strong> sampai terasa natural, baru pindah kunci. Gunakan key selector di atas.</div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Hubungkan dengan lagu.</strong> Major = "Do Re Mi", Dorian = "Oye Como Va", Phrygian Dominant = intro metal gelap.</div></div>
+          <div class="step-item" style="border:none;"><div class="step-num">4</div><div class="step-text"><strong>Latih di backing track.</strong> Telinga harus mengenal "rasa" tiap scale, bukan hanya jari yang hafal posisi.</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card-box" style="margin-bottom:12px;">
+          <div class="card-box-title">KENAPA BELAJAR SCALE?</div>
+          <div class="tip-item"><div class="tip-icon">🎸</div><div><div class="tip-title">IMPROVISASI</div><div class="tip-body">Tau scale = tau nada ekspresif saat solo di atas chord progression tertentu.</div></div></div>
+          <div class="tip-item"><div class="tip-icon">🎵</div><div><div class="tip-title">NGULIK LAGU</div><div class="tip-body">Kenali scale = lebih mudah nebak melodi dan solo hanya dengan dengar.</div></div></div>
+          <div class="tip-item" style="border:none;"><div class="tip-icon">🎼</div><div><div class="tip-title">KOMPOSISI</div><div class="tip-body">Pilih scale yang tepat untuk mengekspresikan emosi yang kamu mau.</div></div></div>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">LEGENDA FRETBOARD</div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot r"></div> Root Note</div>
+            <div class="legend-item"><div class="legend-dot t"></div> Scale tone</div>
+            <div class="legend-item"><div class="legend-dot a"></div> Arpeggio (chord tone)</div>
+          </div>
+          <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.85rem;line-height:1.6;">Fretboard menampilkan <strong style="color:var(--cream)">semua 24 fret</strong> dari open string. Scroll horizontal untuk lihat seluruh neck. Angka di bawah = posisi fret. Titik ganda = fret 12 dan 24 (oktaf).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- STRING INTERVAL EXPLAINER -->
+    <div class="comp-subtitle" style="margin-bottom:14px;">KENAPA PINDAH STRING BIKIN BINGUNG?</div>
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="card-box">
+        <div class="card-box-title">JARAK ANTAR STRING</div>
+        <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.88rem;line-height:1.7;margin-bottom:14px;">Standard tuning tidak sepenuhnya konsisten. 5 pasang string berjarak <strong style="color:var(--tone)">Perfect 4th (5 semitone)</strong>, tapi G→B berjarak <strong style="color:var(--amber)">Major 3rd (4 semitone)</strong> — satu fret lebih pendek.</p>
+        <div id="stringTuningDiagram"></div>
+        <div class="memo-box" style="margin-top:12px;">
+          <div class="memo-title">Satu aturan untuk ingat</div>
+          <div class="memo-text">"Semua string sama, kecuali G ke B — geser 1 fret ekstra ke kanan." Hafal hanya ini, dan semua scale shape akan masuk akal.</div>
+        </div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">EFEKNYA DI SCALE SHAPE</div>
+        <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.88rem;line-height:1.7;margin-bottom:12px;">Tanpa kompensasi G→B, shape scale akan "patah". Dengan kompensasi, pattern jari geser 1 fret saat crossing ke B string.</p>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.75rem;line-height:2;color:#7ab87a;white-space:pre;">Am Pentatonic box 1 — tanpa kompensasi (SALAH):
+e |--5--8--|
+B |--5--8--|  ← seharusnya geser +1
+G |--5--7--|
+D |--5--7--|
+A |--5--7--|
+E |--5--8--|
+
+Am Pentatonic box 1 — dengan kompensasi (BENAR):
+e |--5--8--|
+B |--6--8--|  ← 1 fret lebih tinggi dari G string
+G |--5--7--|  ← "patahan" di sini
+D |--5--7--|
+A |--5--7--|
+E |--5--8--|</pre></div>
+        <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.82rem;margin-top:8px;">B string fret 6 = C (sama dengan G string fret 5). Tanpa geser, kamu main B string fret 5 = Bb — salah nada!</p>
+      </div>
+    </div>
+
+    <!-- ARPEGGIO EXPLAINER -->
+    <div class="comp-subtitle" style="margin-bottom:14px;">ARPEGGIO — CARA HAFAL SCALE LEBIH CEPAT</div>
+    <div class="two-col">
+      <div class="card-box">
+        <div class="card-box-title">KENAPA ARPEGGIO DULU?</div>
+        <p style="font-family:'Crimson Pro',serif;color:#bbb;line-height:1.8;font-size:.95rem;margin-bottom:12px;">Scale = 7 nada, arpeggio = 3–4 nada paling penting (chord tones: 1, 3, 5, 7). Kalau scale adalah "kamus", arpeggio adalah "kata-kata yang paling sering dipakai".</p>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Hafal arpeggio dulu</strong> (nada 1, 3, 5, dan 7). Ini "skeleton" harmonis scale — setiap nada punya makna yang jelas terhadap chord.</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Tambahkan nada sisanya</strong> (2, 4, 6) sebagai passing notes yang menghubungkan chord tones. Jadi tidak perlu hafal 7 nada sekaligus.</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Saat improvisasi</strong>, gunakan arpeggio sebagai "landing points" — nada yang aman untuk resolve. Scale tones lain untuk motion dan warna.</div></div>
+        <div class="step-item" style="border:none;"><div class="step-num">4</div><div class="step-text"><strong>Di fretboard</strong>, klik scale apapun di katalog — arpeggio (chord tones) ditampilkan dengan <span style="color:#9b59b6;font-weight:700;">titik ungu</span>, scale tones biasa biru. Lihat skeleton-nya dulu, baru isi gap-nya.</div></div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">CONTOH: A MINOR (AEOLIAN)</div>
+        <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.82rem;margin-bottom:10px;">Nada lengkap: A–B–C–D–E–F–G</p>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:.55rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:7px;">Step 1 — Hafal Am7 arpeggio dulu</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <div style="background:var(--gold);color:#000;padding:6px 12px;font-size:.72rem;font-weight:700;min-width:32px;text-align:center;">A<br><span style="font-size:.48rem;">root</span></div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;min-width:32px;text-align:center;">C<br><span style="font-size:.48rem;">b3</span></div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;min-width:32px;text-align:center;">E<br><span style="font-size:.48rem;">5</span></div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;min-width:32px;text-align:center;">G<br><span style="font-size:.48rem;">b7</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.55rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:7px;">Step 2 — Isi passing notes</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <div style="background:var(--gold);color:#000;padding:6px 12px;font-size:.72rem;font-weight:700;text-align:center;">A</div>
+            <div style="background:var(--tone);color:#fff;padding:6px 12px;font-size:.72rem;text-align:center;opacity:.7;">B</div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;text-align:center;">C</div>
+            <div style="background:var(--tone);color:#fff;padding:6px 12px;font-size:.72rem;text-align:center;opacity:.7;">D</div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;text-align:center;">E</div>
+            <div style="background:var(--tone);color:#fff;padding:6px 12px;font-size:.72rem;text-align:center;opacity:.7;">F</div>
+            <div style="background:#9b59b6;color:#fff;padding:6px 12px;font-size:.72rem;font-weight:700;text-align:center;">G</div>
+          </div>
+          <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.8rem;margin-top:8px;">Ungu = chord tone (hafal duluan). Biru redup = passing note (isi setelah).</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- end tab-what -->
+
+  <div class="tab-panel" id="tab-catalog">
+    <div class="filter-bar">
+      <button class="filter-btn on" onclick="filterScales('all',this)">Semua</button>
+      <button class="filter-btn" onclick="filterScales('major',this)">Major</button>
+      <button class="filter-btn" onclick="filterScales('minor',this)">Minor</button>
+      <button class="filter-btn" onclick="filterScales('pentatonic',this)">Pentatonic</button>
+      <button class="filter-btn" onclick="filterScales('mode',this)">Mode</button>
+      <button class="filter-btn" onclick="filterScales('jazz',this)">Jazz / Fusion</button>
+      <button class="filter-btn" onclick="filterScales('exotic',this)">Eksotik</button>
+    </div>
+    <div class="scales-grid" id="scalesGrid"></div>
+    <div class="detail-panel" id="scaleDetail"></div>
+  </div>
+  <div class="tab-panel" id="tab-compare">
+    <p class="section-desc" style="margin-bottom:14px;">Perbandingan formula antar scale — perhatikan perbedaan yang menciptakan karakter unik tiap scale.</p>
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead><tr><th>Scale</th><th>Formula</th><th id="compareKeyHeader">Nada (A)</th><th>Karakter</th></tr></thead>
+        <tbody id="compareBody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- IMPROVISASI -->
+<main id="page-improv">
+  <div class="section-eyebrow">Panduan + Latihan</div>
+  <h2 class="section-title">IMPROVISASI</h2>
+  <p class="section-desc">Framework improvisasi, chord-scale map, dan backing tracks dengan rekomendasi scale untuk setiap konteks musik.</p>
+  <div class="two-col" style="margin-bottom:20px;">
+    <div class="card-box">
+      <div class="card-box-title">FRAMEWORK DASAR</div>
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Identifikasi Key & Mood</strong> — Major = ceria. Minor = sad/dark. Cari nada landing yang paling sering.</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Pilih Scale</strong> — Minor → Pentatonic Minor. Major → Major Pentatonic. Jazz → mode spesifik per chord.</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Phrases, Bukan Nada Satu-Satu</strong> — Kelompokkan 3–5 nada. Kasih jeda. Musik adalah dialog bunyi dan diam.</div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Target Chord Tones</strong> — Root, Third, Fifth dari chord yang berbunyi. Resolusi ke sana = berasa "benar".</div></div>
+      <div class="step-item" style="border:none;"><div class="step-num">5</div><div class="step-text"><strong>Bend, Vibrato, Slides</strong> — Dua nada yang sama bisa sangat berbeda tergantung artikulasi.</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card-box">
+        <div class="card-box-title">CHORD → SCALE MAP</div>
+        <div class="chord-row"><div class="chord-name">maj / maj7</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Ionian</span><span class="scale-tag">Maj Pentatonic</span><span class="scale-tag">Lydian</span></div></div>
+        <div class="chord-row"><div class="chord-name">min / min7</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Dorian</span><span class="scale-tag">Aeolian</span><span class="scale-tag">Min Penta</span></div></div>
+        <div class="chord-row"><div class="chord-name">dom7</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Mixolydian</span><span class="scale-tag">Blues</span><span class="scale-tag">Lydian b7</span></div></div>
+        <div class="chord-row"><div class="chord-name">min7b5</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Locrian ♮2</span><span class="scale-tag">Locrian</span></div></div>
+        <div class="chord-row"><div class="chord-name">7alt / 7#11</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Altered</span><span class="scale-tag">Whole Tone</span></div></div>
+        <div class="chord-row" style="border:none;"><div class="chord-name">dim7</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">Dim HW</span><span class="scale-tag">Dim WH</span></div></div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">II–V–I JAZZ (Key C)</div>
+        <div class="chord-row"><div class="chord-name">Dm7 (II)</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">D Dorian</span></div></div>
+        <div class="chord-row"><div class="chord-name">G7 (V)</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">G Mixolydian</span><span class="scale-tag">G Altered</span></div></div>
+        <div class="chord-row" style="border:none;"><div class="chord-name">Cmaj7 (I)</div><div style="color:#333;">→</div><div class="scale-suggestions"><span class="scale-tag">C Ionian</span><span class="scale-tag">C Lydian</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-eyebrow">Cara Pindah Chord Tanpa Pusing</div>
+  <h3 class="comp-subtitle" style="margin-bottom:6px;">GUIDE TONES & CHORD TONES</h3>
+  <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.93rem;line-height:1.7;margin-bottom:20px;">Daripada mikir "scale apa sekarang", fokus ke <strong style="color:var(--cream)">chord tones</strong> — nada yang menyusun chord yang sedang berbunyi. Resolve ke sana = selalu kedengar "benar" terlepas dari scale apapun yang kamu pakai.</p>
+
+  <div class="two-col" style="margin-bottom:20px;">
+    <div class="card-box">
+      <div class="card-box-title">PENDEKATAN PRAKTIS</div>
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Jangan pindah posisi fisik.</strong> Tetap di area fret yang sama. Yang berubah hanya nada mana yang kamu jadikan "landing point", bukan posisi tangan.</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Dengar chord yang berbunyi, cari yang deket.</strong> Saat G7 mulai berbunyi, tanya: "G, B, D, F ada di fret mana yang paling deket dari posisi sekarang?" Resolve ke sana.</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Sisanya cuma passing notes.</strong> Nada apapun di antara chord tones = boleh, asal landing-nya di chord tone. Telinga pendengar akan "forgive" passing notes.</div></div>
+      <div class="step-item" style="border:none;"><div class="step-num">4</div><div class="step-text"><strong>Latih guide tones dulu.</strong> Hanya 2 nada per chord (3rd dan 7th) — kalau bisa smooth voice lead antar guide tones, improvisasimu sudah 80% beres.</div></div>
+    </div>
+    <div class="card-box">
+      <div class="card-box-title">GUIDE TONES — II–V–I (Key C)</div>
+      <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.82rem;margin-bottom:14px;">Guide tones = 3rd + 7th. Ini yang paling "define" karakter tiap chord. Voice lead antar chord = guide tones bergerak seminimal mungkin.</p>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.58rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">Dm7 (II chord)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <span style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--gold);">D root</span>
+          <span style="background:rgba(74,143,196,.15);border:1px solid rgba(74,143,196,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--tone);">F (b3) ← guide</span>
+          <span style="background:rgba(255,255,255,.04);border:1px solid #333;padding:5px 12px;font-size:.7rem;color:#aaa;">A (5)</span>
+          <span style="background:rgba(74,143,196,.15);border:1px solid rgba(74,143,196,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--tone);">C (b7) ← guide</span>
+        </div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.8rem;color:#555;">Landing di F atau C = berasa "Dm7"</div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.58rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">G7 (V chord) — chord berubah, tangan hampir tidak gerak</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <span style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--gold);">G root</span>
+          <span style="background:rgba(232,132,58,.15);border:1px solid rgba(232,132,58,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--amber);">B (3) ← guide</span>
+          <span style="background:rgba(255,255,255,.04);border:1px solid #333;padding:5px 12px;font-size:.7rem;color:#aaa;">D (5)</span>
+          <span style="background:rgba(232,132,58,.15);border:1px solid rgba(232,132,58,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--amber);">F (b7) ← guide</span>
+        </div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.8rem;color:#555;">F dari Dm7 → F di G7 = <strong style="color:#888">sama persis</strong>! C dari Dm7 → B di G7 = turun ½ step. Minimal movement.</div>
+      </div>
+
+      <div>
+        <div style="font-size:.58rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">Cmaj7 (I chord) — resolusi</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <span style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--gold);">C root</span>
+          <span style="background:rgba(122,184,122,.15);border:1px solid rgba(122,184,122,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--sp);">E (3) ← guide</span>
+          <span style="background:rgba(255,255,255,.04);border:1px solid #333;padding:5px 12px;font-size:.7rem;color:#aaa;">G (5)</span>
+          <span style="background:rgba(122,184,122,.15);border:1px solid rgba(122,184,122,.35);padding:5px 12px;font-size:.7rem;font-weight:700;color:var(--sp);">B (7) ← guide</span>
+        </div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.8rem;color:#555;">B dari G7 → B di Cmaj7 = <strong style="color:#888">sama!</strong> F dari G7 → E = turun ½ step. Total: hanya gerak 2 nada, masing-masing ½ step. Itu voice leading.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- II-V-I TAB GUIDE TONES -->
+  <div class="card-box" style="margin-bottom:20px;">
+    <div class="card-box-title">GUIDE TONES II–V–I — LATIHAN TAB (Key C, posisi sekitar fret 5–8)</div>
+    <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.82rem;margin-bottom:14px;">Latih hanya dua nada per chord ini. Dengarkan bagaimana F→F→E dan C→B→B membentuk "cerita" harmonis yang smooth.</p>
+    <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.78rem;line-height:2.2;color:#7ab87a;white-space:pre;margin:0;">|--- Dm7 ---|--- G7 ----|--- Cmaj7 --|
+e|-----------|-----------|------------|
+B|--6(F)-----|--7(B)-----|--8(E)------|   ← 3rd dari tiap chord (b3, 3, 3)
+G|--5(C)-----|--5(F)-----|--4(B)------|   ← 7th dari tiap chord (b7, b7, maj7)
+D|-----------|-----------|------------|
+A|-----------|-----------|------------|
+E|-----------|-----------|------------|
+
+Tips: mainkan G dan B string bersamaan (dyad) untuk tiap chord.
+F berulang di G7 = tidak perlu gerak! C→B = turun 1 fret. B→B = tidak gerak! F→E = turun 1 fret.</pre></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-eyebrow">Latihan dengan Musik</div>
+  <h3 class="comp-subtitle" style="margin-bottom:16px;">BACKING TRACKS & SCALE SUGGESTIONS</h3>
+  <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.93rem;line-height:1.7;margin-bottom:20px;">Klik link untuk buka YouTube dan cari backing track yang sesuai. Scale yang tertera adalah pilihan terbaik untuk improvisasi di atasnya.</p>
+  <div class="bt-grid" id="btGrid"></div>
+</main>
+
+<!-- NGULIK LAGU -->
+<main id="page-ngulik">
+  <div class="section-eyebrow">AI-Powered</div>
+  <h2 class="section-title">NGULIK LAGU</h2>
+  <p class="section-desc">Masukkan link YouTube atau nama lagu — AI akan analisis chord progression, key, scale rekomendasi, dan tablature ikonik.</p>
+  <div class="ngulik-wrap">
+    <div class="ngulik-input-area">
+      <div class="ngulik-title">ANALISIS LAGU</div>
+      <div class="ngulik-subtitle">Paste link YouTube, atau ketik nama lagu + artis untuk analisis lengkap</div>
+      <div style="margin-bottom:12px;">
+        <div class="meta-label">YouTube Link atau Nama Lagu</div>
+        <div class="input-row">
+          <input class="url-input" id="songUrl" placeholder="https://youtube.com/watch?v=... atau 'Comfortably Numb Pink Floyd'" />
+          <button class="analyze-btn" id="analyzeBtn" onclick="analyzeSong()">Analisis ▶</button>
+        </div>
+      </div>
+      <div class="song-meta-input" style="margin-bottom:14px;">
+        <div><div class="meta-label">Nama Lagu (opsional)</div><input class="meta-input" id="songTitle" placeholder="Comfortably Numb" /></div>
+        <div><div class="meta-label">Artis / Band (opsional)</div><input class="meta-input" id="songArtist" placeholder="Pink Floyd" /></div>
+      </div>
+      <div style="border-top:1px solid #222;padding-top:12px;">
+        <div class="meta-label" style="margin-bottom:8px;">Pilih lagu contoh :</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;" id="sampleBtns"></div>
+      </div>
+    </div>
+    <div class="ai-loading" id="aiLoading"><div class="loader"></div><span>Menganalisis dengan AI...</span></div>
+    <div class="analysis-result" id="analysisResult"></div>
+  </div>
+</main>
+
+<!-- RHYTHM -->
+<main id="page-rhythm">
+  <div class="section-eyebrow">Fondasi yang Sering Dilupakan</div>
+  <h2 class="section-title">RHYTHM & GROOVE</h2>
+  <p class="section-desc">Rhythm bukan hanya "gimana cara strumnya" — ini tentang memahami waktu, groove, dan bagaimana gitar berinteraksi dengan drummer dan bassist.</p>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('ts',event)">Time Signature</button>
+    <button class="tab-btn" onclick="switchTab('strum',event)">Strumming</button>
+    <button class="tab-btn" onclick="switchTab('textural',event)">Tekstural & Isian</button>
+    <button class="tab-btn" onclick="switchTab('groove',event)">Lock with Band</button>
+  </div>
+
+  <!-- TIME SIGNATURE -->
+  <div class="tab-panel active" id="tab-ts">
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="card-box">
+        <div class="card-box-title">APA ITU TIME SIGNATURE?</div>
+        <p style="font-family:'Crimson Pro',serif;color:#bbb;line-height:1.8;font-size:.97rem;margin-bottom:14px;">Time signature ditulis sebagai pecahan: <strong style="color:var(--gold)">4/4</strong>, <strong style="color:var(--gold)">3/4</strong>, <strong style="color:var(--gold)">6/8</strong>. Angka atas = <strong style="color:var(--cream)">jumlah ketukan per bar</strong>. Angka bawah = <strong style="color:var(--cream)">nilai not satu ketukan</strong> (4=quarter note, 8=eighth note).</p>
+        <div class="step-item"><div class="step-num" style="font-size:1.2rem;">4/4</div><div class="step-text"><strong>4 quarter notes per bar.</strong> "ONE-two-three-four ONE-two-three-four." Time signature paling umum — 80%+ lagu pop, rock, jazz. Aksen natural di beat 1 dan 3.</div></div>
+        <div class="step-item"><div class="step-num" style="font-size:1.2rem;">3/4</div><div class="step-text"><strong>3 quarter notes per bar.</strong> "ONE-two-three ONE-two-three." Terasa seperti waltz atau ayunan. Lagu: "Take Me Out" Franz Ferdinand verse, "My Favorite Things", lagu-lagu daerah banyak yang 3/4.</div></div>
+        <div class="step-item"><div class="step-num" style="font-size:1.2rem;">6/8</div><div class="step-text"><strong>6 eighth notes per bar, dikelompokkan 3+3.</strong> "ONE-two-three-FOUR-five-six." Terasa seperti dua ayunan. Beda dengan 3/4 yang 3 ketukan berat. Lagu: "Nothing Else Matters", "House of the Rising Sun", "We Are the World".</div></div>
+        <div class="step-item"><div class="step-num" style="font-size:1.2rem;">2/4</div><div class="step-text"><strong>2 quarter notes per bar.</strong> March feel. "ONE-two ONE-two." Cepat dan tegas. Sering di musik tradisional dan march.</div></div>
+        <div class="step-item" style="border:none;"><div class="step-num" style="font-size:1.2rem;">5/4</div><div class="step-text"><strong>5 ketukan per bar.</strong> "ONE-two-three-FOUR-five" atau "ONE-two-THREE-four-five." Terasa ganjil tapi keren. Contoh: "Take Five" Dave Brubeck, intro "Mission Impossible".</div></div>
+      </div>
+      <div>
+        <div class="card-box" style="margin-bottom:12px;">
+          <div class="card-box-title">CARA DENGAR TIME SIGNATURE</div>
+          <div class="tip-item"><div class="tip-icon">👂</div><div><div class="tip-title">DENGAR SNARE DRUM</div><div class="tip-body">Di 4/4, snare biasanya di beat 2 dan 4. Di 3/4, snare di beat 2 dan 3. Di 6/8, snare di beat 4. Snare = penanda paling jelas.</div></div></div>
+          <div class="tip-item"><div class="tip-icon">🥁</div><div><div class="tip-title">HITUNG SAMPAI TERASA GANJIL</div><div class="tip-body">Hitung 1-2-3-4 sambil mendengar. Kalau beat 1-mu tidak jatuh bersamaan dengan kick drum secara konsisten, coba 1-2-3 atau 1-2-3-4-5.</div></div></div>
+          <div class="tip-item"><div class="tip-icon">🎵</div><div><div class="tip-title">RASAKAN KELOMPOK FRASE</div><div class="tip-body">Melodi vokal biasanya mengisi persis satu bar atau dua bar. Hitung seberapa banyak "langkah" sebelum frase mengulang — itu petunjuk time signaturenya.</div></div></div>
+          <div class="tip-item" style="border:none;"><div class="tip-icon">🎸</div><div><div class="tip-title">3/4 vs 6/8 — CARA BEDAIN</div><div class="tip-body">Keduanya bisa terdengar mirip. 3/4 = tiga ketukan berat (BERAT-ringan-ringan). 6/8 = dua ketukan berat dalam kelompok tiga (BERAT-ringan-ringan-BERAT-ringan-ringan). 6/8 lebih "mengalir".</div></div></div>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">SUBDIVISI & FEEL</div>
+          <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.9rem;line-height:1.7;margin-bottom:12px;">Selain time signature, <strong style="color:var(--cream)">feel subdivisi</strong> juga menentukan groove:</p>
+          <div class="chord-row"><div class="chord-name" style="min-width:100px;">Straight</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Semua 8th note sama panjang. Pop, rock, metal. "1-and-2-and-3-and-4-and"</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:100px;">Swing / Shuffle</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">8th note pertama lebih panjang. Jazz, blues. "1-aand-2-aand". Seperti jalan terpincang.</div></div>
+          <div class="chord-row" style="border:none;"><div class="chord-name" style="min-width:100px;">Triplet feel</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Setiap ketukan dibagi 3. 12/8 feel. Ballad, slow blues. "1-trip-let-2-trip-let".</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUAL TIME SIGS -->
+    <div class="comp-subtitle" style="margin-bottom:16px;">VISUALISASI TIME SIGNATURE</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;margin-bottom:20px;">
+      <div class="card-box">
+        <div style="font-size:.58rem;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">4/4 — "four four"</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.78rem;color:#7ab87a;line-height:2;white-space:pre;">Bar:  | 1  +  2  +  3  +  4  + |
+Kick: | K        K              |
+Snare:|    S           S        |
+Hat:  | x  x  x  x  x  x  x  x |
+Gitar:| D  U  D  U  D  U  D  U  |</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Aksen KUAT di beat 1 dan 3 (kick). Beat 2 dan 4 = backbeat (snare).</div>
+      </div>
+      <div class="card-box">
+        <div style="font-size:.58rem;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">3/4 — "three four" / Waltz</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.78rem;color:#7ab87a;line-height:2;white-space:pre;">Bar:  | 1     2     3    |
+Kick: | K                |
+Snare:|       S     S    |
+Hat:  | x     x     x   |
+Gitar:| D     U     U   |</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Beat 1 = paling kuat. Terasa "berat-ringan-ringan". Waltz, lagu anak, beberapa folk.</div>
+      </div>
+      <div class="card-box">
+        <div style="font-size:.58rem;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">6/8 — "six eight" / Compound</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.78rem;color:#7ab87a;line-height:2;white-space:pre;">Bar:  | 1  2  3  4  5  6 |
+Kick: | K           K    |
+Snare:|          S       |
+Hat:  | x  x  x  x  x  x |
+Gitar:| D  .  D  D  .  D |</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Dua kelompok tiga. Aksen di 1 dan 4. Lebih "mengalir" dari 3/4.</div>
+      </div>
+    </div>
+    <div class="memo-box">
+      <div class="memo-title">🎯 Cara Cepat Identifikasi Time Signature</div>
+      <div class="memo-text">1. Tap kaki mengikuti beat yang paling kuat (biasanya kick drum). 2. Hitung berapa ketukan sebelum kick besar itu kembali. 3. Kalau 4 = 4/4. Kalau 3 = 3/4. Kalau 2 = 2/4. 4. Kalau 6 tapi terasa 2 kelompok = 6/8. Lagu pop modern hampir selalu 4/4, jadi kalau bingung, mulai dari sana dulu.</div>
+    </div>
+  </div>
+
+  <!-- STRUMMING -->
+  <div class="tab-panel" id="tab-strum">
+    <p class="section-desc" style="margin-bottom:20px;">Strumming yang enak bukan soal "seberapa keras" — tapi soal <strong style="color:var(--cream)">konsistensi gerakan tangan dan aksen yang tepat</strong>.</p>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="card-box">
+        <div class="card-box-title">PRINSIP UTAMA STRUMMING</div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Tangan kanan tidak pernah berhenti.</strong> Gerakan down-up harus konstan seperti pendulum. Kalau ada rest, tangan tetap bergerak tapi melewati string tanpa menyentuh.</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Aksen di beat kuat, bukan semua sama keras.</strong> Di 4/4, downstroke beat 1 dan 3 lebih kuat. Upstroke biasanya lebih lembut — itu yang menciptakan "groove", bukan ketukan robot.</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Ikuti hi-hat, bukan kick atau snare.</strong> Hi-hat adalah "grid" waktu. Tangan strummu seharusnya bergerak selaras dengan hi-hat drummer. Kalau hi-hat 8th notes = tanganmu bergerak 8th notes juga.</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Bass string vs treble string.</strong> Downstroke umumnya "jatuh" lebih ke bass strings (E, A, D), upstroke ke treble (G, B, e). Ini memberi "weight" yang natural.</div></div>
+        <div class="step-item" style="border:none;"><div class="step-num">5</div><div class="step-text"><strong>Mulai lambat, tanpa chord.</strong> Latih pattern baru dengan mute semua string (tangan kiri mute) dulu. Fokus ke rhythm tangan kanan 100%, baru tambahkan chord.</div></div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">NOTASI STRUMMING</div>
+        <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.88rem;margin-bottom:14px;">Cara baca pattern strumming:</p>
+        <div class="chord-row"><div class="chord-name" style="min-width:60px;font-size:.9rem;">D</div><div style="font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;">Downstroke — gerak pick/jari ke bawah</div></div>
+        <div class="chord-row"><div class="chord-name" style="min-width:60px;font-size:.9rem;">U</div><div style="font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;">Upstroke — gerak pick/jari ke atas</div></div>
+        <div class="chord-row"><div class="chord-name" style="min-width:60px;font-size:.9rem;">x</div><div style="font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;">Muted strum — tangan kiri mute, perkusif</div></div>
+        <div class="chord-row"><div class="chord-name" style="min-width:60px;font-size:.9rem;">.</div><div style="font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;">Rest/miss — tangan gerak tapi tidak kena string</div></div>
+        <div class="chord-row" style="border:none;"><div class="chord-name" style="min-width:60px;font-size:.9rem;">( )</div><div style="font-family:'Crimson Pro',serif;font-size:.9rem;color:#bbb;">Nada lembut / ghost strum</div></div>
+        <div class="memo-box" style="margin-top:14px;">
+          <div class="memo-title">Tips Pick vs Fingerstyle</div>
+          <div class="memo-text">Dengan pick: sudut 45° ke string, longgarkan grip untuk upstroke. Dengan jari: ibu jari = downstroke bass, jari lain = upstroke treble. Keduanya bisa, pilih yang lebih natural untukmu.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subtitle" style="margin-bottom:16px;">POLA STRUMMING UMUM</div>
+    <div class="bt-grid" id="strumGrid"></div>
+
+    <div class="comp-subtitle" style="margin-bottom:14px;">LATIHAN PROGRESIF</div>
+    <div class="two-col">
+      <div class="card-box">
+        <div class="card-box-title">MINGGU 1–2: FONDASI</div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">All downstroke, 60 BPM, muted. Fokus ke consistency dan even spacing antar ketukan.</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Down-up, 60 BPM, muted. Pastikan upstroke ringan, downstroke lebih berat.</div></div>
+        <div class="step-item" style="border:none;"><div class="step-num">3</div><div class="step-text">Tambahkan 2 chord sederhana (G dan C, atau Am dan F). Ganti chord tiap 4 ketukan sambil tetap strum.</div></div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">MINGGU 3–4: PATTERN</div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Latih Pop Ballad Pattern (D . D U . U D U) lambat. Hitung "1 2-and 3 4-and" keras-keras.</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">Tambahkan chord progression Am-F-C-G. Ganti chord tiap bar. Target: pindah chord tanpa ada jeda bunyi.</div></div>
+        <div class="step-item" style="border:none;"><div class="step-num">3</div><div class="step-text">Naikan tempo 5 BPM tiap 2 hari. Target akhir: pattern berjalan comfortable di 90–100 BPM.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEKSTURAL -->
+  <div class="tab-panel" id="tab-textural">
+    <p class="section-desc" style="margin-bottom:20px;">Di lagu pop modern, full strumming sering terdengar "terlalu banyak". Gitaris yang bagus tahu kapan harus <strong style="color:var(--cream)">mundur dan memberi ruang</strong> — hanya isi dengan 1–2 nada, arpeggio, atau ghost notes.</p>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="card-box">
+        <div class="card-box-title">TEKNIK TEXTURAL PLAYING</div>
+        <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">SINGLE NOTE FILLS</div><div class="tip-body">Sebagai ganti strumming penuh, mainkan 1–3 nada di waktu yang "kosong" — biasanya di beat 4 atau antara vokal. Pilih nada dari chord tone atau scale. Contoh: di akhir bar Am, mainkan E (fret 2 D string) sebagai anticipation ke chord berikutnya.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">ARPEGGIO / CHORD PICKING</div><div class="tip-body">Petik senar satu per satu dari bawah ke atas (atau pola tertentu). Suara lebih "airy" dari strumming. Cocok untuk intro, verse yang tenang, atau lagu dengan piano sebagai rhythm utama.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">PARTIAL STRUM</div><div class="tip-body">Strum hanya 3–4 string atas atau bawah, bukan semua 6. Downstroke ke bass strings (3 bawah) untuk "thud", upstroke ke treble (3 atas) untuk "shimmer". Kontrol ini yang bikin gitar tidak memenuhi seluruh spektrum frekuensi.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">DOUBLE STOPS</div><div class="tip-body">Petik 2 string sekaligus — biasanya 3rd atau 6th interval. Suara lebih "chunky" dari single note tapi tidak sepadat full chord. Sangat umum di country, blues, rock. Contoh: G+B string fret 7+8 di atas chord D.</div></div></div>
+        <div class="tip-item" style="border:none;"><div class="tip-icon">◆</div><div><div class="tip-title">RHYTHM GHOST NOTES</div><div class="tip-body">Strum dengan tangan kiri mute sebagian — bukan fully muted, bukan full chord. Menciptakan suara "chk" perkusif yang mengisi groove tanpa harmoni penuh. Khas di funk dan pop modern.</div></div></div>
+      </div>
+      <div>
+        <div class="card-box" style="margin-bottom:12px;">
+          <div class="card-box-title">KAPAN PAKAI APA?</div>
+          <div class="chord-row"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Intro / Outro</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Arpeggio atau single note melody. Beri ruang, jangan langsung full.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Verse tenang</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Fingerpicking atau arpeggio. Full strum bisa terlalu ramai kalau vokal lembut.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Pre-chorus</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Mulai build — partial strum, tambah nada per ketukan.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Chorus</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Full strum atau power chords. Ini saat "open up" yang dramatis.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Bridge</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Tergantung arah lagu — bisa kembali ke sparse atau tetap dense.</div></div>
+          <div class="chord-row" style="border:none;"><div class="chord-name" style="min-width:90px;font-size:.7rem;">Ada piano/keys</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Mundur. Isi hanya bagian yang kosong dari piano. Jangan dobel semua notnya.</div></div>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">ATURAN TIDAK TERTULIS</div>
+          <div class="tip-item"><div class="tip-icon">🎸</div><div><div class="tip-title">LESS IS MORE</div><div class="tip-body">Gitaris yang berpengalaman sering lebih sedikit main daripada yang pemula. Ruang = musik. Jika kamu bingung mau main apa, coba tidak main sama sekali dulu — dengarkan apa yang kurang.</div></div></div>
+          <div class="tip-item" style="border:none;"><div class="tip-icon">🎵</div><div><div class="tip-title">SERVE THE SONG</div><div class="tip-body">Pertanyaan terpenting: "apakah ini membuat lagunya lebih baik?" bukan "apakah ini terdengar keren?" Kadang 2 nada di waktu yang tepat lebih powerful dari 20 nada yang brilliant tapi tidak pada tempatnya.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTOH -->
+    <div class="comp-subtitle" style="margin-bottom:14px;">CONTOH TEKSTURAL — LAGU POP (Key Am, 4/4)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;">
+      <div class="card-box">
+        <div style="font-size:.56rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">Arpeggio fingerpicking pattern — Am-F-C-G</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.72rem;line-height:2;color:#7ab87a;white-space:pre;">    Am              F
+e|--0-----0---0---|--1-----1---1---|
+B|----1---------1-|----1---------1-|
+G|------2---------|------2---------|
+D|--2-------------|--3-------------|
+A|----------------|----------------|
+E|--0-------------|--1-------------|</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Petik bass note (ibu jari), lalu B, G, e, B, G. Pattern 6 nada per bar untuk 6/8 feel atau 8 nada untuk 4/4.</div>
+      </div>
+      <div class="card-box">
+        <div style="font-size:.56rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">Single note fill di akhir bar — mengisi "gap" sebelum chord ganti</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.72rem;line-height:2;color:#7ab87a;white-space:pre;">    Am (bar penuh)        fill   F
+e|--0-----------0-------0--1--|--1-|
+B|--1-----------1-------------|--1-|
+G|--2-----------2-------------|--2-|
+D|--2-----------2-------------|--3-|
+A|--0-----------0-------------|--3-|
+E|----------------------------|--1-|
+   beat 1        beat 3  beat4+</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Chord di beat 1 dan 3, single note fill E→F di beat 4. Nada E "anticipates" chord F berikutnya.</div>
+      </div>
+      <div class="card-box">
+        <div style="font-size:.56rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">Double stops isian — di antara vokal phrase</div>
+        <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.72rem;line-height:2;color:#7ab87a;white-space:pre;">e|------------------------5--7-|
+B|--5-----5-----------5--------|
+G|--5-----5---5--7-------------|
+D|-----------------------------|
+A|-----------------------------|
+E|-----------------------------|
+   chord    double stops  lead in</pre></div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#666;margin-top:6px;">Strum chord tipis di beat 1, lalu double stop G+B sebagai isian, lalu single note lead-in ke frase berikutnya.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROOVE / LOCK WITH BAND -->
+  <div class="tab-panel" id="tab-groove">
+    <p class="section-desc" style="margin-bottom:20px;">Cara agar strumming terasa "enak" bareng band — ini soal <strong style="color:var(--cream)">ke mana kamu mendengarkan</strong>, bukan hanya apa yang kamu mainkan.</p>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="card-box">
+        <div class="card-box-title">IKUT BASS ATAU DRUM?</div>
+        <p style="font-family:'Crimson Pro',serif;color:#888;line-height:1.7;font-size:.9rem;margin-bottom:14px;">Jawabannya: <strong style="color:var(--cream)">keduanya, tapi di layer yang berbeda.</strong></p>
+        <div class="tip-item"><div class="tip-icon">🥁</div><div><div class="tip-title">DRUM = GRID WAKTU</div><div class="tip-body">Hi-hat = subdivisimu (8th atau 16th notes). Snare = backbeat anchor (beat 2 & 4 di 4/4). Kick = emphasis point. Tanganmu harus bergerak selaras dengan hi-hat — itu yang bikin strum terasa "tight".</div></div></div>
+        <div class="tip-item"><div class="tip-icon">🎸</div><div><div class="tip-title">BASS = HARMONIC + RHYTHMIC ANCHOR</div><div class="tip-body">Bass menentukan root chord dan sering mempertegas kick pattern. Kalau bass dan kick landing bersamaan, gitarmu juga sebaiknya landing di sana. Harmoni gitar harus complement bass, bukan fight.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">💡</div><div><div class="tip-title">PRAKTISNYA: DENGAR KEDUANYA</div><div class="tip-body">Untuk rhythm feel → ikuti hi-hat. Untuk chord timing → ikuti bass note pertama tiap bar. Untuk aksen → ikuti kick drum. Ini bisa terjadi bersamaan setelah terbiasa — seperti berjalan sambil mengobrol.</div></div></div>
+        <div class="tip-item" style="border:none;"><div class="tip-icon">🎯</div><div><div class="tip-title">KALAU SOLO TANPA BAND</div><div class="tip-body">Tap kaki di beat 1 dan 3 (atau 1 dan 4). Ketukan kaki = kick drum buatanmu sendiri. Tangan kanan = hi-hat. Dengan ini kamu sudah punya dua layer timing internal yang cukup untuk menjaga groove.</div></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card-box">
+          <div class="card-box-title">MENGAPA STRUMMING TERASA "TIDAK ENAK"?</div>
+          <div class="chord-row"><div class="chord-name" style="min-width:110px;font-size:.68rem;">Rushing</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Main lebih cepat dari tempo seharusnya. Sering terjadi di chorus atau part yang exciting.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:110px;font-size:.68rem;">Dragging</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Main lebih lambat. Sering terjadi di part yang sulit atau saat ganti chord.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:110px;font-size:.68rem;">Uneven accents</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Semua ketukan sama keras = terdengar kaku dan robotic, tidak ada groove.</div></div>
+          <div class="chord-row"><div class="chord-name" style="min-width:110px;font-size:.68rem;">Wrong subdivision</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Tangan gerak 16th notes tapi lagu 8th notes feel = terlalu sibuk dan tidak locked.</div></div>
+          <div class="chord-row" style="border:none;"><div class="chord-name" style="min-width:110px;font-size:.68rem;">Chord change late</div><div style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#999;">Pindah chord terlambat = ada "gap" atau note bunder sebelum chord baru bunyi.</div></div>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">LATIHAN GROOVE</div>
+          <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Rekam dirimu.</strong> Dengarkan kembali. Rushing/dragging jauh lebih jelas terdengar dari luar daripada saat main.</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Latih dengan drum loop.</strong> Cari drum loop di YouTube (e.g. "90 BPM drum loop 4/4"). Main di atasnya — jauh lebih efektif dari metronom klik biasa karena ada hi-hat yang bisa diikutin.</div></div>
+          <div class="step-item" style="border:none;"><div class="step-num">3</div><div class="step-text"><strong>"Pocket" latihan.</strong> Mainkan satu chord saja (G misalnya) dengan pattern yang kamu pelajari, di atas drum loop, 5 menit penuh. Fokus 100% ke groove, zero ke harmoni.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subtitle" style="margin-bottom:14px;">LATIHAN GROOVE — CONTOH DI ATAS DRUM PATTERN</div>
+    <div class="card-box" style="margin-bottom:16px;">
+      <div class="card-box-title">GITAR + DRUM ALIGNMENT (4/4, 90 BPM)</div>
+      <p style="font-family:'Crimson Pro',serif;color:#666;font-size:.82rem;margin-bottom:14px;">Perhatikan di mana strum jatuh relatif terhadap kick dan snare:</p>
+      <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.78rem;line-height:2.2;color:#7ab87a;white-space:pre;">Beat:   |  1     +     2     +     3     +     4     +  |
+Kick:   |  K                       K                    |
+Snare:  |              S                       S        |
+Hi-hat: |  x     x     x     x     x     x     x     x  |
+Gitar:  |  D     .     D     U     .     U     D     U  |
+         ↑                   ↑           ↑
+       lock dg kick        lock dg snare  upstroke fills</pre></div>
+      <div class="memo-box" style="margin-top:12px;">
+        <div class="memo-title">Yang Dirasakan Saat "In the Pocket"</div>
+        <div class="memo-text">Downstroke beat 1 landing BERSAMAAN dengan kick = rasa "settled". Upstroke setelah snare = rasa "lift". Kalau ini sudah terasa natural, artinya kamu sudah "locked in" dengan drummer. Sebelum sampai ke sana, latihan dengan drum loop 15 menit sehari sudah cukup dalam 2–3 minggu.</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card-box">
+        <div class="card-box-title">LINK LATIHAN GROOVE (YOUTUBE)</div>
+        <p style="font-family:'Crimson Pro',serif;color:#888;font-size:.85rem;margin-bottom:12px;">Cari drum loops ini di YouTube untuk latihan:</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <a href="https://www.youtube.com/results?search_query=70+bpm+drum+loop+4/4+guitar+practice" target="_blank" class="yt-link" style="margin-top:0;">70 BPM Drum Loop 4/4 — Beginner</a>
+          <a href="https://www.youtube.com/results?search_query=90+bpm+drum+loop+4/4+groove+guitar" target="_blank" class="yt-link" style="margin-top:0;">90 BPM Drum Loop 4/4 — Intermediate</a>
+          <a href="https://www.youtube.com/results?search_query=funk+drum+loop+90+bpm+guitar+practice" target="_blank" class="yt-link" style="margin-top:0;">90 BPM Funk Drum Loop</a>
+          <a href="https://www.youtube.com/results?search_query=3/4+waltz+drum+loop+guitar+practice" target="_blank" class="yt-link" style="margin-top:0;">3/4 Waltz Drum Loop</a>
+          <a href="https://www.youtube.com/results?search_query=6/8+drum+loop+guitar+practice" target="_blank" class="yt-link" style="margin-top:0;">6/8 Drum Loop</a>
+        </div>
+      </div>
+      <div class="card-box">
+        <div class="card-box-title">LEVEL UP CHECKLIST</div>
+        <div class="tip-item"><div class="tip-icon">☐</div><div><div class="tip-title">Bisa tap foot + strum bersamaan</div><div class="tip-body">Kaki = tempo internal. Harus bisa melakukan keduanya tanpa salah satunya "nunggu" yang lain.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">☐</div><div><div class="tip-title">Pattern tidak keteteran saat ganti chord</div><div class="tip-body">Chord change tidak boleh mempengaruhi tempo atau pattern. Latih ganti chord tanpa memperlambat tangan kanan.</div></div></div>
+        <div class="tip-item"><div class="tip-icon">☐</div><div><div class="tip-title">Bisa main di atas drum loop 5 menit tanpa drift</div><div class="tip-body">Rekam dan cek — apakah masih "in sync" di menit ke-4 seperti menit ke-1?</div></div></div>
+        <div class="tip-item" style="border:none;"><div class="tip-icon">☐</div><div><div class="tip-title">Bisa memilih sparse vs full sesuai konteks</div><div class="tip-body">Di verse tenang: otomatis kurangi. Di chorus: otomatis buka penuh. Ini tanda bahwa rhythm sense sudah jadi musical instinct.</div></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- TRAINING PLAN -->
+<main id="page-plan">
+  <div class="section-eyebrow">Adaptive Practice System</div>
+  <h2 class="section-title">TRAINING PLAN</h2>
+  <p class="section-desc">Latihan terstruktur seperti running plan — ada warm-up, materi baru, review, dan combine session. Adaptif ke jadwal dan durasi kamu.</p>
+
+  <!-- ONBOARDING -->
+  <div class="plan-onboard" id="planOnboard">
+    <div class="progress-bar"><div class="progress-fill" id="onboardProgress" style="width:20%"></div></div>
+
+    <!-- Step 1: Level -->
+    <div class="onboard-step active" id="step1">
+      <div class="onboard-q">What's your current level?</div>
+      <div class="onboard-sub">Ini menentukan materi awal dan kecepatan progressinya.</div>
+      <div class="option-grid">
+        <button class="opt-btn" data-val="beginner" onclick="selectOpt(this,'level')"><strong>Beginner</strong><br><span style="color:#666;font-size:.58rem;">Baru mulai, belum hafal scale apapun</span></button>
+        <button class="opt-btn" data-val="intermediate" onclick="selectOpt(this,'level')"><strong>Intermediate</strong><br><span style="color:#666;font-size:.58rem;">Sudah tahu pentatonic, mau expand</span></button>
+        <button class="opt-btn" data-val="advanced" onclick="selectOpt(this,'level')"><strong>Advanced</strong><br><span style="color:#666;font-size:.58rem;">Nyaman dengan modes, mau jazz/fusion</span></button>
+      </div>
+      <div class="onboard-nav"><button class="onboard-next" onclick="nextStep(2)">Next →</button></div>
+    </div>
+
+    <!-- Step 2: Goal -->
+    <div class="onboard-step" id="step2">
+      <div class="onboard-q">Primary goal?</div>
+      <div class="onboard-sub">Menentukan materi apa yang diprioritaskan.</div>
+      <div class="option-grid">
+        <button class="opt-btn" data-val="rock" onclick="selectOpt(this,'goal')"><strong>Rock / Blues Improv</strong><br><span style="color:#666;font-size:.58rem;">Solo, licks, blues vocabulary</span></button>
+        <button class="opt-btn" data-val="jazz" onclick="selectOpt(this,'goal')"><strong>Jazz / Fusion</strong><br><span style="color:#666;font-size:.58rem;">Modes, chord changes, bebop</span></button>
+        <button class="opt-btn" data-val="rhythm" onclick="selectOpt(this,'goal')"><strong>Rhythm / Strumming</strong><br><span style="color:#666;font-size:.58rem;">Groove, tekstural, playing in a band</span></button>
+        <button class="opt-btn" data-val="fingerstyle" onclick="selectOpt(this,'goal')"><strong>Fingerstyle / Singer-Songwriter</strong><br><span style="color:#666;font-size:.58rem;">Arpeggio, fingerpicking, accompaniment</span></button>
+        <button class="opt-btn" data-val="general" onclick="selectOpt(this,'goal')"><strong>General / Semua</strong><br><span style="color:#666;font-size:.58rem;">Seimbang antara semua aspek</span></button>
+      </div>
+      <div class="onboard-nav">
+        <button class="onboard-back" onclick="nextStep(1)">← Back</button>
+        <button class="onboard-next" onclick="nextStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Days -->
+    <div class="onboard-step" id="step3">
+      <div class="onboard-q">Hari apa saja bisa pegang gitar?</div>
+      <div class="onboard-sub">Pilih semua hari yang memungkinkan (minimal 3 hari).</div>
+      <div class="option-grid">
+        <button class="opt-btn multi" data-val="1" onclick="toggleDay(this)">Mon</button>
+        <button class="opt-btn multi" data-val="2" onclick="toggleDay(this)">Tue</button>
+        <button class="opt-btn multi" data-val="3" onclick="toggleDay(this)">Wed</button>
+        <button class="opt-btn multi" data-val="4" onclick="toggleDay(this)">Thu</button>
+        <button class="opt-btn multi" data-val="5" onclick="toggleDay(this)">Fri</button>
+        <button class="opt-btn multi" data-val="6" onclick="toggleDay(this)">Sat</button>
+        <button class="opt-btn multi" data-val="0" onclick="toggleDay(this)">Sun</button>
+      </div>
+      <div class="onboard-nav">
+        <button class="onboard-back" onclick="nextStep(2)">← Back</button>
+        <button class="onboard-next" onclick="nextStep(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Duration -->
+    <div class="onboard-step" id="step4">
+      <div class="onboard-q">Berapa lama per sesi?</div>
+      <div class="onboard-sub">Waktu realistis yang bisa konsisten, bukan yang ideal.</div>
+      <div class="option-grid">
+        <button class="opt-btn" data-val="15" onclick="selectOpt(this,'duration')"><strong>15 menit</strong><br><span style="color:#666;font-size:.58rem;">Singkat tapi konsisten</span></button>
+        <button class="opt-btn" data-val="30" onclick="selectOpt(this,'duration')"><strong>30 menit</strong><br><span style="color:#666;font-size:.58rem;">Sweet spot untuk progress</span></button>
+        <button class="opt-btn" data-val="45" onclick="selectOpt(this,'duration')"><strong>45 menit</strong><br><span style="color:#666;font-size:.58rem;">Bisa explore lebih dalam</span></button>
+        <button class="opt-btn" data-val="60" onclick="selectOpt(this,'duration')"><strong>60 menit</strong><br><span style="color:#666;font-size:.58rem;">Full session dengan improv</span></button>
+      </div>
+      <div class="onboard-nav">
+        <button class="onboard-back" onclick="nextStep(3)">← Back</button>
+        <button class="onboard-next" onclick="nextStep(5)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Duration weeks -->
+    <div class="onboard-step" id="step5">
+      <div class="onboard-q">Target berapa minggu?</div>
+      <div class="onboard-sub">Plan akan di-generate sampai minggu terakhir, tapi bisa diperpanjang.</div>
+      <div class="option-grid">
+        <button class="opt-btn" data-val="4" onclick="selectOpt(this,'weeks')"><strong>4 minggu</strong><br><span style="color:#666;font-size:.58rem;">Sprint — fondasi kuat</span></button>
+        <button class="opt-btn" data-val="8" onclick="selectOpt(this,'weeks')"><strong>8 minggu</strong><br><span style="color:#666;font-size:.58rem;">Recommended — fondasi + expand</span></button>
+        <button class="opt-btn" data-val="12" onclick="selectOpt(this,'weeks')"><strong>12 minggu</strong><br><span style="color:#666;font-size:.58rem;">Deep — sampai intermediate/advanced</span></button>
+      </div>
+      <div class="onboard-nav">
+        <button class="onboard-back" onclick="nextStep(4)">← Back</button>
+        <button class="onboard-next" onclick="generatePlan()">Generate Plan ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN VIEW -->
+  <div class="plan-view" id="planView">
+    <div class="streak-bar">
+      <div><div class="streak-num" id="streakNum">0</div><div class="streak-label">Day Streak 🔥</div></div>
+      <div style="width:1px;height:36px;background:#2a2a2a;margin:0 4px;flex-shrink:0;"></div>
+      <div style="flex:1;min-width:0;"><div id="planMetaLine" class="plan-meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div><div class="streak-dots" id="streakDots" style="margin-top:4px;"></div></div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+        <button class="reset-plan-btn" onclick="editPlan()" style="border-color:#1a2a3a;color:#446688;">✎ Edit Plan</button>
+        <button class="reset-plan-btn" onclick="confirmReset()" style="border-color:#3a1a1a;color:#664444;">↺ Reset</button>
+      </div>
+    </div>
+    <div class="week-nav">
+      <button class="week-nav-btn" id="prevWeekBtn" onclick="changeWeek(-1)">← Prev Week</button>
+      <span id="weekNavLabel" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--cream);letter-spacing:2px;"></span>
+      <button class="week-nav-btn" id="nextWeekBtn" onclick="changeWeek(1)">Next Week →</button>
+    </div>
+    <div class="week-header">
+      <div class="week-badge" id="weekBadge"></div>
+      <div class="week-theme" id="weekTheme"></div>
+    </div>
+    <div class="day-grid" id="dayGrid"></div>
+  </div>
+</main>
+
+<!-- COMPOSITION -->
+<main id="page-composition">
+  <div class="section-eyebrow">Panduan Komposisi</div>
+  <h2 class="section-title">KOMPOSISI</h2>
+  <p class="section-desc">Komposisi adalah improvisasi yang di-edit. Gunakan scale sebagai fondasi untuk membangun lagu yang punya arah dan cerita.</p>
+  <div class="two-col" style="margin-bottom:24px;">
+    <div style="overflow-x:auto;">
+      <div class="comp-subtitle" style="margin-bottom:12px;">SCALE PER MOOD</div>
+      <table class="compare-table">
+        <thead><tr><th>Emosi / Mood</th><th>Scale</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--cream);">Ceria, optimis</td><td class="formula-cell">Ionian, Lydian</td></tr>
+          <tr><td style="color:var(--cream);">Melankolis</td><td class="formula-cell">Aeolian, Phrygian</td></tr>
+          <tr><td style="color:var(--cream);">Funky, groovy</td><td class="formula-cell">Dorian, Min Pentatonic</td></tr>
+          <tr><td style="color:var(--cream);">Blues, raw</td><td class="formula-cell">Blues Scale, Min Penta</td></tr>
+          <tr><td style="color:var(--cream);">Misterius, tense</td><td class="formula-cell">Phrygian Dom, Locrian</td></tr>
+          <tr><td style="color:var(--cream);">Oriental, eksotik</td><td class="formula-cell">Harmonic Minor, Double Harm.</td></tr>
+          <tr><td style="color:var(--cream);">Jazz, sophisticated</td><td class="formula-cell">Melodic Minor, Lydian b7</td></tr>
+          <tr><td style="color:var(--cream);">Dreamy, floating</td><td class="formula-cell">Lydian, Whole Tone</td></tr>
+          <tr><td style="color:var(--cream);">Dark, metal</td><td class="formula-cell">Phrygian, Locrian, Diminished</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-box">
+      <div class="card-box-title">DIATONIC CHORDS — KEY C</div>
+      <div class="chord-row"><div class="chord-name">I — Cmaj7</div><div style="font-size:.7rem;color:#555;">Tonic, home</div></div>
+      <div class="chord-row"><div class="chord-name">II — Dm7</div><div style="font-size:.7rem;color:#555;">Subdominant</div></div>
+      <div class="chord-row"><div class="chord-name">III — Em7</div><div style="font-size:.7rem;color:#555;">Mediant</div></div>
+      <div class="chord-row"><div class="chord-name">IV — Fmaj7</div><div style="font-size:.7rem;color:#555;">Subdominant, lift</div></div>
+      <div class="chord-row"><div class="chord-name">V — G7</div><div style="font-size:.7rem;color:#555;">Dominant, tension</div></div>
+      <div class="chord-row"><div class="chord-name">VI — Am7</div><div style="font-size:.7rem;color:#555;">Relative minor</div></div>
+      <div class="chord-row" style="border:none;"><div class="chord-name">VII — Bm7b5</div><div style="font-size:.7rem;color:#555;">Leading tone</div></div>
+    </div>
+  </div>
+  <div class="comp-subtitle" style="margin-bottom:14px;">TEKNIK KOMPOSISI</div>
+  <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">MODAL INTERCHANGE</div><div class="tip-body">Pinjam chord dari parallel mode/key. Di C major, pinjam dari C minor: iv (Fm) atau ♭VII (B♭). Ini yang bikin progressi Radiohead, Muse terdengar "unexpected" tapi enak.</div></div></div>
+  <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">SECONDARY DOMINANT</div><div class="tip-body">Tambahkan V7 sebelum chord diatonis apapun. A7 → Dm7. Menciptakan temporary tonicization yang menarik.</div></div></div>
+  <div class="tip-item"><div class="tip-icon">◆</div><div><div class="tip-title">MELODIC CONTOUR</div><div class="tip-body">Melodi yang bagus punya "shape" — naik ke klimaks, turun ke resolusi. Rancang arah melodinya seperti narasi cerita.</div></div></div>
+  <div class="tip-item" style="border:none;"><div class="tip-icon">◆</div><div><div class="tip-title">TENSION & RELEASE</div><div class="tip-body">Scale seperti Altered, Diminished = tension. Kembali ke tonic = release. Kontrol siklus tension ini = kontrol emosi pendengar.</div></div></div>
+</main>
+
+<!-- PRACTICE -->
+<main id="page-practice">
+  <div class="section-eyebrow">Rencana Latihan</div>
+  <h2 class="section-title">LATIHAN</h2>
+  <p class="section-desc">Latihan efektif bukan soal durasi, tapi kualitas fokus dan progresivitas terstruktur.</p>
+  <div class="comp-subtitle" style="margin-bottom:12px;">RUTINITAS HARIAN (30 MENIT)</div>
+  <div class="practice-grid" style="margin-bottom:32px;">
+    <div class="practice-card"><div class="practice-num">01</div><div class="practice-title">Warmup (5 min)</div><div class="practice-body">Chromatic exercises, stretching. Proteksi cedera jangka panjang.</div></div>
+    <div class="practice-card"><div class="practice-num">02</div><div class="practice-title">Scale Baru (10 min)</div><div class="practice-body">Fokus 1 scale per minggu. Ascending + descending, lalu dalam 3rds.</div></div>
+    <div class="practice-card"><div class="practice-num">03</div><div class="practice-title">Backing Track (10 min)</div><div class="practice-body">Main di atas backing track. Ini yang "mengaktifkan" telinga musikal.</div></div>
+    <div class="practice-card"><div class="practice-num">04</div><div class="practice-title">Repertoire (5 min)</div><div class="practice-body">Latih lagu yang sedang dinulik atau komposisi yang dikerjakan.</div></div>
+    <div class="practice-card"><div class="practice-num">05</div><div class="practice-title">Free Improv (5 min)</div><div class="practice-body">Mainkan apapun yang kamu rasakan. Bangun koneksi emosional.</div></div>
+    <div class="practice-card"><div class="practice-num">+</div><div class="practice-title">Recording</div><div class="practice-body">Rekam minimal 1x seminggu. Dengar dari luar = perspektif baru.</div></div>
+  </div>
+  <div class="comp-subtitle" style="margin-bottom:12px;">ROADMAP</div>
+  <div class="tip-item"><div class="tip-icon" style="font-family:'Bebas Neue';font-size:.95rem;color:var(--gold);">LV1</div><div><div class="tip-title">FONDASI (Bulan 1–3)</div><div class="tip-body">Minor + Major Pentatonic. Bending + vibrato. Ngulik 3–5 lagu rock/blues sederhana.</div></div></div>
+  <div class="tip-item"><div class="tip-icon" style="font-family:'Bebas Neue';font-size:.95rem;color:var(--gold);">LV2</div><div><div class="tip-title">EKSPANSI (Bulan 4–8)</div><div class="tip-body">Natural Minor, Major Scale full. Mulai Dorian + Mixolydian. Diatonic chords.</div></div></div>
+  <div class="tip-item"><div class="tip-icon" style="font-family:'Bebas Neue';font-size:.95rem;color:var(--gold);">LV3</div><div><div class="tip-title">WARNA (Bulan 9–15)</div><div class="tip-body">Semua 7 mode, Harmonic + Melodic Minor. Chord-scale relationship. II-V-I.</div></div></div>
+  <div class="tip-item" style="border:none;"><div class="tip-icon" style="font-family:'Bebas Neue';font-size:.95rem;color:var(--gold);">LV4</div><div><div class="tip-title">JAZZ & FUSION (Bulan 16+)</div><div class="tip-body">Altered, Lydian b7, Whole Tone, Diminished. Playing over changes. Bebop vocabulary.</div></div></div>
+</main>
+
+<script>
+// ============================================================
+// CONSTANTS & DATA
+// ============================================================
+const NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const FRET_MARKERS=[3,5,7,9,12,15,17,19,21,24];
+const DOUBLE_MARKERS=[12,24];
+let selectedKey=9; // default A
+
+const SCALES=[
+  {id:'major-pentatonic',name:'Major Pentatonic',tags:['pentatonic','major'],formula:'W-W-WH-W-WH',steps:[0,2,4,7,9],degrees:['1','2','3','5','6'],arp:[0,4,7],// 1,3,5character:'Cerah, positif, "bahasa universal" gitar.',mood:'Happy, bright, country, pop',usage:['Country','Pop','Blues','Rock'],used_by:['B.B. King','Eric Clapton','John Mayer'],memo:'Ini scale paling "aman". Kalau bingung di atas major key, ini always works.',when_to_use:'Di atas chord major dan major progressions.',
+   licks:[
+    {title:'Country bend lick (Key G, fret 5 area)',tab:`e|---------------------------|\nB|--5b7--5-------------------|\nG|----------7--5--4----------|\nD|------------------7--5-----|\nA|---------------------------|\nE|---------------------------|`,tip:'Bend nada ke-2 (B string fret 5) ke fret 7. Classic country/pop sound.'},
+    {title:'Cascading run (Key A, fret 5 area)',tab:`e|---5--7--5-----------------|\nB|-----------5--8--7--5------|\nG|----------------------7--6-|\nD|---------------------------|\nA|---------------------------|\nE|---------------------------|`,tip:'Turun dari high e ke G, smooth dan melodis. Target: root A.'},
+  ]},
+  {id:'minor-pentatonic',name:'Minor Pentatonic',tags:['pentatonic','minor'],formula:'WH-W-W-WH-W',steps:[0,3,5,7,10],degrees:['1','b3','4','5','b7'],arp:[0,3,7],// 1,b3,5character:'Gelap tapi powerful. Scale paling populer di rock dan blues.',mood:'Dark, raw, soulful, powerful',usage:['Rock','Blues','Metal','R&B'],used_by:['Jimi Hendrix','Slash','Eric Clapton'],memo:'Mulai dari sini. Hafal 5 posisi "box pattern"-nya. Posisi pertama paling umum dipakai.',when_to_use:'Di atas chord minor, blues progressions, dominant 7.',
+   licks:[
+    {title:'Classic blues rock lick (Key A, box 1)',tab:`e|---------------------5--8b10|\nB|--5--8--5--8--5--8----------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Pola naik di B string, lalu bend di high e fret 8 ke pitch fret 10. Slash / Clapton banget.'},
+    {title:'SRV-style hammer-on pull-off (Key A)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7h9p7--5------------------|\nD|----------7h9p7--5----------|\nA|------------------7h9p7--5--|\nE|----------------------------|`,tip:'Hammer-on pull-off berulang turun per string. Keep it smooth, bukan terburu-buru.'},
+  ]},
+  {id:'blues',name:'Blues Scale',tags:['minor','pentatonic'],formula:'WH-W-H-H-WH-W',steps:[0,3,5,6,7,10],degrees:['1','b3','4','b5','5','b7'],arp:[0,3,7],// 1,b3,5character:'Minor Pentatonic + "blue note" (b5). Jiwa dari blues.',mood:'Gritty, emotional, bending-friendly',usage:['Blues','Rock','Jazz blues','Soul'],used_by:['Stevie Ray Vaughan','Albert King','Buddy Guy'],memo:'Minor Pentatonic + nada b5. Pakai b5 sebagai passing note — jembatan menuju 4 atau 5.',when_to_use:'Untuk blues yang lebih "dirty" dan ekspresif.',
+   licks:[
+    {title:'Blue note passing lick (Key A)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7--6--7--5----------------|\nD|----------7--6--7--5--------|\nA|------------------7---------|\nE|----------------------------|`,tip:'Fret 6 di G string = b5 (blue note). Mainkan cepat sebagai passing note antara 7 dan 5.'},
+    {title:'Albert King-style bending (Key A)',tab:`e|--8b10--8--5----------------|\nB|-------------8b10r8--5------|\nG|---------------------------7|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Bend kuat dari fret 8. Albert King sering bend dari bawah — push string ke atas (reverse bend).'},
+  ]},
+  {id:'ionian',name:'Ionian (Major)',tags:['major','mode'],formula:'W-W-H-W-W-W-H',steps:[0,2,4,5,7,9,11],degrees:['1','2','3','4','5','6','7'],arp:[0,4,7,11],// 1,3,5,7character:'Cerah, happy, stabil. "Do Re Mi" klasik.',mood:'Happy, resolved, bright, stable',usage:['Pop','Rock','Classical','Country'],used_by:['Banyak lagu pop'],memo:'Do-Re-Mi-Fa-Sol-La-Si-Do. Semua mode adalah rotasi dari scale ini.',when_to_use:'Di atas Imaj7 dan IVmaj7.',
+   licks:[
+    {title:'Major scale run (Key C, open position)',tab:`e|--0--1--0-------------------|\nB|----------1--0--------------|\nG|---------------2--0---------|\nD|-------------------2--0-----|\nA|-----------------------3--2-|\nE|----------------------------|`,tip:'Run descending C major scale dari e ke A string. Target: root C di A string fret 3.'},
+    {title:'Melodic phrase (Key G)',tab:`e|----------------------------|\nB|--8--7--5-------------------|\nG|----------7--5--4--5--4-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Phrase melodis yang resolve ke nada 3rd (B). Berasa pop/ceria.'},
+  ]},
+  {id:'dorian',name:'Dorian',tags:['minor','mode'],formula:'W-H-W-W-W-H-W',steps:[0,2,3,5,7,9,10],degrees:['1','2','b3','4','5','6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Minor dengan major 6th. Lebih bright dari natural minor. Favorit jazz dan funk.',mood:'Funky, soulful, jazzy, minor but uplifting',usage:['Jazz','Funk','Soul','Fusion','Rock'],used_by:['Carlos Santana','Miles Davis','Daft Punk'],memo:'Natural Minor + naikkan nada ke-6. A Dorian: A-B-C-D-E-F#-G. F# itu yang bikin Dorian "soulful".',when_to_use:'Di atas min7 chords. Progressi Im7-IV7 (funk) = Dorian.',
+   licks:[
+    {title:'Santana-style Dorian phrase (Key Am)',tab:`e|--12--10--------------------|\nB|--------12--10--------------|\nG|---------------11--9--------|\nD|--------------------12--10--|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize F# (major 6th dari A Dorian) di G string fret 11. Itu "sound" Dorian yang soulful.'},
+    {title:'Funk Dorian lick (Key Dm)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7--9--10--9--7------------|\nD|----------------10--8--7----|\nA|----------------------------|\nE|----------------------------|`,tip:'Phrase dengan feel groovy. Emphasize B natural (fret 9 D string = landing point yang bright).'},
+  ]},
+  {id:'phrygian',name:'Phrygian',tags:['minor','mode'],formula:'H-W-W-W-H-W-W',steps:[0,1,3,5,7,8,10],degrees:['1','b2','b3','4','5','b6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Sangat gelap dan eksotik. b2 = karakter Flamenco/Metal.',mood:'Dark, exotic, flamenco, metal',usage:['Flamenco','Metal','Fusion'],used_by:['Tom Morello','Steve Vai','Metallica'],memo:'Natural minor dengan b2. Suara khas: dari root turun ke b2. I→bII motion = Phrygian.',when_to_use:'Di atas min7 dark/exotic. Flamenco dan metal.',
+   licks:[
+    {title:'Phrygian motion I→bII (Key E)',tab:`e|--0--1--0--1--0-------------|\nB|--0--1--0--1--0-------------|\nG|--1--2--1--2--1-------------|\nD|----------------------------|\nA|----------------------------|\nE|--0--1--0--1--0-------------|`,tip:'Gerak antara E (root) dan F (b2). Itu gerakan khas Phrygian — terasa dark seketika. Bisa dipakai sebagai pedal point.'},
+    {title:'Metal descending run (Key E Phrygian)',tab:`e|--12--11--10--8-------------|\nB|----------------10--8-------|\nG|----------------------9--8--|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Turun dari E di fret 12, gunakan chromatic feel dari b2. Metallica / Megadeth sering pakai pola ini.'},
+  ]},
+  {id:'lydian',name:'Lydian',tags:['major','mode'],formula:'W-W-W-H-W-W-H',steps:[0,2,4,6,7,9,11],degrees:['1','2','3','#4','5','6','7'],arp:[0,4,7,11],// 1,3,5,7character:'#4 menciptakan rasa dreamy, floating, magical.',mood:'Dreamy, magical, floating, wonder',usage:['Film Score','Jazz','Fusion'],used_by:['John Williams','Joe Satriani','Radiohead'],memo:'Major + naikkan nada ke-4. C Lydian = C-D-E-F#-G-A-B. F# itu yang bikin "floating".',when_to_use:'Di atas maj7 chords untuk rasa magical.',
+   licks:[
+    {title:'Lydian floating phrase (Key G)',tab:`e|--7--9--11--12--11--9-------|\nB|---------------------------8|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik ke #4 (C# = fret 11 di B string area). Rasakan "lift" yang terjadi di sana — itu ciri Lydian.'},
+    {title:'Satriani-style Lydian run (Key D)',tab:`e|--10--9--7------------------|\nB|----------10--9--7----------|\nG|------------------9--8--7---|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Run descending yang emphasize #4. Smooth, gunakan legato (hammer/pull-off).'},
+  ]},
+  {id:'mixolydian',name:'Mixolydian',tags:['major','mode'],formula:'W-W-H-W-W-H-W',steps:[0,2,4,5,7,9,10],degrees:['1','2','3','4','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7character:'Major scale dengan b7. Blues tapi bright.',mood:'Groovy, rock, slightly bluesy',usage:['Rock','Blues','Funk','Country'],used_by:['Santana','Led Zeppelin','The Beatles'],memo:'Major dengan b7 yang diturunkan. C Mixolydian = C-D-E-F-G-A-Bb.',when_to_use:'Di atas dominant 7 chords. Blues rock dan funk riff.',
+   licks:[
+    {title:'Classic Mixolydian blues-rock lick (Key A)',tab:`e|----------------------------|\nB|--10--8---------------------|\nG|--------9--7--9--7----------|\nD|------------------10--8--7--|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize G natural (b7 dari A) di G string fret 7. Itu yang bikin Mixolydian terasa "bluesy" tapi tetap bright.'},
+    {title:'Hendrix-style dominant riff (Key E)',tab:`e|----------------------------|\nB|--8--7----------------------|\nG|-------9--7-----------------|\nD|-----------9--7--9--7-------|\nA|---------------------9--7---|\nE|----------------------------|`,tip:'D natural (b7 dari E) adalah kunci karakter Mixolydian. Slide dari G ke D untuk feel dominant yang groovy.'},
+  ]},
+  {id:'aeolian',name:'Aeolian (Natural Minor)',tags:['minor','mode'],formula:'W-H-W-W-H-W-W',steps:[0,2,3,5,7,8,10],degrees:['1','2','b3','4','5','b6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Minor "default". Sad, introspective, melancholic.',mood:'Sad, dark, introspective',usage:['Rock','Metal','Pop','Classical'],used_by:['Radiohead','Led Zeppelin'],memo:'A Aeolian = nada yang sama dengan C Major, hanya mulai dari A.',when_to_use:'Default untuk minor key.',
+   licks:[
+    {title:'Emotional minor descent (Key Am)',tab:`e|--5--8--7--5----------------|\nB|------------8--6--5---------|\nG|-------------------7--5-----|\nD|---------------------------7|\nA|----------------------------|\nE|----------------------------|`,tip:'Turun dari Am chord tone ke D — b6 (F) memberi warna sad yang khas Aeolian. Tambah vibrato di akhir.'},
+    {title:'Rock minor phrase (Key Am, fret 5)',tab:`e|----------------------------|\nB|--5--8b9--8--5--------------|\nG|---------------7--5---------|\nD|-------------------7--5--3--|\nA|----------------------------|\nE|----------------------------|`,tip:'Pola descending yang khas rock minor. Bend di B string untuk ekspresi emosional.'},
+  ]},
+  {id:'locrian',name:'Locrian',tags:['minor','mode'],formula:'H-W-W-H-W-W-W',steps:[0,1,3,5,6,8,10],degrees:['1','b2','b3','4','b5','b6','b7'],arp:[0,3,6,10],// 1,b3,b5,b7 (dim7)character:'Mode paling dark. b5 membuat tonic chord diminished.',mood:'Extremely dark, unstable',usage:['Metal','Jazz (over m7b5)'],used_by:['Metal guitarists','Jazz players'],memo:'Hampir tidak dipakai sebagai "home scale". Kegunaan utama: di atas min7b5 dalam jazz.',when_to_use:'Di atas min7b5 chords.',
+   licks:[
+    {title:'Half-dim jazz phrase (Key B Locrian, over Bm7b5)',tab:`e|----------------------------|\nB|--7--6--5-------------------|\nG|----------7--5--4--5--------|\nD|--------------------7-------|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize b5 (F, fret 6 B string) tapi segera resolve. Cocok sebagai passing phrase di atas Bm7b5.'},
+  ]},
+  {id:'harmonic-minor',name:'Harmonic Minor',tags:['minor','jazz'],formula:'W-H-W-W-H-WH-H',steps:[0,2,3,5,7,8,11],degrees:['1','2','b3','4','5','b6','7'],arp:[0,3,7,11],// 1,b3,5,maj7character:'Natural minor dengan raised 7th. Interval augmented 2nd = sangat eksotik.',mood:'Dramatic, exotic, eastern, cinematic',usage:['Classical','Metal','Cinematic'],used_by:['Yngwie Malmsteen','Iron Maiden'],memo:'Natural minor + naikkan nada ke-7. A Harm. Minor: A-B-C-D-E-F-G#.',when_to_use:'Drama dan exoticism. V7 dalam minor key.',
+   licks:[
+    {title:'Yngwie neoclassical sweep fragment (Key Am)',tab:`e|--12------------------12----|\nB|------13--12--10--12--------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'G# (major 7th, fret 13 B string) adalah nada "kunci" Harmonic Minor — interval augmented 2nd antara F dan G# itu yang terasa exotic.'},
+    {title:'Eastern-sounding descending run (Key Am)',tab:`e|--17--16--13--12--13--12----|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Run di high e string. G# dan F berdampingan menciptakan augmented 2nd yang khas suara "Timur Tengah".'},
+  ]},
+  {id:'phrygian-dominant',name:'Phrygian Dominant',tags:['minor','jazz','exotic'],formula:'H-WH-H-W-H-W-W',steps:[0,1,4,5,7,8,10],degrees:['1','b2','3','4','5','b6','b7'],arp:[0,4,7,10],// 1,3,5,b7 (dom7)character:'Mode 5 dari Harmonic Minor. Flamenco/Arabic yang sangat kuat.',mood:'Flamenco, arabic, epic, dominant tension',usage:['Flamenco','Metal','Film Score'],used_by:['Al Di Meola','Paco de Lucia'],memo:'Phrygian + naikkan nada ke-3. Di Am, V7 (E7) = mainkan E Phrygian Dominant.',when_to_use:'Di atas V7 dalam minor. V7→Im Flamenco.',
+   licks:[
+    {title:'Flamenco rasqueado-style lick (Key E)',tab:`e|--0--1--4--1--0-------------|\nB|--0--1--0--1--0-------------|\nG|--1--2--1--2--1-------------|\nD|----------------------------|\nA|----------------------------|\nE|--0--1--0--1--0-------------|`,tip:'F natural (b2) dan G# (major 3rd) berdampingan. Itu interval khas Phrygian Dominant = suara Flamenco.'},
+    {title:'Arabic ascending run (Key E)',tab:`e|--0--1--4--5--7--8----------|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik dari E ke C via augmented 2nd (F ke G#). Main lambat dengan vibrato untuk feel paling ekspresif.'},
+  ]},
+  {id:'melodic-minor',name:'Melodic Minor',tags:['minor','jazz'],formula:'W-H-W-W-W-W-H',steps:[0,2,3,5,7,9,11],degrees:['1','2','b3','4','5','6','7'],arp:[0,3,7,11],// 1,b3,5,maj7character:'Natural minor dengan raised 6th AND 7th. Sangat penting dalam jazz modern.',mood:'Sophisticated, jazzy, flowing',usage:['Jazz','Fusion','Classical'],used_by:['Bill Evans','Pat Metheny','Chick Corea'],memo:'Major scale dengan b3. Mode-modenya (Lydian b7, Altered) = senjata jazz fusion.',when_to_use:'Di atas min(maj7) chords. Dasar mode jazz modern.',
+   licks:[
+    {title:'Jazz melodic minor phrase (Key Cm)',tab:`e|----------------------------|\nB|--9--8--6-------------------|\nG|----------8--7--5--7--5-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize major 6th (A natural, fret 7 G string) dan major 7th (B, fret 8). Dua nada itulah yang membedakan Melodic Minor dari Natural Minor.'},
+  ]},
+  {id:'lydian-b7',name:'Lydian b7 (Overtone)',tags:['jazz','mode'],formula:'W-W-W-H-W-H-W',steps:[0,2,4,6,7,9,10],degrees:['1','2','3','#4','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7character:'Mode ke-4 dari Melodic Minor. Mixolydian dengan #4. Sangat jazzy.',mood:'Jazzy, bright, dominant, sophisticated',usage:['Jazz','Fusion','Funk'],used_by:['Herbie Hancock','Wayne Shorter'],memo:'Mixolydian + naikkan nada 4. G Lydian b7 = G-A-B-C#-D-E-F.',when_to_use:'Di atas dominant 7 chords jazzy/sophisticated.',
+   licks:[
+    {title:'Lydian b7 jazz lick (Key G7)',tab:`e|----------------------------|\nB|--8--7--6--7--8-------------|\nG|----------------7--9--7-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'C# (fret 6 B string = #4) adalah "money note" Lydian b7 — tension yang unik di atas G7, resolve ke G.'},
+  ]},
+  {id:'altered',name:'Altered Scale (Super Locrian)',tags:['jazz'],formula:'H-W-H-W-W-W-W',steps:[0,1,3,4,6,8,10],degrees:['1','b9','#9','3','#11','#5','b7'],arp:[0,4,8,10],// 1,3,#5,b7character:'Mode ke-7 dari Melodic Minor. Semua nada "altered". Maximum tension.',mood:'Maximum tension, outside, jazz fusion',usage:['Jazz','Fusion'],used_by:['John Coltrane','Miles Davis','Pat Metheny'],memo:'G Altered = G-Ab-Bb-B-Db-Eb-F. Di atas G7alt sebelum resolve ke Cmaj7.',when_to_use:'Di atas V7alt chords dalam jazz. G7alt → Cmaj7.',
+   licks:[
+    {title:'Altered scale tension → resolve (Key G7alt → C)',tab:`e|--11--10--8--11--10---------|\nB|-------------------11--10---|\nG|-------------------------------7|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Semua nada "outside" di G7alt. Di beat terakhir resolve ke C (fret 8 E string atau fret 5 G). Tension yang ekstrem lalu resolusi = feel jazz fusion yang khas.'},
+  ]},
+  {id:'whole-tone',name:'Whole Tone',tags:['jazz','exotic'],formula:'W-W-W-W-W-W',steps:[0,2,4,6,8,10],degrees:['1','2','3','#4','#5','b7'],arp:[0,4,8],// 1,3,#5character:'Semua interval sama. Dreamlike, floating, ambiguous.',mood:'Dreamy, ambiguous, floating',usage:['Jazz','Film Score','Impressionism'],used_by:['Claude Debussy','Joe Satriani'],memo:'Hanya ada 2 whole tone scales. Mudah dihafal karena semua intervalnya sama.',when_to_use:'Di atas augmented triads atau dominant 7#5.',
+   licks:[
+    {title:'Whole tone ascending run (Key C)',tab:`e|----------------------------|\nB|--5--6--8--10---------------|\nG|-------------7--9--11-------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Setiap nada berjarak 2 fret. Karena interval seragam, pattern posisi jari selalu sama di setiap string. Mudah dipindah ke key apapun.'},
+  ]},
+  {id:'diminished-hw',name:'Diminished (HW)',tags:['jazz','exotic'],formula:'H-W-H-W-H-W-H-W',steps:[0,1,3,4,6,7,9,10],degrees:['1','b2','b3','3','b5','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7 (dom7)character:'Scale 8 nada simetris. Untuk dominant 7 chords dalam jazz.',mood:'Tense, dominant, jazz, dark symmetry',usage:['Jazz','Film Score','Metal'],used_by:['John Coltrane','Herbie Hancock'],memo:'HW = Half-Whole untuk dom7. WH = Whole-Half untuk dim7. Hanya 3 transposisi unik.',when_to_use:'Di atas dominant 7 chords dalam jazz.',
+   licks:[
+    {title:'Diminished symmetrical lick (Key G7)',tab:`e|----------------------------|\nB|--8--7--6--5----------------|\nG|------------8--7--6--5------|\nD|----------------------8--7--|\nA|----------------------------|\nE|----------------------------|`,tip:'Pattern turun berulang 1-2 fret. Karena simetris, pattern jari selalu sama tiap minor 3rd (3 fret). Bisa dimulai dari fret manapun dan tetap dalam scale.'},
+  ]},
+  {id:'diminished-wh',name:'Diminished (WH)',tags:['jazz','exotic'],formula:'W-H-W-H-W-H-W-H',steps:[0,2,3,5,6,8,9,11],degrees:['1','2','b3','4','b5','b6','6','7'],arp:[0,3,6,9],// 1,b3,b5,bb7 (dim7)character:'Octatonic versi untuk diminished 7 chords.',mood:'Dark, symmetric, tense, chromatic',usage:['Jazz','Classical','Film Score'],used_by:['Classical composers'],memo:'Versi WH dimulai dengan Whole step. Dipakai di atas dim7 chords.',when_to_use:'Di atas diminished 7 chords.',
+   licks:[
+    {title:'Dim7 arpeggio phrase (Key Bdim7)',tab:`e|--7--6--5-------------------|\nB|----------8--7--6--5--------|\nG|--------------------8--7----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Arpeggio dim7 chord (B-D-F-Ab) lalu sambung dengan nada WH scale. Semua nota berjarak minor 3rd.'},
+  ]},
+  {id:'double-harmonic',name:'Double Harmonic Major',tags:['exotic'],formula:'H-WH-H-W-H-WH-H',steps:[0,1,4,5,7,8,11],degrees:['1','b2','3','4','5','b6','7'],arp:[0,4,7,11],// 1,3,5,maj7character:'Dua interval augmented 2nd = sangat eksotik. Byzantine/Arabic/Indian.',mood:'Byzantine, Arabic, exotic, dramatic',usage:['World Music','Metal','Film Score'],used_by:['Steve Vai','Al Di Meola'],memo:'"Byzantine scale". Dua augmented 2nd sangat tidak konvensional.',when_to_use:'Exoticism ekstrem. Berasa "ancient" atau "middle eastern".',
+   licks:[
+    {title:'Byzantine exotic riff (Key C)',tab:`e|--8--9--12--13--12--9--8----|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik dari C ke G di satu string saja. Dua augmented 2nd (C→Db→E dan Ab→B) terasa sangat "asing" tapi dramatis.'},
+  ]},
+  {id:'locrian-2',name:'Locrian ♮2 (Half Diminished)',tags:['jazz','mode'],formula:'W-H-W-H-W-W-W',steps:[0,2,3,5,6,8,10],degrees:['1','2','b3','4','b5','b6','b7'],arp:[0,3,6,10],// 1,b3,b5,b7character:'Mode ke-6 dari Melodic Minor. Locrian dengan natural 2.',mood:'Dark but flowing, jazz minor',usage:['Jazz','Fusion'],used_by:['Scofield','Metheny'],memo:'Locrian ♮2 solve clash b2 di atas min7b5. Natural 2 lebih smooth.',when_to_use:'Di atas min7b5 chords dalam jazz.',
+   licks:[
+    {title:'Half-dim smooth resolution (Key Bm7b5)',tab:`e|----------------------------|\nB|--7--5----------------------|\nG|-------7--6--4--6--4--------|\nD|--------------------7--5----|\nA|----------------------------|\nE|----------------------------|`,tip:'Natural 2 (C#, fret 6 G string) adalah perbedaan dari Locrian biasa. Terasa lebih "smooth" dan tidak clash di atas Bm7b5.'},
+  ]},
+];
+
+const BACKING_TRACKS=[
+  {title:'A Minor Blues Backing Track',genre:'Blues',bpm:'70',key:'A Minor',tags:['Beginner'],primary_scales:['A Minor Pentatonic','A Blues Scale'],secondary_scales:['A Dorian','A Aeolian'],desc:'Classic 12-bar blues di Am. Backing track terbaik untuk mulai belajar improvisasi.',url:'https://www.youtube.com/results?search_query=A+minor+blues+backing+track+guitar+12+bar'},
+  {title:'E Dorian Funk Groove',genre:'Funk / Soul',bpm:'95',key:'E Dorian',tags:['Intermediate'],primary_scales:['E Dorian','E Minor Pentatonic'],secondary_scales:['E Aeolian'],desc:'Groove funky di Em. Latihan Dorian dan Minor Pentatonic dengan feel soul.',url:'https://www.youtube.com/results?search_query=E+dorian+funk+backing+track+guitar'},
+  {title:'Jazz II-V-I Backing Track',genre:'Jazz',bpm:'120',key:'C Major',tags:['Advanced'],primary_scales:['D Dorian (Dm7)','G Mixolydian (G7)','C Ionian (Cmaj7)'],secondary_scales:['G Altered Scale'],desc:'Classic jazz II-V-I. D Dorian → G Mixolydian/Altered → C Ionian.',url:'https://www.youtube.com/results?search_query=jazz+ii+v+i+backing+track+Dm+G7+Cmaj7'},
+  {title:'E Phrygian Dark Metal',genre:'Metal / Rock',bpm:'140',key:'E Phrygian',tags:['Intermediate'],primary_scales:['E Phrygian','E Minor Pentatonic'],secondary_scales:['E Phrygian Dominant','E Harmonic Minor'],desc:'Dark dan heavy di E Phrygian. Latihan Phrygian dan Harmonic Minor dalam metal.',url:'https://www.youtube.com/results?search_query=E+phrygian+metal+backing+track+guitar'},
+  {title:'G Major Rock Backing Track',genre:'Rock',bpm:'110',key:'G Major',tags:['Beginner'],primary_scales:['G Major Pentatonic','G Minor Pentatonic'],secondary_scales:['G Ionian','G Mixolydian'],desc:'Rock/country feel di G Major. Latihan Major Pentatonic dan hybrid picking.',url:'https://www.youtube.com/results?search_query=G+major+rock+backing+track+guitar'},
+  {title:'C Lydian Ambient / Dream',genre:'Fusion / Ambient',bpm:'80',key:'C Lydian',tags:['Intermediate'],primary_scales:['C Lydian','C Major Pentatonic'],secondary_scales:['G Lydian b7'],desc:'Ambient dan floating di C Lydian. Latihan Lydian scale dan melodi yang dreamy.',url:'https://www.youtube.com/results?search_query=C+lydian+backing+track+guitar+ambient+dreamy'},
+  {title:'Flamenco Backing Track — Am',genre:'Flamenco / World',bpm:'120',key:'A Phrygian',tags:['Intermediate'],primary_scales:['E Phrygian Dominant','A Harmonic Minor'],secondary_scales:['E Flamenco','A Minor Pentatonic'],desc:'Rhythm Flamenco di Am. Latihan Phrygian Dominant dan Harmonic Minor.',url:'https://www.youtube.com/results?search_query=flamenco+backing+track+Am+Phrygian+guitar'},
+  {title:'E Melodic Minor Jazz Fusion',genre:'Jazz Fusion',bpm:'130',key:'E Melodic Minor',tags:['Advanced'],primary_scales:['E Melodic Minor','E Altered Scale'],secondary_scales:['A Lydian b7','B Altered'],desc:'Fusion dengan harmoni Melodic Minor. Latihan Altered, Lydian b7, Locrian ♮2.',url:'https://www.youtube.com/results?search_query=jazz+fusion+backing+track+guitar+melodic+minor'},
+];
+
+const SAMPLE_SONGS=[
+  {title:'Comfortably Numb',artist:'Pink Floyd',url:'https://www.youtube.com/watch?v=_FrOQC-zEog'},
+  {title:'Oye Como Va',artist:'Santana',url:'https://www.youtube.com/watch?v=XDvuMWVLvYE'},
+  {title:'So What',artist:'Miles Davis',url:'https://www.youtube.com/watch?v=ylXk1LBvIqU'},
+  {title:'Hotel California',artist:'Eagles',url:'https://www.youtube.com/watch?v=BciS5krYL80'},
+  {title:'Sultans of Swing',artist:'Dire Straits',url:'https://www.youtube.com/watch?v=h0ffIJ7ZO4U'},
+  {title:'Eruption',artist:'Van Halen',url:'https://www.youtube.com/watch?v=sN3rdVqMFFk'},
+  {title:'Little Wing',artist:'Jimi Hendrix',url:'https://www.youtube.com/watch?v=vMBxODPg_5U'},
+  {title:'Autumn Leaves',artist:'Jazz Standard',url:'https://www.youtube.com/watch?v=r-Z8KuwI7Gc'},
+  {title:'Cliffs of Dover',artist:'Eric Johnson',url:'https://www.youtube.com/watch?v=_3mKhNhV1Y8'},
+  {title:'Stairway to Heaven',artist:'Led Zeppelin',url:'https://www.youtube.com/watch?v=QkF3oxziUI4'},
+];
+
+// ============================================================
+// KEY SELECTOR
+// ============================================================
+function initKeySelector(){
+  const grid=document.getElementById('keyGrid');
+  grid.innerHTML=NOTES.map((n,i)=>`<button class="key-btn ${i===selectedKey?'selected':''}" onclick="changeKey(${i},this)">${n}</button>`).join('');
+}
+
+function changeKey(idx,btn){
+  selectedKey=idx;
+  document.querySelectorAll('.key-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if(openScale) toggleDetail(openScale,true);
+  renderCompare();
+}
+
+// ============================================================
+// SCALE CATALOG
+// ============================================================
+function renderCatalog(filter='all'){
+  const grid=document.getElementById('scalesGrid');
+  const filtered=filter==='all'?SCALES:SCALES.filter(s=>s.tags.includes(filter));
+  grid.innerHTML=filtered.map(s=>`
+    <div class="scale-card" id="card-${s.id}" onclick="toggleDetail('${s.id}',false)">
+      <div class="card-tag">${s.tags.map(t=>`<span class="tag-pill">${t}</span>`).join('')}</div>
+      <div class="card-name">${s.name}</div>
+      <div class="card-formula">${s.formula}</div>
+      <div class="card-desc">${s.character}</div>
+    </div>`).join('');
+}
+
+function filterScales(filter,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const det=document.getElementById('scaleDetail');
+  det.classList.remove('open');det.innerHTML='';openScale=null;
+  renderCatalog(filter);
+}
+
+let openScale=null;
+
+function toggleDetail(id,forceReopen){
+  const detail=document.getElementById('scaleDetail');
+  if(openScale===id && !forceReopen){
+    detail.classList.remove('open');detail.innerHTML='';
+    document.querySelectorAll('.scale-card').forEach(c=>c.classList.remove('active'));
+    openScale=null;return;
+  }
+  openScale=id;
+  document.querySelectorAll('.scale-card').forEach(c=>c.classList.remove('active'));
+  const card=document.getElementById('card-'+id);
+  if(card) card.classList.add('active');
+  const s=SCALES.find(x=>x.id===id);
+  const noteNames=s.steps.map(st=>NOTES[(selectedKey+st)%12]);
+  detail.innerHTML=`
+    <div class="detail-grid">
+      <div>
+        <div class="detail-title">${s.name}</div>
+        <div class="detail-subtitle">${s.character}</div>
+        <div class="info-block">
+          <div class="info-label">Formula Interval</div>
+          <div style="font-family:'Space Mono',monospace;font-size:.8rem;color:var(--gold);letter-spacing:1px;">${s.formula}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Nada dalam Key ${NOTES[selectedKey]}</div>
+          <div class="formula-visual">${noteNames.map((n,i)=>`<div class="fv-block"><div class="fv-note ${i===0?'root-note':''}">${n}</div><div class="fv-interval">${s.degrees[i]}</div></div>${i<noteNames.length-1?'<div class="fv-arrow">›</div>':''}`).join('')}</div>
+        </div>
+        <div class="info-block"><div class="info-label">Mood</div><div class="info-content">${s.mood}</div></div>
+        <div class="info-block"><div class="info-label">Kapan Dipakai</div><div class="info-content">${s.when_to_use}</div></div>
+        <div class="info-block"><div class="info-label">Genre</div><div class="usage-list">${s.usage.map(u=>`<span class="usage-chip">${u}</span>`).join('')}</div></div>
+        <div class="info-block"><div class="info-label">Gitaris Referensi</div><div class="usage-list">${s.used_by.map(u=>`<span class="usage-chip">${u}</span>`).join('')}</div></div>
+      </div>
+      <div>
+        <div class="fretboard-label">FULL FRETBOARD — Key ${NOTES[selectedKey]} — Fret 0–24 (scroll →)</div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot r"></div>Root</div>
+          <div class="legend-item"><div class="legend-dot a"></div>Arpeggio (chord tone)</div>
+          <div class="legend-item"><div class="legend-dot t"></div>Scale tone</div>
+        </div>
+        ${s.arp&&s.arp.length?`<div style="margin-bottom:8px;"><span style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:#9b59b6;">Arpeggio notes: </span>${s.arp.map(st=>`<span style="background:rgba(155,89,182,.15);border:1px solid rgba(155,89,182,.35);color:#c39bd3;padding:2px 8px;font-size:.65rem;font-weight:700;margin:0 2px;">${NOTES[(selectedKey+st)%12]}</span>`).join('')}</div>`:''}
+        ${renderFretboard(s,selectedKey)}
+        <div class="memo-box">
+          <div class="memo-title">💡 Tips Menghafal</div>
+          <div class="memo-text">${s.memo}</div>
+        </div>
+        ${s.licks&&s.licks.length?`<div style="margin-top:14px;">
+          <div class="info-label" style="margin-bottom:10px;">🎸 Contoh Lick</div>
+          ${s.licks.map(lk=>`<div style="background:#080a08;border:1px solid #1a2a1a;padding:12px;margin-bottom:8px;">
+            <div style="font-size:.56rem;letter-spacing:2px;color:var(--sp);text-transform:uppercase;margin-bottom:7px;">${lk.title}</div>
+            <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.75rem;line-height:2;color:#7ab87a;white-space:pre;margin:0;">${escHtml(lk.tab)}</pre></div>
+            <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#777;margin-top:7px;line-height:1.5;">💬 ${lk.tip}</div>
+          </div>`).join('')}
+        </div>`:''}
+      </div>
+    </div>`;
+  detail.classList.add('open');
+  setTimeout(()=>detail.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+}
+
+// ============================================================
+// FULL 24-FRET FRETBOARD
+// ============================================================
+function renderFretboard(scale,rootIdx,showArp=true){
+  const stringNames=['e','B','G','D','A','E'];
+  const correctOpen=[4,11,7,2,9,4]; // e B G D A E semitones from C
+  const numFrets=25;
+  const scaleNotes=new Set(scale.steps.map(s=>(rootIdx+s)%12));
+  // arpeggio = chord tones (degrees 1,3,5,7 = step indices 0,2,4,6 for 7-note scales; adjust per scale)
+  const arpSteps=scale.arp||[];
+  const arpNotes=new Set(arpSteps.map(s=>(rootIdx+s)%12));
+
+  let html=`<div class="fretboard-wrap"><div class="fretboard-scroll">`;
+  html+=`<div class="fb-header">`;
+  for(let f=0;f<numFrets;f++){
+    const isDbl=DOUBLE_MARKERS.includes(f);
+    const isM=FRET_MARKERS.includes(f);
+    html+=`<div class="fb-fret-num ${isDbl?'dbl':isM?'marker':''}">${f}</div>`;
+  }
+  html+=`</div>`;
+
+  for(let si=0;si<6;si++){
+    const openNote=correctOpen[si];
+    html+=`<div class="string-row"><div class="string-name">${stringNames[si]}</div>`;
+    for(let f=0;f<numFrets;f++){
+      const noteVal=(openNote+f)%12;
+      const isRoot=noteVal===(rootIdx%12);
+      const inArp=showArp&&arpNotes.has(noteVal)&&!isRoot;
+      const inScale=scaleNotes.has(noteVal)&&!inArp;
+      html+=`<div class="fret-cell ${f===0?'nut':''}">`;
+      if(isRoot) html+=`<div class="fret-dot root">${NOTES[noteVal]}</div>`;
+      else if(inArp) html+=`<div class="fret-dot arp">${NOTES[noteVal]}</div>`;
+      else if(inScale) html+=`<div class="fret-dot tone">${NOTES[noteVal]}</div>`;
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  }
+  html+=`<div class="pos-marker-row">`;
+  for(let f=0;f<numFrets;f++){
+    const isDbl=DOUBLE_MARKERS.includes(f);
+    const isM=FRET_MARKERS.includes(f)&&!isDbl;
+    html+=`<div class="pm-cell">`;
+    if(isDbl) html+=`<div style="display:flex;gap:3px;"><div style="width:5px;height:5px;background:#444;border-radius:50%;"></div><div style="width:5px;height:5px;background:#444;border-radius:50%;"></div></div>`;
+    else if(isM) html+=`<div style="width:5px;height:5px;background:#2d2d2d;border-radius:50%;"></div>`;
+    html+=`</div>`;
+  }
+  html+=`</div></div></div>`;
+  return html;
+}
+
+// ============================================================
+// COMPARE TABLE
+// ============================================================
+function renderCompare(){
+  const tbody=document.getElementById('compareBody');
+  const hdr=document.getElementById('compareKeyHeader');
+  if(hdr) hdr.textContent=`Nada (${NOTES[selectedKey]})`;
+  if(!tbody) return;
+  tbody.innerHTML=SCALES.map(s=>{
+    const notes=s.steps.map(st=>NOTES[(selectedKey+st)%12]).join('–');
+    return`<tr>
+      <td style="color:var(--cream);font-weight:700;">${s.name}</td>
+      <td class="formula-cell">${s.formula}</td>
+      <td class="formula-cell" style="font-size:.62rem;">${notes}</td>
+      <td style="font-family:'Crimson Pro',serif;font-size:.85rem;color:#bbb;">${s.mood}</td>
+    </tr>`;}).join('');
+}
+
+// ============================================================
+// BACKING TRACKS
+// ============================================================
+function renderBackingTracks(){
+  const grid=document.getElementById('btGrid');
+  if(!grid) return;
+  grid.innerHTML=BACKING_TRACKS.map(bt=>`
+    <div class="bt-card">
+      <div class="bt-tag">${bt.genre} · ${bt.bpm} BPM · ${bt.key} ${bt.tags.map(t=>`· ${t}`).join('')}</div>
+      <div class="bt-title">${bt.title}</div>
+      <div class="bt-desc">${bt.desc}</div>
+      <div style="font-size:.53rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:4px;">Primary Scales</div>
+      <div class="bt-scales">${bt.primary_scales.map(sc=>`<span class="bt-scale-chip primary">${sc}</span>`).join('')}</div>
+      <div style="font-size:.53rem;letter-spacing:2px;color:#444;text-transform:uppercase;margin-top:8px;margin-bottom:4px;">Juga coba</div>
+      <div class="bt-scales">${bt.secondary_scales.map(sc=>`<span class="bt-scale-chip">${sc}</span>`).join('')}</div>
+      <a href="${bt.url}" target="_blank" class="yt-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2.2 12 2.2 12 2.2s-4.8 0-7.3.2c-.6.1-1.9.1-3 1.3C.8 4.5.5 6.5.5 6.5S.2 8.8.2 11v2.1c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.2.3-4.5V11c0-2.2-.3-4.5-.3-4.5zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+        Cari di YouTube
+      </a>
+    </div>`).join('');
+}
+
+// ============================================================
+// SAMPLE SONGS
+// ============================================================
+function initSampleButtons(){
+  const wrap=document.getElementById('sampleBtns');
+  if(!wrap) return;
+  wrap.innerHTML=SAMPLE_SONGS.map(s=>`
+    <button class="sample-btn" onclick="setSample('${s.title}','${s.artist}','${s.url}')">${s.title}</button>
+  `).join('');
+}
+
+function setSample(title,artist,url){
+  document.getElementById('songTitle').value=title;
+  document.getElementById('songArtist').value=artist;
+  document.getElementById('songUrl').value=url;
+}
+
+// ============================================================
+// AI SONG ANALYZER
+// ============================================================
+async function analyzeSong(){
+  const url=document.getElementById('songUrl').value.trim();
+  const title=document.getElementById('songTitle').value.trim();
+  const artist=document.getElementById('songArtist').value.trim();
+  if(!url&&!title){alert('Masukkan link YouTube atau nama lagu terlebih dahulu.');return;}
+  const btn=document.getElementById('analyzeBtn');
+  const loading=document.getElementById('aiLoading');
+  const result=document.getElementById('analysisResult');
+  btn.disabled=true;loading.classList.add('show');
+  result.classList.remove('show');result.innerHTML='';
+
+  const songQuery=title?(artist?`"${title}" by ${artist}`:title):url;
+
+  const prompt=`Kamu adalah pakar teori musik dan guitar instructor berpengalaman.
+Analisis lagu: ${songQuery}
+URL: ${url||'tidak ada'}
+
+Kembalikan HANYA valid JSON. Tidak ada teks lain, tidak ada markdown backtick, tidak ada komentar.
+
+ATURAN PENTING untuk JSON:
+- Semua string harus pakai double quote
+- Untuk newline di dalam tab string, gunakan \\n (backslash-n), BUKAN enter/newline literal
+- Tidak boleh ada trailing comma setelah elemen terakhir array atau object
+- Semua field harus diisi, gunakan string kosong jika tidak ada data
+
+Format JSON yang dikembalikan:
+{"song_title":"...","artist":"...","key":"contoh B minor","tempo":"contoh 120 BPM","genre":"...","time_signature":"4/4","chord_progressions":[{"section":"Intro","chords":["Am","G","F","E"],"note":"..."},{"section":"Verse","chords":["Am","G"],"note":"..."},{"section":"Chorus","chords":["F","C","G","Am"],"note":"..."}],"scale_recommendations":[{"rank":1,"scale_name":"Minor Pentatonic","key_context":"B Minor Pentatonic","why":"penjelasan detail mengapa cocok","difficulty":"Beginner"},{"rank":2,"scale_name":"Aeolian","key_context":"B Aeolian","why":"penjelasan","difficulty":"Intermediate"},{"rank":3,"scale_name":"Dorian","key_context":"B Dorian","why":"penjelasan","difficulty":"Advanced"}],"famous_licks":[{"description":"deskripsi lick ikonik","position":"fret area","technique":"teknik"},{"description":"lick kedua","position":"fret area","technique":"teknik"}],"guitar_techniques":["teknik1","teknik2","teknik3"],"tablature_highlights":[{"section":"Main Riff","tab":"e|-----------|\\nB|-----------|\\nG|-----------|\\nD|-----------|\\nA|-----------|\\nE|-----------|","notes":"cara memainkan"},{"section":"Solo Ikonik","tab":"e|-----------|\\nB|-----------|\\nG|-----------|\\nD|-----------|\\nA|-----------|\\nE|-----------|","notes":"cara memainkan"}],"improv_tips":"tips improvisasi 2-3 kalimat","similar_songs":["lagu1 - artis1","lagu2 - artis2","lagu3 - artis3"]}
+
+Isi dengan data AKURAT sesuai lagu. Tablature harus bisa dimainkan.`;
+
+  try{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:3500,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    if(!response.ok){
+      const errData=await response.json().catch(()=>({}));
+      throw new Error(`API ${response.status}: ${errData?.error?.message||response.statusText}`);
+    }
+
+    const data=await response.json();
+    const raw=data.content.map(i=>i.text||'').join('');
+
+    const parsed=robustParseJSON(raw);
+    if(!parsed) throw new Error('Tidak bisa parse response. Coba lagi.');
+    renderAnalysis(parsed,url);
+
+  }catch(e){
+    result.innerHTML=`<div style="padding:18px;color:#c66;font-size:.78rem;border:1px solid #5a1a1a;background:#130000;">⚠️ ${escHtml(e.message)}<br><br><span style="color:#664;">Buka app dari browser (bukan Claude desktop/mobile app). Kalau sudah di browser, coba lagi — kadang butuh 1-2x retry.</span></div>`;
+    result.classList.add('show');
+  }finally{
+    btn.disabled=false;loading.classList.remove('show');
+  }
+}
+
+function robustParseJSON(raw){
+  // 1. Strip markdown fences
+  let s=raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+
+  // 2. Extract outermost { ... }
+  const first=s.indexOf('{');
+  const last=s.lastIndexOf('}');
+  if(first===-1||last===-1) return null;
+  s=s.slice(first,last+1);
+
+  // 3. Try direct parse first
+  try{return JSON.parse(s);}catch(_){}
+
+  // 4. Fix pass — process char by char to safely fix common Claude JSON issues
+  s=fixJSON(s);
+
+  try{return JSON.parse(s);}catch(_){}
+
+  // 5. Aggressive fix — strip everything problematic
+  const aggressive=s
+    .replace(/[\u0000-\u001F\u007F]/g,(c)=>c==='\n'?'\\n':c==='\t'?'\\t':'')
+    .replace(/,(\s*[}\]])/g,'$1')
+    .replace(/([{,]\s*)(\w+)(\s*:)/g,'$1"$2"$3'); // unquoted keys
+  try{return JSON.parse(aggressive);}catch(_){}
+
+  return null;
+}
+
+function fixJSON(s){
+  let out='';
+  let inStr=false;
+  let escaped=false;
+
+  for(let i=0;i<s.length;i++){
+    const c=s[i];
+
+    if(escaped){
+      out+=c;
+      escaped=false;
+      continue;
+    }
+
+    if(c==='\\'){
+      escaped=true;
+      out+=c;
+      continue;
+    }
+
+    if(c==='"'){
+      inStr=!inStr;
+      out+=c;
+      continue;
+    }
+
+    if(inStr){
+      // Inside a string: escape raw control chars
+      if(c==='\n'){out+='\\n';continue;}
+      if(c==='\r'){continue;}
+      if(c==='\t'){out+='\\t';continue;}
+      out+=c;
+      continue;
+    }
+
+    // Outside string: fix trailing commas
+    if(c===']'||c==='}'){
+      // Remove trailing comma before this char
+      let trimmed=out.trimEnd();
+      if(trimmed.endsWith(',')) out=trimmed.slice(0,-1);
+      else out=out;
+    }
+
+    out+=c;
+  }
+
+  // If string was left open (truncated response), close it
+  if(inStr) out+='"';
+
+  // Balance brackets
+  const opens=(out.match(/\[/g)||[]).length-(out.match(/\]/g)||[]).length;
+  const braces=(out.match(/\{/g)||[]).length-(out.match(/\}/g)||[]).length;
+  for(let i=0;i<opens;i++) out+=']';
+  for(let i=0;i<braces;i++) out+='}';
+
+  // Final trailing comma sweep (outside strings only — simple regex safe here)
+  out=out.replace(/,(\s*[}\]])/g,'$1');
+
+  return out;
+}
+
+function renderAnalysis(d,url){
+  const result=document.getElementById('analysisResult');
+  const ytId=extractYoutubeId(url);
+  let html=`
+    <div class="result-song-title">${d.song_title||'Unknown'}</div>
+    <div class="result-artist">${[d.artist,d.key,d.tempo,d.genre,d.time_signature].filter(Boolean).join(' · ')}</div>`;
+
+  if(ytId){
+    html+=`<div style="margin-bottom:18px;"><div style="position:relative;padding-bottom:28%;max-width:480px;background:#000;border:1px solid #333;">
+      <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe>
+    </div></div>`;
+  }
+
+  if(d.chord_progressions&&d.chord_progressions.length){
+    html+=`<div class="result-section"><div class="result-section-title">Chord Progressions</div>`;
+    d.chord_progressions.forEach(prog=>{
+      html+=`<div style="margin-bottom:10px;">
+        <div style="font-size:.58rem;letter-spacing:2px;color:var(--amber);margin-bottom:5px;text-transform:uppercase;">${prog.section}</div>
+        <div class="chord-prog-display">${(prog.chords||[]).map(c=>`<div class="chord-bubble">${c}</div>`).join('')}</div>
+        ${prog.note?`<div style="font-family:'Crimson Pro',serif;font-size:.8rem;color:#666;margin-top:4px;">${prog.note}</div>`:''}
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(d.scale_recommendations&&d.scale_recommendations.length){
+    html+=`<div class="result-section"><div class="result-section-title">Scale Rekomendasi Improvisasi</div><div class="scale-recommend">`;
+    d.scale_recommendations.forEach(sr=>{
+      const dc=sr.difficulty==='Beginner'?'#7ab87a':sr.difficulty==='Advanced'?'#c66':'var(--amber)';
+      html+=`<div class="scale-rec-item">
+        <div class="scale-rec-rank">${sr.rank}</div>
+        <div>
+          <div class="scale-rec-name">${sr.key_context||sr.scale_name} <span style="font-size:.52rem;color:${dc};border:1px solid ${dc};padding:1px 6px;margin-left:5px;">${sr.difficulty||''}</span></div>
+          <div class="scale-rec-why">${sr.why}</div>
+        </div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  }
+
+  if(d.tablature_highlights&&d.tablature_highlights.length){
+    html+=`<div class="result-section"><div class="result-section-title">Tablature</div>`;
+    d.tablature_highlights.forEach(tab=>{
+      html+=`<div style="margin-bottom:14px;">
+        <div style="font-size:.56rem;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:7px;">${tab.section}</div>
+        <div style="overflow-x:auto;"><pre class="tab-notation">${escHtml(tab.tab||'')}</pre></div>
+        ${tab.notes?`<div style="font-family:'Crimson Pro',serif;font-size:.8rem;color:#666;margin-top:4px;">${tab.notes}</div>`:''}
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(d.famous_licks&&d.famous_licks.length){
+    html+=`<div class="result-section"><div class="result-section-title">Famous Licks & Phrases</div>`;
+    d.famous_licks.forEach(lick=>{
+      html+=`<div style="padding:9px;background:var(--bg3);border:1px solid #222;margin-bottom:5px;">
+        <div style="font-size:.68rem;font-weight:700;color:var(--cream);margin-bottom:2px;">${lick.description||''}</div>
+        <div style="font-size:.65rem;color:var(--amber);">Posisi: ${lick.position||'—'} · Teknik: ${lick.technique||'—'}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(d.guitar_techniques&&d.guitar_techniques.length){
+    html+=`<div class="result-section"><div class="result-section-title">Teknik Gitar</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">${d.guitar_techniques.map(t=>`<span class="usage-chip" style="color:var(--tone);border-color:rgba(74,143,196,.3);">${t}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  if(d.improv_tips){
+    html+=`<div class="result-section"><div class="result-section-title">Tips Improvisasi</div>
+      <div class="memo-box" style="margin:0;"><div class="memo-text">${d.improv_tips}</div></div>
+    </div>`;
+  }
+
+  if(d.similar_songs&&d.similar_songs.length){
+    html+=`<div class="result-section"><div class="result-section-title">Lagu Serupa untuk Latihan</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">${d.similar_songs.map(s=>`<span class="usage-chip">${s}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  result.innerHTML=html;result.classList.add('show');
+  setTimeout(()=>result.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function extractYoutubeId(url){
+  if(!url) return null;
+  const m=url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return m?m[1]:null;
+}
+
+function escHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ============================================================
+// PAGE NAVIGATION & TABS
+// ============================================================
+function showPage(id){
+  // Always deactivate all pages including plan sub-views
+  document.querySelectorAll('main,.hero').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  const target=document.getElementById('page-'+id);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active');
+  });
+}
+
+function switchTab(id,e){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(e&&e.target) e.target.classList.add('active');
+}
+
+// ============================================================
+// RHYTHM PATTERNS RENDER
+// ============================================================
+const STRUM_PATTERNS=[
+  {name:'Basic Downstroke',ts:'4/4',level:'Beginner',genre:'Rock / Folk',notation:'D . D . D . D .',desc:'Semua downstroke, 1 per ketukan. Fondasi sebelum belajar kombinasi.',tip:'Fokus ke consistency — tiap ketukan sama kuatnya. Gunakan metronom di tempo lambat dulu (60 BPM).',ytUrl:'https://www.youtube.com/results?search_query=basic+downstroke+strumming+pattern+guitar+beginner'},
+  {name:'Down-Up Basic',ts:'4/4',level:'Beginner',genre:'Pop / Folk',notation:'D U D U D U D U',desc:'Alternating down-up per 8th note. Gerakan tangan tidak berhenti — seperti pendulum.',tip:'Tangan harus tetap bergerak naik-turun konstan. Miss strum = lewati string, tangan tetap gerak.',ytUrl:'https://www.youtube.com/results?search_query=down+up+strumming+pattern+guitar+beginner+tutorial'},
+  {name:'Pop Ballad Pattern',ts:'4/4',level:'Beginner',genre:'Pop',notation:'D . D U . U D U',desc:'Pattern paling umum di lagu pop. Beat 1 down, beat 2 down-up, beat 3 up, beat 4 down-up.',tip:'Hitung "1 2-and 3 4-and" sambil strum. Rest di "and" setelah beat 1 dan 3.',ytUrl:'https://www.youtube.com/results?search_query=pop+strumming+pattern+guitar+D+DU+UDU+tutorial'},
+  {name:'Reggae Skank',ts:'4/4',level:'Intermediate',genre:'Reggae',notation:'. U . U . U . U',desc:'Hanya upstroke, tepat di offbeat (the "ands"). Berlawanan total dengan intuisi.',tip:'Mute chord dengan tangan kiri saat downstroke. Yang bunyi hanya upstroke. Ikuti hi-hat drummer.',ytUrl:'https://www.youtube.com/results?search_query=reggae+skank+guitar+strumming+pattern+tutorial+upstroke'},
+  {name:'Funk Chop',ts:'4/4',level:'Intermediate',genre:'Funk / Soul',notation:'D x D U x U D x',desc:'"x" = muted strum (perkusif). Campuran nada dan mute menciptakan groove funky.',tip:'Tangan kanan tetap bergerak konstan. Tangan kiri mute string dengan rileks — semi-muted bukan fully muted.',ytUrl:'https://www.youtube.com/results?search_query=funk+guitar+strumming+muted+chop+pattern+tutorial'},
+  {name:'Waltz Pattern',ts:'3/4',level:'Beginner',genre:'Waltz / Folk / Country',notation:'D U U D U U D U U',desc:'3/4 time: 3 ketukan per bar. Down di beat 1, up-up di beat 2-3.',tip:'Rasakan "ONE-two-three ONE-two-three". Beat 1 selalu paling kuat.',ytUrl:'https://www.youtube.com/results?search_query=waltz+3/4+strumming+pattern+guitar+tutorial'},
+  {name:'Fingerpicking Travis Pick',ts:'4/4',level:'Intermediate',genre:'Folk / Country / Singer-Songwriter',notation:'Bass-T-M-I bass-T-M-I',desc:'Ibu jari (T) petik bass string bergantian, jari lain petik treble. Pattern arpeggio klasik.',tip:'Ibu jari ke E/A/D string bergantian, telunjuk ke G, tengah ke B, manis ke e. Latih bass line dulu.',ytUrl:'https://www.youtube.com/results?search_query=travis+picking+fingerpicking+pattern+guitar+tutorial'},
+  {name:'6/8 Ballad',ts:'6/8',level:'Intermediate',genre:'Ballad / Pop',notation:'D . D D . D D . D',desc:'6/8: 6 eighth notes per bar, aksen di beat 1 dan 4. Terasa seperti 2 kelompok 3.',tip:'Hitung 1-2-3-4-5-6, aksen di 1 dan 4. Lagu: "Nothing Else Matters" Metallica, "House of the Rising Sun".',ytUrl:'https://www.youtube.com/results?search_query=6/8+strumming+pattern+guitar+tutorial+ballad'},
+];
+
+function renderRhythmPatterns(){
+  const grid=document.getElementById('strumGrid');
+  if(!grid) return;
+  grid.innerHTML=STRUM_PATTERNS.map(p=>`
+    <div class="bt-card">
+      <div class="bt-tag">${p.ts} · ${p.genre} · <span style="color:${p.level==='Beginner'?'var(--sp)':p.level==='Intermediate'?'var(--amber)':'#c99'}">${p.level}</span></div>
+      <div class="bt-title">${p.name}</div>
+      <div style="background:#080a08;border:1px solid #1a2a1a;padding:10px 12px;margin:8px 0;font-family:'Space Mono',monospace;font-size:.85rem;color:#7ab87a;letter-spacing:3px;">${p.notation}</div>
+      <div class="bt-desc">${p.desc}</div>
+      <div class="memo-box" style="margin:8px 0;"><div class="memo-text">💡 ${p.tip}</div></div>
+      <a href="${p.ytUrl}" target="_blank" class="yt-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2.2 12 2.2 12 2.2s-4.8 0-7.3.2c-.6.1-1.9.1-3 1.3C.8 4.5.5 6.5.5 6.5S.2 8.8.2 11v2.1c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.2.3-4.5V11c0-2.2-.3-4.5-.3-4.5zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+        Lihat contoh di YouTube
+      </a>
+    </div>`).join('');
+}
+
+
+initKeySelector();
+renderCatalog();
+renderCompare();
+renderBackingTracks();
+initSampleButtons();
+renderRhythmPatterns();
+initStringDiagram();
+
+// ============================================================
+// TRAINING PLAN ENGINE
+// ============================================================
+const TP={
+  profile:null,
+  plan:null,
+  progress:null, // {dayKey: bool}
+  currentWeek:1,
+};
+
+// ---- CURRICULUM BLOCKS ----
+const CURRICULUM={
+  beginner:{
+    rock:[
+      {w:1,theme:"Pentatonic Foundation",days:[
+        {title:"Minor Pentatonic Intro",blocks:[{t:"warmup",d:"Chromatic warmup 3 menit — jari semua"},{t:"focus",d:"Minor Pentatonic box 1 — hafal 5 nada, naik turun pelan"},{t:"apply",d:"Main di atas A Minor Blues backing track, bebas"}]},
+        {title:"Minor Pentatonic + Bending",blocks:[{t:"warmup",d:"Chromatic + light stretching"},{t:"review",d:"Ulang Minor Pentatonic box 1 dari kemarin"},{t:"focus",d:"Latih bending di B string fret 7 ke pitch fret 9"},{t:"apply",d:"Masukkan 1 bend di tiap phrase saat improv"}]},
+        {title:"Introduce Blues Scale",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"review",d:"Minor Pentatonic ascending + descending"},{t:"focus",d:"Blues Scale = Minor Penta + 1 blue note (b5). Cari posisinya"},{t:"combine",d:"Main pentatonic, sekali-sekali masukkan blue note sebagai passing note"}]},
+        {title:"Consolidation + Backing Track",blocks:[{t:"warmup",d:"Warmup + review lick kemarin"},{t:"review",d:"Blues Scale full naik turun"},{t:"apply",d:"15 menit main di atas backing track, fokus ke phrases pendek"}]},
+      ]},
+      {w:2,theme:"Rhythm Foundation",days:[
+        {title:"Basic Downstroke",blocks:[{t:"warmup",d:"Strumming muted — downstroke only, 60 BPM"},{t:"focus",d:"Down-Up basic pattern dengan Am dan F chord"},{t:"apply",d:"Am - F - C - G progression, ganti tiap 4 ketukan"}]},
+        {title:"Pop Ballad Pattern",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"review",d:"Down-Up dari kemarin, naikkan BPM 5"},{t:"focus",d:"Pop Ballad Pattern: D . D U . U D U — hitung keras-keras"},{t:"apply",d:"Terapkan ke Am - F - C - G"}]},
+        {title:"Pentatonic + Rhythm Combine",blocks:[{t:"warmup",d:"Strumming warmup muted"},{t:"review",d:"Pop Ballad Pattern + Blues Scale"},{t:"combine",d:"Strum 2 bar, solo/lick 2 bar, bergantian — call and response"},{t:"apply",d:"Backing track + praktek call and response"}]},
+        {title:"Rest and Listen Day",blocks:[{t:"review",d:"Dengarkan 3 lagu favoritmu, identifikasi rhythm pattern guitarnya"},{t:"free",d:"Boleh main bebas maksimal 10 menit — jangan overthink"}]},
+      ]},
+      {w:3,theme:"Major + Expand",days:[
+        {title:"Major Pentatonic",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"focus",d:"Major Pentatonic box 1 — bandingkan dengan Minor Pentatonic"},{t:"apply",d:"Major Pentatonic di atas G major progression"}]},
+        {title:"Pentatonic Switch Minor to Major",blocks:[{t:"warmup",d:"Warmup + chromatic"},{t:"review",d:"Major Pentatonic ascending descending"},{t:"combine",d:"Minor Pentatonic di minor chord, Major di major chord — dalam satu lagu"},{t:"apply",d:"G major backing track — coba switch ke relative minor Em"}]},
+        {title:"Introduce Dorian",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Dorian = Natural Minor + raised 6th. Bandingkan A Dorian vs A Natural Minor — satu nada beda (F#)"},{t:"apply",d:"Dorian di atas Am7 backing track"}]},
+        {title:"First Combine Session",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Minor Pentatonic + Dorian — dua scale di A"},{t:"combine",d:"Mainkan Minor Pentatonic lalu colour dengan F# dari Dorian — rasakan bedanya"},{t:"apply",d:"Funk/Dorian backing track"}]},
+      ]},
+      {w:4,theme:"Consolidation Week",days:[
+        {title:"Review All Scales",blocks:[{t:"review",d:"Minor Penta - Blues Scale - Major Penta - Dorian, masing-masing 3 menit"},{t:"apply",d:"Pilih 1 backing track, main selama 10 menit — tidak ada aturan"}]},
+        {title:"Rhythm Deep Dive",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"review",d:"Pop Ballad Pattern + introduce Reggae Skank"},{t:"apply",d:"Rekam diri sendiri 2 menit. Dengarkan — apakah konsisten?"}]},
+        {title:"Free Application",blocks:[{t:"combine",d:"Pilih scale apapun + backing track apapun yang kamu suka"},{t:"free",d:"Main bebas, tidak ada target — eksplorasi adalah tujuannya"}]},
+        {title:"Week 4 Check-in",blocks:[{t:"review",d:"Semua materi yang sudah dipelajari — coba tiap scale 1 menit"},{t:"free",d:"Catat 1 hal yang sudah terasa lebih natural dari minggu pertama"}]},
+      ]},
+    ],
+    jazz:[
+      {w:1,theme:"Foundation: Pentatonic + Ears",days:[
+        {title:"Minor Pentatonic Intro",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"focus",d:"Minor Pentatonic box 1 — hafal 5 nada dengan sabar"},{t:"apply",d:"Main di atas Am blues, dengarkan tiap nada"}]},
+        {title:"Basic Chord Tones",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio: A-C-E-G. Petik satu-satu, hafal posisinya"},{t:"apply",d:"Alternasi: arpeggio 2 bar, pentatonic 2 bar"}]},
+        {title:"Major Scale Foundation",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Am7 arpeggio"},{t:"focus",d:"Ionian (Major Scale) — hafal C major dulu naik turun"},{t:"apply",d:"Major scale di atas Cmaj7 backing"}]},
+        {title:"Chord-Scale Connection",blocks:[{t:"review",d:"Ionian + pentatonic"},{t:"combine",d:"Setiap kali mainkan chord, arpeggio dulu lalu scale. Dengarkan bedanya"},{t:"free",d:"Eksplorasi bebas 10 menit"}]},
+      ]},
+      {w:2,theme:"Modes for Jazz",days:[
+        {title:"Dorian for Minor Chords",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Dorian — hafal interval. Main lambat, dengar tiap nada"},{t:"apply",d:"Am7 backing track, emphasize major 6th (F#)"}]},
+        {title:"Mixolydian for Dominant",blocks:[{t:"warmup",d:"Warmup + Dorian review"},{t:"focus",d:"Mixolydian di atas G7 — b7 (F) adalah tensionnya"},{t:"apply",d:"G7 backing track"}]},
+        {title:"II-V-I First Pass",blocks:[{t:"combine",d:"Dm7 = Dorian, G7 = Mixolydian, Cmaj7 = Ionian — outline chords dulu"},{t:"apply",d:"II-V-I backing track, lambat"}]},
+        {title:"Chord Tone Focus",blocks:[{t:"focus",d:"Am7 arpeggio full — semua posisi di neck"},{t:"combine",d:"Arpeggio ke scale ke arpeggio — jangan lepas dari chord tones"}]},
+      ]},
+    ],
+    rhythm:[
+      {w:1,theme:"Strumming Foundation",days:[
+        {title:"Downstroke Control",blocks:[{t:"warmup",d:"Muted strumming — 8 downstroke per bar, 60 BPM"},{t:"focus",d:"Perhatikan: tiap downstroke harus sama keras. Record dan dengar"},{t:"apply",d:"Am chord — downstroke pattern 5 menit"}]},
+        {title:"Down-Up Motion",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"review",d:"Even downstroke, 65 BPM"},{t:"focus",d:"Tambahkan upstroke — tangan tidak berhenti. Gerakan pendulum"},{t:"apply",d:"Am - F dengan down-up pattern"}]},
+        {title:"First Pattern",blocks:[{t:"warmup",d:"Down-up warmup muted"},{t:"review",d:"Down-up dengan Am - F"},{t:"focus",d:"Pop Ballad: D . D U . U D U — hitung 1 2and 3 4and"},{t:"apply",d:"Chord progression Am-F-C-G"}]},
+        {title:"Rhythm Listen Day",blocks:[{t:"review",d:"Identifikasi rhythm di 3 lagu favoritmu"},{t:"free",d:"Main bebas sesuai feelmu"}]},
+      ]},
+      {w:2,theme:"Pattern Expansion",days:[
+        {title:"Reggae Skank",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"focus",d:"Hanya upstroke di offbeat. Tangan kiri mute saat downstroke"},{t:"apply",d:"Am progression dengan reggae feel"}]},
+        {title:"Funk Chop Intro",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Reggae skank"},{t:"focus",d:"Funk chop: muted strum perkusif. D x D U x U"},{t:"apply",d:"Funk drum loop 80 BPM"}]},
+        {title:"Combine Patterns",blocks:[{t:"warmup",d:"Warmup"},{t:"combine",d:"Verse: Pop ballad pattern. Chorus: full downstroke energi. Bridge: reggae feel"},{t:"apply",d:"Am-F-C-G, ganti pattern tiap 4 bar"}]},
+        {title:"Record and Review",blocks:[{t:"apply",d:"Rekam dirimu 3 menit di atas backing track"},{t:"review",d:"Dengarkan — where does it feel locked? Where does it drift?"}]},
+      ]},
+    ],
+    fingerstyle:[
+      {w:1,theme:"Right Hand Independence",days:[
+        {title:"Thumb Independence",blocks:[{t:"warmup",d:"Jari kanan warmup — petik tiap string bergantian"},{t:"focus",d:"Ibu jari ke bass string E, A, D bergantian. Metronom 60 BPM"},{t:"apply",d:"Ibu jari bass G chord — E string fret 3, lalu A string"}]},
+        {title:"Simple Arpeggio",blocks:[{t:"warmup",d:"Thumb warmup"},{t:"review",d:"Thumb pattern di G chord"},{t:"focus",d:"p-i-m-a pattern: thumb-index-middle-ring, Am chord"},{t:"apply",d:"p-i-m-a di Am - F - C - G perlahan"}]},
+        {title:"Travis Pick Intro",blocks:[{t:"warmup",d:"p-i-m-a warmup"},{t:"review",d:"Basic arpeggio Am"},{t:"focus",d:"Travis: thumb bergantian bass (E string, A string) + jari treble"},{t:"apply",d:"Travis di G chord 5 menit non-stop"}]},
+        {title:"Rest Day",blocks:[{t:"review",d:"Dengarkan fingerstyle player favoritmu, perhatikan thumb pattern"},{t:"free",d:"Main bebas tanpa target"}]},
+      ]},
+    ],
+    general:[
+      {w:1,theme:"All-Around Foundation",days:[
+        {title:"Scale + Rhythm Day",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"focus",d:"Minor Pentatonic box 1 — 10 menit"},{t:"combine",d:"Down-Up strumming dengan chord progression"}]},
+        {title:"Ears + Arpeggio",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio — petik satu-satu, dengarkan tiap nada"},{t:"apply",d:"Main arpeggio lalu scale di atas Am backing track"}]},
+        {title:"Rhythm Focus",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"focus",d:"Pop Ballad Pattern pelan-pelan"},{t:"apply",d:"Terapkan ke Am-F-C-G"}]},
+        {title:"Free + Review",blocks:[{t:"review",d:"Semua yang sudah dipelajari minggu ini"},{t:"free",d:"Main bebas 10 menit"}]},
+      ]},
+      {w:2,theme:"Expand and Combine",days:[
+        {title:"Dorian + Pentatonic",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Dorian — F# adalah kunci. Bandingkan dengan Aeolian"},{t:"combine",d:"Minor Pentatonic + Dorian di Am — main bergantian, rasakan bedanya"}]},
+        {title:"Rhythm Expand",blocks:[{t:"warmup",d:"Strumming warmup"},{t:"focus",d:"Funk chop atau fingerpicking — pilih salah satu"},{t:"apply",d:"Progression Am-F-C-G dengan teknik baru"}]},
+        {title:"Arpeggio + Scale",blocks:[{t:"focus",d:"Am7 arpeggio + Dorian — arpeggio sebagai landmark"},{t:"apply",d:"Main di atas backing track, selalu land di chord tone"}]},
+        {title:"Free + Reflect",blocks:[{t:"review",d:"Review semua minggu ini"},{t:"free",d:"Improv bebas, rekam dirimu"}]},
+      ]},
+    ],
+  },
+  intermediate:{
+    rock:[
+      {w:1,theme:"Mode Expansion: Dorian and Mixolydian",days:[
+        {title:"Dorian Deep Dive",blocks:[{t:"warmup",d:"Chromatic + Minor Pentatonic review cepat"},{t:"focus",d:"Dorian formula dan posisi fret. Bandingkan dengan Aeolian — 1 nada beda (6th)"},{t:"apply",d:"Funk/Dorian backing track — emphasize F# (major 6th)"}]},
+        {title:"Mixolydian",blocks:[{t:"warmup",d:"Warmup + Dorian review"},{t:"focus",d:"Mixolydian = Major + b7. E Mixolydian di atas E7 chord progression"},{t:"apply",d:"Rock/blues backing track dengan dominant feel"}]},
+        {title:"Dorian vs Minor Pentatonic Combine",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Dorian ascending/descending"},{t:"combine",d:"Start dengan Minor Pentatonic (aman), tambah Dorian nada 2 dan 6 untuk warna lebih"},{t:"apply",d:"Funk backing track"}]},
+        {title:"Pentatonic + Mixolydian Combine",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Mixolydian"},{t:"combine",d:"Minor Pentatonic di atas minor chord, Mixolydian di atas dominant chord — practice switching"},{t:"apply",d:"12-bar blues backing track"}]},
+      ]},
+      {w:2,theme:"Phrygian + Dark Colours",days:[
+        {title:"Phrygian and b2 Motion",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Phrygian — b2 adalah ciri khasnya. I to bII motion coba di E string"},{t:"apply",d:"Metal/Phrygian backing track"}]},
+        {title:"Harmonic Minor",blocks:[{t:"warmup",d:"Warmup + Phrygian review"},{t:"focus",d:"Harmonic Minor — raised 7th creates augmented 2nd. A harm minor: G#"},{t:"apply",d:"Flamenco atau metal backing track"}]},
+        {title:"Phrygian + Harmonic Minor Combine",blocks:[{t:"combine",d:"Phrygian untuk motion gelap, Harmonic Minor untuk drama — keduanya di Am"},{t:"apply",d:"Backing track Am, main 15 menit, rekam hasilnya"}]},
+        {title:"Recovery Session",blocks:[{t:"review",d:"Review semua scale yang dipelajari minggu 1 dan 2"},{t:"free",d:"Main bebas di atas backing track favoritmu"}]},
+      ]},
+      {w:3,theme:"Lydian + Major Colours",days:[
+        {title:"Lydian",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Lydian — #4 adalah lift-nya. C Lydian: F# sebagai kunci karakter"},{t:"apply",d:"Ambient/Lydian backing track, rasakan floating feel"}]},
+        {title:"Major Pentatonic + Lydian Combine",blocks:[{t:"warmup",d:"Warmup + Lydian review"},{t:"combine",d:"Major Pentatonic untuk foundation, masukkan #4 dari Lydian untuk colour"},{t:"apply",d:"Major rock backing track"}]},
+        {title:"Arpeggio Integration",blocks:[{t:"focus",d:"Arpeggio tiap chord dalam progression — Am7, Dm7, G7, Cmaj7"},{t:"combine",d:"Arpeggio dulu, lalu fill dengan scale. Rasakan perbedaan targeted vs random"}]},
+        {title:"Full Application",blocks:[{t:"apply",d:"Pilih lagu favoritmu, ngulik dengan scale yang sudah dipelajari"},{t:"free",d:"Rekam 2 menit improv — tidak perlu sempurna"}]},
+      ]},
+      {w:4,theme:"Guide Tones + Chord Changes",days:[
+        {title:"Guide Tones II-V-I",blocks:[{t:"focus",d:"Guide tones: 3rd dan 7th tiap chord. Dm7: F+C, G7: B+F, Cmaj7: E+B"},{t:"apply",d:"Latih voice leading guide tones dengan dyad (2 nada bareng)"}]},
+        {title:"Playing Over Changes",blocks:[{t:"review",d:"Guide tones dari kemarin"},{t:"combine",d:"II-V-I backing track — emphasize guide tones saat chord berganti, scale untuk penghubung"},{t:"apply",d:"Jazz backing track Dm7-G7-Cmaj7"}]},
+        {title:"Full II-V-I",blocks:[{t:"combine",d:"Dorian (Dm7) - Mixolydian (G7) - Ionian (Cmaj7) — full II-V-I"},{t:"apply",d:"15 menit di atas jazz backing track"}]},
+        {title:"Consolidation",blocks:[{t:"review",d:"Semua dari 4 minggu ini"},{t:"free",d:"Improv bebas, rekam, dengar, identify apa yang sudah natural"}]},
+      ]},
+    ],
+    jazz:[
+      {w:1,theme:"Modes and Jazz Foundation",days:[
+        {title:"Dorian Deep Dive",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Dorian — hafal interval dan posisi fret. Main lambat, dengar tiap nada"},{t:"apply",d:"Am7 backing track"}]},
+        {title:"Chord Tones First",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio full — semua posisi di neck"},{t:"combine",d:"Arpeggio ke scale ke arpeggio — jangan lepas dari chord tones"}]},
+        {title:"Mixolydian for Dominant",blocks:[{t:"warmup",d:"Warmup + Dorian review"},{t:"focus",d:"Mixolydian di atas G7 — b7 (F) adalah tensionnya"},{t:"apply",d:"G7 backing track"}]},
+        {title:"II-V-I First Pass",blocks:[{t:"combine",d:"Dm7 = Dorian, G7 = Mixolydian, Cmaj7 = Ionian — outline chords dulu"},{t:"apply",d:"II-V-I backing track, lambat"}]},
+      ]},
+      {w:2,theme:"Bebop Language",days:[
+        {title:"Approach Notes",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Chromatic approach note ke chord tones. Masuk dari setengah nada bawah atau atas"},{t:"apply",d:"Am7 backing, masukkan approach notes"}]},
+        {title:"Dorian + Approach Combine",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Approach notes"},{t:"combine",d:"Dorian + approach notes di Dm7 — target setiap chord tone"},{t:"apply",d:"Slow jazz backing"}]},
+        {title:"Enclosure",blocks:[{t:"focus",d:"Enclosure: kelilingi chord tone dari atas DAN bawah sebelum resolusi"},{t:"combine",d:"Dm7: coba enclosure ke F (3rd) dan C (7th)"},{t:"apply",d:"Jazz backing track"}]},
+        {title:"Full Progression",blocks:[{t:"combine",d:"Dm7 (Dorian + approach) - G7 (Mixolydian) - Cmaj7 (Ionian) — full II-V-I"},{t:"apply",d:"Full II-V-I jam, 15 menit"}]},
+      ]},
+    ],
+    rhythm:[
+      {w:1,theme:"Groove and Texture",days:[
+        {title:"Funk Chop",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"focus",d:"Funk chop: muted strum sebagai perkusi. Tangan kanan constant, kiri kontrol mute"},{t:"apply",d:"Funk drum loop 90 BPM"}]},
+        {title:"Partial Strum Technique",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Funk chop dari kemarin"},{t:"focus",d:"Partial strum: hanya 3 string atas, hanya 3 string bawah. Kontrol selektif"},{t:"apply",d:"Pop progression dengan partial strum"}]},
+        {title:"Single Note Fills",blocks:[{t:"warmup",d:"Strumming warmup"},{t:"focus",d:"Fill 1-2 nada di akhir bar (beat 4). Pilih dari chord tone terdekat"},{t:"combine",d:"Strum 3 bar, fill di bar ke-4 — repeat"}]},
+        {title:"Double Stops",blocks:[{t:"review",d:"Single note fills"},{t:"focus",d:"Double stops: 2 string sekaligus, G+B atau D+G. 3rd interval"},{t:"combine",d:"Strum + double stop fill dalam satu progression"}]},
+      ]},
+    ],
+    fingerstyle:[
+      {w:1,theme:"Travis Pick + Melody",days:[
+        {title:"Travis Pick Consolidation",blocks:[{t:"warmup",d:"p-i-m-a warmup"},{t:"focus",d:"Travis pick di G dan C chord — thumb bergantian bass strings"},{t:"apply",d:"Travis pick di G-C-D progression 10 menit"}]},
+        {title:"Melody Layer",blocks:[{t:"warmup",d:"Travis warmup"},{t:"review",d:"Travis pick di G"},{t:"focus",d:"Tambahkan melodi di e string di atas Travis pattern — G chord dengan melody line"},{t:"apply",d:"Coba main lagu sederhana dengan bass + melody"}]},
+        {title:"Thumb Independence Level 2",blocks:[{t:"focus",d:"Thumb bergantian bass 1-3-1-3 sementara jari treble main rhythm terpisah"},{t:"apply",d:"Folk backing atau practice alone 15 menit"}]},
+        {title:"Full Song Application",blocks:[{t:"apply",d:"Pilih lagu fingerstyle sederhana (Dust in the Wind, Blackbird) — ngulik intro/verse"},{t:"free",d:"Eksplorasi bebas"}]},
+      ]},
+    ],
+    general:[
+      {w:1,theme:"Expand and Combine",days:[
+        {title:"Dorian + Pentatonic",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Dorian review — F# adalah kunci"},{t:"combine",d:"Minor Pentatonic + Dorian di Am — main bergantian, rasakan bedanya"}]},
+        {title:"Rhythm Expand",blocks:[{t:"warmup",d:"Strumming warmup"},{t:"focus",d:"Funk chop atau fingerpicking — pilih salah satu"},{t:"apply",d:"Progression Am-F-C-G dengan teknik baru"}]},
+        {title:"Arpeggio + Scale",blocks:[{t:"focus",d:"Am7 arpeggio + Dorian — arpeggio sebagai landmark"},{t:"apply",d:"Main di atas backing track, selalu land di chord tone"}]},
+        {title:"Free + Reflect",blocks:[{t:"review",d:"Review semua minggu ini"},{t:"free",d:"Improv bebas, rekam dirimu"}]},
+      ]},
+    ],
+  },
+  advanced:{
+    rock:[
+      {w:1,theme:"Melodic Minor and Altered Sounds",days:[
+        {title:"Melodic Minor",blocks:[{t:"warmup",d:"Chromatic + scale warmup"},{t:"focus",d:"Melodic Minor = Major + b3. C Melodic Minor: Eb saja yang beda dari C major"},{t:"apply",d:"Melodic minor di atas Cm(maj7) backing"}]},
+        {title:"Lydian b7",blocks:[{t:"warmup",d:"Warmup + melodic minor review"},{t:"focus",d:"Lydian b7 = mode 4 melodic minor. G Lydian b7: C# (tritone) adalah money note"},{t:"apply",d:"Dominant backing track G7"}]},
+        {title:"Altered Scale",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Altered = mode 7 melodic minor. G altered di atas G7alt to Cmaj7"},{t:"combine",d:"Mixolydian (safe) - Altered (outside) - resolve ke tonic. Rasakan tension-release"}]},
+        {title:"Tension-Release Combine",blocks:[{t:"combine",d:"G7: masuk dengan Mixolydian, keluar dengan Altered sebelum resolve ke C"},{t:"apply",d:"Jazz backing track II-V-I"}]},
+      ]},
+      {w:2,theme:"Advanced Harmony",days:[
+        {title:"Diminished Scale for Dominant",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Diminished HW di atas dominant 7 chords. G7: G-Ab-Bb-B-Db-D-E-F"},{t:"apply",d:"G7 backing, masukkan diminished run"}]},
+        {title:"Superimposition",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Superimpose scale dari root berbeda: main Eb major arpeggio di atas G7 untuk tension"},{t:"combine",d:"G7: Mixolydian dulu, lalu superimpose Eb arpeggio, lalu resolve ke C"}]},
+        {title:"Chromatic Lines",blocks:[{t:"focus",d:"Chromatic connecting notes antara scale tones. Tidak semua nada harus diatonic"},{t:"combine",d:"Scale yang sudah dikuasai + chromatic approach — masuk dari atas atau bawah chord tone"}]},
+        {title:"Full Improv Session",blocks:[{t:"apply",d:"30 menit free improv di atas backing track pilihan — apply semua"},{t:"free",d:"Rekam dan review keesokan harinya"}]},
+      ]},
+    ],
+    jazz:[
+      {w:1,theme:"Altered Dominants and Outside Playing",days:[
+        {title:"Altered Scale Deep",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"G Altered: G-Ab-Bb-B-Db-Eb-F. Identifikasi b9, #9, #11, #5, b7"},{t:"apply",d:"G7alt backing — masuk outside, resolve kuat ke Cmaj7"}]},
+        {title:"Lydian b7 in Context",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Altered scale"},{t:"combine",d:"G7: Lydian b7 = bright dominant. G7alt: Altered = dark dominant. Latih switch dalam II-V-I"},{t:"apply",d:"Jazz backing track"}]},
+        {title:"Bebop Approach Notes",blocks:[{t:"focus",d:"Chromatic approach note ke chord tones. Masuk dari setengah nada bawah atau atas"},{t:"combine",d:"Dorian + approach notes di Dm7"},{t:"apply",d:"Slow jazz backing"}]},
+        {title:"Full Progression",blocks:[{t:"combine",d:"Dm7 (Dorian + approach) - G7alt (Altered) - Cmaj7 (Lydian atau Ionian)"},{t:"apply",d:"Full II-V-I jam, 15 menit"}]},
+      ]},
+      {w:2,theme:"Giant Steps and Coltrane Changes",days:[
+        {title:"Tritone Sub",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Tritone substitution: replace G7 dengan Db7. Nada guide tone (B dan F) tetap ada"},{t:"apply",d:"II-V-I dengan tritone sub di V chord"}]},
+        {title:"Coltrane Matrix Intro",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Giant Steps pattern: tonik berpindah tiap major 3rd — C, Ab, E. Hafal tiga key ini"},{t:"apply",d:"Latih arpeggio di C, Ab, E bergantian"}]},
+        {title:"Outside Playing",blocks:[{t:"combine",d:"Intentionally play outside (wrong scale) lalu resolve back in — controlled tension"},{t:"apply",d:"Advanced jam track"}]},
+        {title:"Full Session",blocks:[{t:"apply",d:"30 menit bebas di atas jazz backing track"},{t:"free",d:"Rekam dan analisis keesokan harinya"}]},
+      ]},
+    ],
+    rhythm:[
+      {w:1,theme:"Advanced Groove and Hybrid",days:[
+        {title:"16th Note Funk",blocks:[{t:"warmup",d:"8th note funk warmup"},{t:"focus",d:"16th note pattern — subdivisi lebih rapat, aksen di 2 dan 4"},{t:"apply",d:"Funk drum loop 90 BPM"}]},
+        {title:"Hybrid Picking Intro",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Hybrid picking: pick + middle finger. Banjo roll pattern"},{t:"apply",d:"Country/rock progression dengan hybrid"}]},
+        {title:"Textural Layering",blocks:[{t:"combine",d:"Full strum chorus, arpeggio verse, single note fill pre-chorus — dalam satu lagu"},{t:"apply",d:"Rekam 2 menit mengisi backing track"}]},
+        {title:"Free Groove",blocks:[{t:"free",d:"Improv rhythm bebas — tidak ada rule, play what sounds good"}]},
+      ]},
+    ],
+    fingerstyle:[
+      {w:1,theme:"Arrangement and Chord-Melody",days:[
+        {title:"Chord-Melody Concept",blocks:[{t:"focus",d:"Chord-melody: melody di string tertinggi, chord di bawahnya bersamaan"},{t:"apply",d:"Coba chord-melody simple: G chord dengan melodi Do di atas"}]},
+        {title:"Jazz Standard Chord-Melody",blocks:[{t:"review",d:"Chord-melody konsep"},{t:"focus",d:"Autumn Leaves bar 1-4 dalam chord-melody arrangement"},{t:"apply",d:"Praktek perlahan dengan metronom"}]},
+        {title:"Walking Bass",blocks:[{t:"focus",d:"Walking bass: ibu jari chromatic connecting chord roots"},{t:"combine",d:"Walking bass + chord stabs + melody — 3 layer"}]},
+        {title:"Arrangement Practice",blocks:[{t:"apply",d:"Pilih lagu apapun, coba buat 4-bar arrangement dengan bass + chord + melody"},{t:"free",d:"Rekam hasilnya"}]},
+      ]},
+    ],
+    general:[
+      {w:1,theme:"Advanced Colour and Context",days:[
+        {title:"Melodic Minor + Context",blocks:[{t:"focus",d:"Melodic Minor dan mode-modenya"},{t:"apply",d:"Terapkan di atas jam track"}]},
+        {title:"Advanced Rhythm",blocks:[{t:"focus",d:"16th note subdivisi atau chord-melody concept"},{t:"apply",d:"Backing track dengan teknik baru"}]},
+        {title:"Full Combine",blocks:[{t:"combine",d:"Scale pilihan + rhythm technique + arpeggio landmark dalam satu performance"},{t:"apply",d:"Rekam 3 menit"}]},
+        {title:"Reflect and Plan Next",blocks:[{t:"review",d:"Apa yang sudah terasa natural? Apa yang masih perlu drill?"},{t:"free",d:"Improv bebas"}]},
+      ]},
+    ],
+  },
+};
+const onboardData={level:null,goal:null,days:[],duration:null,weeks:null};
+
+function selectOpt(btn,field){
+  btn.closest('.option-grid').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  onboardData[field]=btn.dataset.val;
+}
+
+function toggleDay(btn){
+  btn.classList.toggle('selected');
+  const v=parseInt(btn.dataset.val);
+  const i=onboardData.days.indexOf(v);
+  if(i===-1) onboardData.days.push(v);
+  else onboardData.days.splice(i,1);
+}
+
+function nextStep(n){
+  // validate
+  if(n===2&&!onboardData.level){alert('Pilih level dulu ya.');return;}
+  if(n===3&&!onboardData.goal){alert('Pilih goal dulu.');return;}
+  if(n===4&&onboardData.days.length<2){alert('Pilih minimal 2 hari.');return;}
+  if(n===5&&!onboardData.duration){alert('Pilih durasi dulu.');return;}
+  document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('step'+n);
+  if(el){el.classList.add('active');}
+  const pct=Math.round((n/5)*100);
+  document.getElementById('onboardProgress').style.width=pct+'%';
+}
+
+// ---- PLAN GENERATION ----
+function generatePlan(){
+  if(!onboardData.weeks){alert('Pilih target minggu dulu.');return;}
+  const {level,goal,days,duration,weeks}=onboardData;
+  const dur=parseInt(duration);
+  const totalWeeks=parseInt(weeks);
+  const sortedDays=days.slice().sort((a,b)=>a-b);
+
+  // Get curriculum for level+goal, pad with general if needed
+  const goalKey=goal==='rock'?'rock':goal==='jazz'?'jazz':goal==='rhythm'?'rhythm':goal==='fingerstyle'?'fingerstyle':'general';
+  const weekTemplates=(CURRICULUM[level]&&CURRICULUM[level][goalKey])||CURRICULUM[level].general||CURRICULUM.beginner.general;
+
+  // Build plan: array of week objects
+  const plan=[];
+  const today=new Date();
+  today.setHours(0,0,0,0);
+
+  let sessionIdx=0;
+  for(let w=1;w<=totalWeeks;w++){
+    const tmpl=weekTemplates[(w-1)%weekTemplates.length];
+    const weekStartDate=new Date(today);
+    // Find start of this plan week (first practice day >= today + (w-1)*7 days)
+    weekStartDate.setDate(today.getDate()+(w-1)*7);
+    // Align to next occurrence of sortedDays[0]
+    const wSessions=[];
+    // generate 7 days for this week
+    for(let d=0;d<7;d++){
+      const dayDate=new Date(weekStartDate);
+      dayDate.setDate(weekStartDate.getDate()+d);
+      const dow=dayDate.getDay();
+      const isPracticeDay=sortedDays.includes(dow);
+      if(isPracticeDay){
+        const dayTmpl=tmpl&&tmpl.days?tmpl.days[sessionIdx%tmpl.days.length]:null;
+        const session=buildSession(dayTmpl,dur,w,sessionIdx);
+        wSessions.push({date:dateKey(dayDate),dow,isPractice:true,...session});
+        sessionIdx++;
+      } else {
+        wSessions.push({date:dateKey(dayDate),dow,isPractice:false,title:'Rest Day',blocks:[]});
+      }
+    }
+    plan.push({week:w,theme:tmpl?tmpl.theme:'Review & Expand',days:wSessions});
+  }
+
+  TP.profile={level,goal,days:sortedDays,duration:dur,weeks:totalWeeks,startDate:dateKey(today)};
+  TP.plan=plan;
+  TP.progress={};
+  TP.currentWeek=1;
+  savePlan();
+  renderPlanView();
+}
+
+function buildSession(tmpl,dur,week,idx){
+  if(!tmpl) return {title:'Practice Session',blocks:buildDefaultBlocks(dur)};
+  // scale blocks based on duration
+  let blocks=[...tmpl.blocks];
+  if(dur<=15){
+    // only warmup + first focus
+    blocks=blocks.filter(b=>b.t==='warmup'||b.t==='focus').slice(0,2);
+  } else if(dur<=30){
+    blocks=blocks.slice(0,4);
+  } else if(dur<=45){
+    // all blocks
+  } else {
+    // add free improv if not present
+    if(!blocks.find(b=>b.t==='free')) blocks.push({t:'free',d:'Free improv — main apapun yang terasa fun, tidak ada rule'});
+  }
+  // assign durations
+  const typeWeight={warmup:.1,review:.15,focus:.35,combine:.25,apply:.3,free:.15};
+  const totalWeight=blocks.reduce((s,b)=>s+(typeWeight[b.t]||.2),0);
+  blocks=blocks.map(b=>({...b,min:Math.round((typeWeight[b.t]||.2)/totalWeight*dur)}));
+  return{title:tmpl.title||'Practice Session',blocks};
+}
+
+function buildDefaultBlocks(dur){
+  const b=[{t:'warmup',d:'Chromatic warmup — semua jari, lambat'},{t:'focus',d:'Pilih scale yang sedang kamu pelajari, main naik turun'},{t:'apply',d:'Main di atas backing track bebas'}];
+  if(dur>=45) b.push({t:'free',d:'Free improv'});
+  return b;
+}
+
+function dateKey(d){return d.toISOString().slice(0,10);}
+
+function todayKey(){return dateKey(new Date());}
+
+// ---- RENDER PLAN ----
+function renderPlanView(){
+  // Hide onboarding, show plan view
+  document.getElementById('planOnboard').style.display='none';
+  document.getElementById('planView').classList.add('active');
+  renderStreak();
+  renderWeek(TP.currentWeek);
+}
+
+function renderStreak(){
+  const today=todayKey();
+  const prog=TP.progress||{};
+  // count streak: consecutive days ending today
+  let streak=0;
+  const d=new Date();
+  for(let i=0;i<365;i++){
+    const k=dateKey(d);
+    if(prog[k]) streak++;
+    else if(k!==today) break;
+    d.setDate(d.getDate()-1);
+  }
+  document.getElementById('streakNum').textContent=streak;
+  const p=TP.profile;
+  document.getElementById('planMetaLine').textContent=
+    `${p.level} · ${p.goal} · ${p.duration}min/session · Week ${TP.currentWeek}/${p.weeks}`;
+  // dots: last 14 practice days
+  const allPracticeDates=[];
+  TP.plan.forEach(w=>w.days.forEach(d=>{if(d.isPractice)allPracticeDates.push(d.date);}));
+  const last14=allPracticeDates.slice(-14);
+  document.getElementById('streakDots').innerHTML=last14.map(k=>{
+    const cls=k===today?'today':prog[k]?'hit':'miss';
+    return`<div class="streak-dot ${cls}" title="${k}"></div>`;
+  }).join('');
+}
+
+const BLOCK_INFO={
+  warmup:{label:'WARMUP'},review:{label:'REVIEW'},focus:{label:'FOCUS'},
+  combine:{label:'COMBINE'},apply:{label:'APPLY'},free:{label:'FREE'},
+};
+
+function appLink(page,label,tab){
+  let extra='';
+  if(tab) extra=';setTimeout(function(){var btn=document.querySelector(".tab-btn[onclick*=\'"+tab+"\']");if(btn){btn.click();}else{switchTab(tab,{target:{classList:{add:function(){},remove:function(){}}}});}},80)';
+  return '<a onclick="showPage(\''+page+'\')'+extra+'" style="color:#4a8fc4;cursor:pointer;text-decoration:underline;">'+label+'</a>';
+}
+
+function enrichBlock(b){
+  const d=b.d.toLowerCase();
+  const tips=[];
+  if(b.t==='warmup'&&d.includes('chromatic'))
+    tips.push('Chromatic warmup: fret 1-2-3-4 naik per string, lalu 4-3-2-1 turun. Semua jari tetap di fretnya selama bergerak.');
+  if(b.t==='warmup'&&d.includes('strumming'))
+    tips.push('Muted strumming: tekan semua string dengan telapak tangan kiri, strum bebas. Fokus ke gerakan tangan kanan saja.');
+  if(d.includes('pentatonic'))
+    tips.push(appLink('scales','Buka Katalog Scale','catalog')+' untuk diagram fretboard pentatonic di semua kunci dengan key selector.');
+  if(d.includes('dorian')&&!d.includes('pentatonic'))
+    tips.push('Dorian = Natural Minor + raised 6th. Di A: F# bukan F — itu yang bikin soulful. '+appLink('scales','Buka Dorian','catalog'));
+  if(d.includes('mixolydian'))
+    tips.push('Mixolydian = Major + b7. Di G: F natural bukan F#. Default untuk dominant 7 chords. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('phrygian')&&!d.includes('dominant'))
+    tips.push('Phrygian dimulai dengan Half step. Gerakan I ke bII adalah sound khasnya — coba E string fret 0 ke 1. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('lydian b7'))
+    tips.push('Lydian b7 = mode ke-4 Melodic Minor. #4 + b7 = tension jazzy di atas dominant chords. '+appLink('scales','Lihat di Katalog','catalog'));
+  else if(d.includes('lydian'))
+    tips.push('Lydian = Major + #4. Di C: F# bukan F. Nada #4 itu yang bikin terasa floating. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('harmonic minor'))
+    tips.push('Harmonic Minor = Natural Minor + raised 7th. Di A: G# bukan G. Augmented 2nd = suara eksotik. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('blues scale'))
+    tips.push('Blues Scale = Minor Pentatonic + b5 (blue note). Pakai b5 sebagai passing note — jangan berhenti lama. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('altered scale')||(d.includes('altered')&&d.includes('tension')))
+    tips.push('Altered = mode ke-7 Melodic Minor. Semua nada altered: b9, #9, #11, b13. Maximum tension di atas V7alt. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('melodic minor'))
+    tips.push('Melodic Minor = Major scale dengan b3. Mode-modenya (Lydian b7, Altered) = senjata jazz fusion. '+appLink('scales','Lihat di Katalog','catalog'));
+  if(d.includes('arpeggio'))
+    tips.push('Arpeggio = chord tones (1,3,5,7) dipetik satu-satu. Hafal ini dulu — ini landing points terpenting saat improv. '+appLink('scales','Panduan Arpeggio','catalog'));
+  if(d.includes('bend'))
+    tips.push('Bending: ring finger bends, index+middle bantu dorong. Target whole step (2 fret) atau half step (1 fret). Tahan pitch, jangan goyah.');
+  if((d.includes('strum')||d.includes('down-up')||d.includes('downstroke'))&&!d.includes('arpeggio'))
+    tips.push('Kunci strumming: tangan kanan tidak pernah berhenti. Miss strum = lewati string, bukan berhenti. '+appLink('rhythm','Buka Strumming Patterns','strum'));
+  if(d.includes('pop ballad')||d.includes('d . d u'))
+    tips.push('Pop Ballad: D . D U . U D U — hitung "1  2-and  3  4-and". Titik (.) = tangan gerak tapi tidak kena string. '+appLink('rhythm','Lihat di Strumming Patterns','strum'));
+  if(d.includes('funk chop')||d.includes('muted strum'))
+    tips.push('Funk chop: tangan kiri semi-mute agar ada suara "chk" perkusif. Tangan kanan constant. '+appLink('rhythm','Lihat Funk Chop di tab Strumming','strum'));
+  if(d.includes('travis')||d.includes('p-i-m-a'))
+    tips.push('Travis pick: ibu jari bergantian bass strings (E dan A), jari lain ke treble. Latih thumb dulu sebelum digabung. '+appLink('rhythm','Lihat Fingerpicking di tab Strumming','strum'));
+  if(d.includes('reggae')||d.includes('skank'))
+    tips.push('Reggae skank: hanya upstroke yang bunyi, di offbeat. Tangan kiri mute saat downstroke. '+appLink('rhythm','Lihat Reggae Skank di tab Strumming','strum'));
+  if(d.includes('16th note')||d.includes('subdivisi'))
+    tips.push('16th note = 4 subdivisi per ketukan. Hitung "1-e-and-a  2-e-and-a". Mulai lambat di 60 BPM, tangan kanan constant. '+appLink('rhythm','Lihat Groove di tab Lock with Band','groove'));
+  if(d.includes('partial strum')||d.includes('single note fill')||d.includes('double stop'))
+    tips.push(appLink('rhythm','Buka tab Tekstural & Isian','textural')+' — teknik fills, double stops, dan partial strum untuk pop modern.');
+  if(d.includes('backing track'))
+    tips.push(appLink('improv','Buka Backing Tracks')+' — list backing tracks per genre dengan scale recommendations.');
+  if(d.includes('drum loop'))
+    tips.push(appLink('rhythm','Lihat drum loop links di Lock with Band','groove')+' untuk latihan groove.');
+  if(d.includes('ii-v-i')||d.includes('ii v i'))
+    tips.push('Guide tone F di Dm7 sama dengan F di G7 — tidak perlu gerak! B di G7 ke B di Cmaj7 juga tidak gerak. '+appLink('improv','Lihat Guide Tones'));
+  if(d.includes('guide tone'))
+    tips.push('Guide tones = 3rd dan 7th dari tiap chord. Dua nada ini paling define karakter chord. '+appLink('improv','Lihat Guide Tones'));
+  if(b.t==='free')
+    tips.push('Tidak ada aturan di sini. Kalau buntu: pilih 1 nada dan eksplorasi semua cara membunyikannya — bend, slide, vibrato, pull-off, harmonics.');
+  if(b.t==='combine'&&tips.length<2)
+    tips.push('Combine tip: mulai dengan scale familiar sebagai home base, lalu sisipkan 1-2 nada dari scale kedua sebagai colour. Satu dominant, satu sebagai aksen.');
+  if(d.includes('call and response'))
+    tips.push('Strum chord 2 bar (question), jawab dengan lick 2 bar (answer). Silence adalah bagian dari jawaban.');
+  if(d.includes('approach note'))
+    tips.push('Chromatic approach note: masuk ke chord tone dari setengah nada di bawah atau di atas. Fundamental untuk voice leading jazz yang smooth.');
+  if(d.includes('chord-melody'))
+    tips.push('Chord-melody: melody selalu di string tertinggi. Butuh chord voicing uncommon. '+appLink('composition','Lihat Komposisi'));
+  return tips.slice(0,2).join(' ');
+}
+
+function renderWeek(wNum){
+  TP.currentWeek=wNum;
+  const week=TP.plan[wNum-1];
+  if(!week) return;
+  document.getElementById('weekBadge').textContent=`WEEK ${wNum}`;
+  document.getElementById('weekTheme').textContent=week.theme;
+  document.getElementById('weekNavLabel').textContent=`Week ${wNum} of ${TP.profile.weeks}`;
+  document.getElementById('prevWeekBtn').disabled=wNum<=1;
+  document.getElementById('nextWeekBtn').disabled=wNum>=TP.profile.weeks;
+
+  const today=todayKey();
+  const prog=TP.progress||{};
+  const DAY_NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  document.getElementById('dayGrid').innerHTML=week.days.map(day=>{
+    if(!day.isPractice){
+      const restTips=['Istirahatkan jari — otot butuh recovery untuk tumbuh.','Dengarkan lagu favoritmu, fokus ke gitar — ngulik feel-nya.','Tonton video gitaris favoritmu, perhatikan teknik tangan kanan dan kiri.','Visualisasikan scale yang sedang dipelajari tanpa pegang gitar.','Stretching jari dan pergelangan — cegah cedera jangka panjang.'];
+      const tip=restTips[(new Date(day.date).getDay())%restTips.length];
+      return`<div class="day-card rest">
+        <div class="day-label rest-lbl">${DAY_NAMES[day.dow]}</div>
+        <div class="day-title" style="color:#2a2a2a;font-size:1rem;">REST DAY</div>
+        <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#2a2a2a;margin-top:6px;line-height:1.6;">${tip}</div>
+      </div>`;
+    }
+    const isDone=!!prog[day.date];
+    const isToday=day.date===today;
+    const isFuture=day.date>today;
+    const isPast=day.date<today&&!isDone;
+    let cardClass='day-card';
+    if(isToday) cardClass+=' today';
+    if(isDone) cardClass+=' done';
+    const labelTxt=isDone?'✓ Done':isToday?'Today →':isFuture?DAY_NAMES[day.dow]:DAY_NAMES[day.dow]+' (missed)';
+    const labelCls=isDone?'done-lbl':isToday?'today-lbl':isFuture?'upcoming-lbl':'rest-lbl';
+
+    const blocksHtml=(day.blocks||[]).map(b=>{
+      const info=BLOCK_INFO[b.t]||{label:b.t,color:'#555'};
+      const detail=enrichBlock(b);
+      return`<div class="block-item">
+        <div style="flex-shrink:0;min-width:68px;">
+          <div class="block-type ${b.t}">${info.label}</div>
+          ${b.min?`<div class="block-dur">${b.min} min</div>`:''}
+        </div>
+        <div style="flex:1;">
+          <div class="block-desc">${b.d}</div>
+          ${detail?`<div style="margin-top:5px;font-size:.72rem;color:#556;line-height:1.5;">${detail}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+
+    const btnHtml=isDone
+      ?`<div class="done-btn">✓ Completed</div>`
+      :`<button class="done-btn" onclick="markDone('${day.date}')">Mark as Done ✓</button>`;
+
+    return`<div class="${cardClass}" id="daycard-${day.date}">
+      <div class="day-label ${labelCls}">${labelTxt}</div>
+      <div class="day-title">${day.title}</div>
+      <div class="block-list">${blocksHtml}</div>
+      ${btnHtml}
+    </div>`;
+  }).join('');
+  renderStreak();
+}
+
+function changeWeek(dir){
+  const nw=TP.currentWeek+dir;
+  if(nw<1||nw>TP.profile.weeks) return;
+  renderWeek(nw);
+}
+
+function markDone(dateStr){
+  if(!TP.progress) TP.progress={};
+  TP.progress[dateStr]=true;
+  savePlan();
+  // update just the card
+  const card=document.getElementById('daycard-'+dateStr);
+  if(card){
+    card.classList.add('done');
+    card.querySelector('.done-btn').outerHTML=`<div class="done-btn">✓ Completed</div>`;
+    const lbl=card.querySelector('.day-label');
+    if(lbl){lbl.textContent='✓ Done';lbl.className='day-label done-lbl';}
+  }
+  renderStreak();
+}
+
+function savePlan(){
+  try{
+    localStorage.setItem('fretboard_profile',JSON.stringify(TP.profile));
+    localStorage.setItem('fretboard_plan',JSON.stringify(TP.plan));
+    localStorage.setItem('fretboard_progress',JSON.stringify(TP.progress));
+  }catch(e){console.warn('localStorage save failed',e);}
+}
+
+function loadPlan(){
+  try{
+    const profile=localStorage.getItem('fretboard_profile');
+    const plan=localStorage.getItem('fretboard_plan');
+    const progress=localStorage.getItem('fretboard_progress');
+    if(profile&&plan){
+      TP.profile=JSON.parse(profile);
+      TP.plan=JSON.parse(plan);
+      TP.progress=JSON.parse(progress)||{};
+      // find current week
+      const today=todayKey();
+      let cw=1;
+      TP.plan.forEach((w,i)=>{
+        if(w.days.some(d=>d.date<=today)) cw=i+1;
+      });
+      TP.currentWeek=Math.min(cw,TP.profile.weeks);
+      return true;
+    }
+  }catch(e){console.warn('localStorage load failed',e);}
+  return false;
+}
+
+function editPlan(){
+  document.getElementById('planView').classList.remove('active');
+  document.getElementById('planOnboard').style.display='';
+  document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('onboardProgress').style.width='20%';
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  if(TP.profile){
+    const p=TP.profile;
+    Object.assign(onboardData,{level:p.level,goal:p.goal,days:[...p.days],duration:String(p.duration),weeks:String(p.weeks)});
+    document.querySelectorAll(`.opt-btn[data-val="${p.level}"]`).forEach(b=>b.classList.add('selected'));
+    document.querySelectorAll(`.opt-btn[data-val="${p.goal}"]`).forEach(b=>b.classList.add('selected'));
+    p.days.forEach(d=>document.querySelectorAll(`.opt-btn.multi[data-val="${d}"]`).forEach(b=>b.classList.add('selected')));
+    document.querySelectorAll(`.opt-btn[data-val="${p.duration}"]`).forEach(b=>b.classList.add('selected'));
+    document.querySelectorAll(`.opt-btn[data-val="${p.weeks}"]`).forEach(b=>b.classList.add('selected'));
+  }
+}
+
+function confirmReset(){
+  if(confirm('Reset training plan? Semua progress akan hilang.')){
+    localStorage.removeItem('fretboard_profile');
+    localStorage.removeItem('fretboard_plan');
+    localStorage.removeItem('fretboard_progress');
+    TP.profile=null;TP.plan=null;TP.progress=null;TP.currentWeek=1;
+    document.getElementById('planView').classList.remove('active');
+    document.getElementById('planOnboard').style.display='';
+    document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('onboardProgress').style.width='20%';
+    Object.assign(onboardData,{level:null,goal:null,days:[],duration:null,weeks:null});
+    document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  }
+}
+
+function initPlanPage(){
+  if(loadPlan()){
+    renderPlanView();
+  }
+}
+initPlanPage();
+
+function initStringDiagram(){
+  const el=document.getElementById('stringTuningDiagram');
+  if(!el) return;
+  const strings=[
+    {name:'E (low)',note:'E'},{name:'A',note:'A'},{name:'D',note:'D'},
+    {name:'G',note:'G'},{name:'B',note:'B',isB:true},{name:'e (high)',note:'E'},
+  ];
+  const intervals=[
+    {label:'Perfect 4th — +5 fret',comp:false},
+    {label:'Perfect 4th — +5 fret',comp:false},
+    {label:'Perfect 4th — +5 fret',comp:false},
+    {label:'Major 3rd — +4 fret  (1 fret lebih pendek!)',comp:true},
+    {label:'Perfect 4th — +5 fret',comp:false},
+  ];
+  let html='<div style="font-size:.56rem;letter-spacing:2px;color:#e8843a;text-transform:uppercase;margin-bottom:10px;">Jarak Semitone Antar String</div>';
+  strings.forEach((s,i)=>{
+    const col=s.isB?'#e8843a':'#c9a84c';
+    const bg=s.isB?'rgba(232,132,58,.2)':'rgba(74,143,196,.1)';
+    const bd=s.isB?'rgba(232,132,58,.5)':'rgba(74,143,196,.3)';
+    const fw=s.isB?'700':'400';
+    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">';
+    html+='<div style="width:64px;font-size:.58rem;color:'+col+';text-align:right;font-weight:'+fw+';">'+s.name+'</div>';
+    html+='<div style="width:28px;height:22px;background:'+bg+';border:1px solid '+bd+';display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:'+col+';">'+s.note+'</div>';
+    if(i<5){
+      const iv=intervals[i];
+      const lc=iv.comp?'#e8843a':'#444';
+      const bg2=iv.comp?'#e8843a':'#2a2a2a';
+      const fw2=iv.comp?'font-weight:700;':'';
+      html+='<div style="flex:1;display:flex;align-items:center;gap:6px;padding:4px 0;">';
+      html+='<div style="height:1px;width:20px;background:'+bg2+';"></div>';
+      html+='<div style="font-size:.54rem;color:'+lc+';'+fw2+'">'+iv.label+'</div>';
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  html+='<div style="margin-top:10px;padding:8px 10px;background:rgba(232,132,58,.07);border-left:3px solid #e8843a;font-size:.82rem;color:#bbb;line-height:1.6;"><strong style="color:#e8843a;">G ke B = 4 semitone</strong> bukan 5. Saat pindah dari G ke B string, shape scale harus geser <strong style="color:#f5f0e8;">1 fret lebih tinggi</strong> untuk kompensasi.</div>';
+  el.innerHTML=html;
+}
+</script>
+
+</body>
+</html>
