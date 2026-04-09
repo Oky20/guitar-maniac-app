@@ -1549,9 +1549,12 @@ function renderAnalysis(d,url){
     <div class="result-artist">${[d.artist,d.key,d.tempo,d.genre,d.time_signature].filter(Boolean).join(' · ')}</div>`;
 
   if(ytId){
-    html+=`<div style="margin-bottom:18px;"><div style="position:relative;padding-bottom:28%;max-width:480px;background:#000;border:1px solid #333;">
-      <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe>
-    </div></div>`;
+    html+=`<div style="margin-bottom:16px;">
+      <a href="https://www.youtube.com/watch?v=${ytId}" target="_blank" class="yt-link" style="display:inline-flex;align-items:center;gap:7px;background:#130000;border:1px solid #4a0000;color:#ff6060;font-size:.62rem;letter-spacing:1px;padding:9px 16px;text-decoration:none;transition:all .2s;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2.2 12 2.2 12 2.2s-4.8 0-7.3.2c-.6.1-1.9.1-3 1.3C.8 4.5.5 6.5.5 6.5S.2 8.8.2 11v2.1c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.8 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.2.3-4.5V11c0-2.2-.3-4.5-.3-4.5zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+        Watch on YouTube ↗
+      </a>
+    </div>`;
   }
 
   if(d.chord_progressions&&d.chord_progressions.length){
