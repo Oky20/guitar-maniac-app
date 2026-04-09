@@ -1,9 +1,5 @@
 export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '2mb',
-    },
-  },
+  api: { bodyParser: { sizeLimit: '2mb' } },
 };
 
 export default async function handler(req, res) {
@@ -15,7 +11,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
+  if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
 
   let body = req.body;
   if (typeof body === 'string') {
@@ -23,20 +19,18 @@ export default async function handler(req, res) {
   }
 
   const prompt = body?.prompt;
-  if (!prompt) return res.status(400).json({ error: 'Missing prompt in request body' });
+  if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const model = 'gemini-2.5-flash';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-    const upstream = await fetch(geminiUrl, {
+    const upstream = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: String(prompt) }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 4096,
-        },
+        generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
       }),
     });
 
@@ -49,14 +43,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Convert Gemini response format → Anthropic-compatible format
-    // so the frontend doesn't need to change
+    // Convert to Anthropic-compatible format so frontend works unchanged
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const anthropicCompatible = {
+    return res.status(200).json({
       content: [{ type: 'text', text }],
-    };
-
-    return res.status(200).json(anthropicCompatible);
+    });
 
   } catch (err) {
     return res.status(500).json({ error: err.message || 'Internal server error' });
