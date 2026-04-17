@@ -1050,94 +1050,94 @@ const DOUBLE_MARKERS=[12,24];
 let selectedKey=9; // default A
 
 const SCALES=[
-  {id:'major-pentatonic',name:'Major Pentatonic',tags:['pentatonic','major'],formula:'W-W-WH-W-WH',steps:[0,2,4,7,9],degrees:['1','2','3','5','6'],arp:[0,4,7],// 1,3,5character:'Cerah, positif, "bahasa universal" gitar.',mood:'Happy, bright, country, pop',usage:['Country','Pop','Blues','Rock'],used_by:['B.B. King','Eric Clapton','John Mayer'],memo:'Ini scale paling "aman". Kalau bingung di atas major key, ini always works.',when_to_use:'Di atas chord major dan major progressions.',
+  {id:'major-pentatonic',name:'Major Pentatonic',tags:['pentatonic','major'],formula:'W-W-WH-W-WH',steps:[0,2,4,7,9],degrees:['1','2','3','5','6'],arp:[0,4,7],character:'Cerah, positif, "bahasa universal" gitar.',mood:'Happy, bright, country, pop',usage:['Country','Pop','Blues','Rock'],used_by:['B.B. King','Eric Clapton','John Mayer'],memo:'Ini scale paling "aman". Kalau bingung di atas major key, ini always works.',when_to_use:'Di atas chord major dan major progressions.',
    licks:[
     {title:'Country bend lick (Key G, fret 5 area)',tab:`e|---------------------------|\nB|--5b7--5-------------------|\nG|----------7--5--4----------|\nD|------------------7--5-----|\nA|---------------------------|\nE|---------------------------|`,tip:'Bend nada ke-2 (B string fret 5) ke fret 7. Classic country/pop sound.'},
     {title:'Cascading run (Key A, fret 5 area)',tab:`e|---5--7--5-----------------|\nB|-----------5--8--7--5------|\nG|----------------------7--6-|\nD|---------------------------|\nA|---------------------------|\nE|---------------------------|`,tip:'Turun dari high e ke G, smooth dan melodis. Target: root A.'},
   ]},
-  {id:'minor-pentatonic',name:'Minor Pentatonic',tags:['pentatonic','minor'],formula:'WH-W-W-WH-W',steps:[0,3,5,7,10],degrees:['1','b3','4','5','b7'],arp:[0,3,7],// 1,b3,5character:'Gelap tapi powerful. Scale paling populer di rock dan blues.',mood:'Dark, raw, soulful, powerful',usage:['Rock','Blues','Metal','R&B'],used_by:['Jimi Hendrix','Slash','Eric Clapton'],memo:'Mulai dari sini. Hafal 5 posisi "box pattern"-nya. Posisi pertama paling umum dipakai.',when_to_use:'Di atas chord minor, blues progressions, dominant 7.',
+  {id:'minor-pentatonic',name:'Minor Pentatonic',tags:['pentatonic','minor'],formula:'WH-W-W-WH-W',steps:[0,3,5,7,10],degrees:['1','b3','4','5','b7'],arp:[0,3,7],character:'Gelap tapi powerful. Scale paling populer di rock dan blues.',mood:'Dark, raw, soulful, powerful',usage:['Rock','Blues','Metal','R&B'],used_by:['Jimi Hendrix','Slash','Eric Clapton'],memo:'Mulai dari sini. Hafal 5 posisi "box pattern"-nya. Posisi pertama paling umum dipakai.',when_to_use:'Di atas chord minor, blues progressions, dominant 7.',
    licks:[
     {title:'Classic blues rock lick (Key A, box 1)',tab:`e|---------------------5--8b10|\nB|--5--8--5--8--5--8----------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Pola naik di B string, lalu bend di high e fret 8 ke pitch fret 10. Slash / Clapton banget.'},
     {title:'SRV-style hammer-on pull-off (Key A)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7h9p7--5------------------|\nD|----------7h9p7--5----------|\nA|------------------7h9p7--5--|\nE|----------------------------|`,tip:'Hammer-on pull-off berulang turun per string. Keep it smooth, bukan terburu-buru.'},
   ]},
-  {id:'blues',name:'Blues Scale',tags:['minor','pentatonic'],formula:'WH-W-H-H-WH-W',steps:[0,3,5,6,7,10],degrees:['1','b3','4','b5','5','b7'],arp:[0,3,7],// 1,b3,5character:'Minor Pentatonic + "blue note" (b5). Jiwa dari blues.',mood:'Gritty, emotional, bending-friendly',usage:['Blues','Rock','Jazz blues','Soul'],used_by:['Stevie Ray Vaughan','Albert King','Buddy Guy'],memo:'Minor Pentatonic + nada b5. Pakai b5 sebagai passing note — jembatan menuju 4 atau 5.',when_to_use:'Untuk blues yang lebih "dirty" dan ekspresif.',
+  {id:'blues',name:'Blues Scale',tags:['minor','pentatonic'],formula:'WH-W-H-H-WH-W',steps:[0,3,5,6,7,10],degrees:['1','b3','4','b5','5','b7'],arp:[0,3,7],character:'Minor Pentatonic + "blue note" (b5). Jiwa dari blues.',mood:'Gritty, emotional, bending-friendly',usage:['Blues','Rock','Jazz blues','Soul'],used_by:['Stevie Ray Vaughan','Albert King','Buddy Guy'],memo:'Minor Pentatonic + nada b5. Pakai b5 sebagai passing note — jembatan menuju 4 atau 5.',when_to_use:'Untuk blues yang lebih "dirty" dan ekspresif.',
    licks:[
     {title:'Blue note passing lick (Key A)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7--6--7--5----------------|\nD|----------7--6--7--5--------|\nA|------------------7---------|\nE|----------------------------|`,tip:'Fret 6 di G string = b5 (blue note). Mainkan cepat sebagai passing note antara 7 dan 5.'},
     {title:'Albert King-style bending (Key A)',tab:`e|--8b10--8--5----------------|\nB|-------------8b10r8--5------|\nG|---------------------------7|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Bend kuat dari fret 8. Albert King sering bend dari bawah — push string ke atas (reverse bend).'},
   ]},
-  {id:'ionian',name:'Ionian (Major)',tags:['major','mode'],formula:'W-W-H-W-W-W-H',steps:[0,2,4,5,7,9,11],degrees:['1','2','3','4','5','6','7'],arp:[0,4,7,11],// 1,3,5,7character:'Cerah, happy, stabil. "Do Re Mi" klasik.',mood:'Happy, resolved, bright, stable',usage:['Pop','Rock','Classical','Country'],used_by:['Banyak lagu pop'],memo:'Do-Re-Mi-Fa-Sol-La-Si-Do. Semua mode adalah rotasi dari scale ini.',when_to_use:'Di atas Imaj7 dan IVmaj7.',
+  {id:'ionian',name:'Ionian (Major)',tags:['major','mode'],formula:'W-W-H-W-W-W-H',steps:[0,2,4,5,7,9,11],degrees:['1','2','3','4','5','6','7'],arp:[0,4,7,11],character:'Cerah, happy, stabil. "Do Re Mi" klasik.',mood:'Happy, resolved, bright, stable',usage:['Pop','Rock','Classical','Country'],used_by:['Banyak lagu pop'],memo:'Do-Re-Mi-Fa-Sol-La-Si-Do. Semua mode adalah rotasi dari scale ini.',when_to_use:'Di atas Imaj7 dan IVmaj7.',
    licks:[
     {title:'Major scale run (Key C, open position)',tab:`e|--0--1--0-------------------|\nB|----------1--0--------------|\nG|---------------2--0---------|\nD|-------------------2--0-----|\nA|-----------------------3--2-|\nE|----------------------------|`,tip:'Run descending C major scale dari e ke A string. Target: root C di A string fret 3.'},
     {title:'Melodic phrase (Key G)',tab:`e|----------------------------|\nB|--8--7--5-------------------|\nG|----------7--5--4--5--4-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Phrase melodis yang resolve ke nada 3rd (B). Berasa pop/ceria.'},
   ]},
-  {id:'dorian',name:'Dorian',tags:['minor','mode'],formula:'W-H-W-W-W-H-W',steps:[0,2,3,5,7,9,10],degrees:['1','2','b3','4','5','6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Minor dengan major 6th. Lebih bright dari natural minor. Favorit jazz dan funk.',mood:'Funky, soulful, jazzy, minor but uplifting',usage:['Jazz','Funk','Soul','Fusion','Rock'],used_by:['Carlos Santana','Miles Davis','Daft Punk'],memo:'Natural Minor + naikkan nada ke-6. A Dorian: A-B-C-D-E-F#-G. F# itu yang bikin Dorian "soulful".',when_to_use:'Di atas min7 chords. Progressi Im7-IV7 (funk) = Dorian.',
+  {id:'dorian',name:'Dorian',tags:['minor','mode'],formula:'W-H-W-W-W-H-W',steps:[0,2,3,5,7,9,10],degrees:['1','2','b3','4','5','6','b7'],arp:[0,3,7,10],character:'Minor dengan major 6th. Lebih bright dari natural minor. Favorit jazz dan funk.',mood:'Funky, soulful, jazzy, minor but uplifting',usage:['Jazz','Funk','Soul','Fusion','Rock'],used_by:['Carlos Santana','Miles Davis','Daft Punk'],memo:'Natural Minor + naikkan nada ke-6. A Dorian: A-B-C-D-E-F#-G. F# itu yang bikin Dorian "soulful".',when_to_use:'Di atas min7 chords. Progressi Im7-IV7 (funk) = Dorian.',
    licks:[
     {title:'Santana-style Dorian phrase (Key Am)',tab:`e|--12--10--------------------|\nB|--------12--10--------------|\nG|---------------11--9--------|\nD|--------------------12--10--|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize F# (major 6th dari A Dorian) di G string fret 11. Itu "sound" Dorian yang soulful.'},
     {title:'Funk Dorian lick (Key Dm)',tab:`e|----------------------------|\nB|----------------------------|\nG|--7--9--10--9--7------------|\nD|----------------10--8--7----|\nA|----------------------------|\nE|----------------------------|`,tip:'Phrase dengan feel groovy. Emphasize B natural (fret 9 D string = landing point yang bright).'},
   ]},
-  {id:'phrygian',name:'Phrygian',tags:['minor','mode'],formula:'H-W-W-W-H-W-W',steps:[0,1,3,5,7,8,10],degrees:['1','b2','b3','4','5','b6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Sangat gelap dan eksotik. b2 = karakter Flamenco/Metal.',mood:'Dark, exotic, flamenco, metal',usage:['Flamenco','Metal','Fusion'],used_by:['Tom Morello','Steve Vai','Metallica'],memo:'Natural minor dengan b2. Suara khas: dari root turun ke b2. I→bII motion = Phrygian.',when_to_use:'Di atas min7 dark/exotic. Flamenco dan metal.',
+  {id:'phrygian',name:'Phrygian',tags:['minor','mode'],formula:'H-W-W-W-H-W-W',steps:[0,1,3,5,7,8,10],degrees:['1','b2','b3','4','5','b6','b7'],arp:[0,3,7,10],character:'Sangat gelap dan eksotik. b2 = karakter Flamenco/Metal.',mood:'Dark, exotic, flamenco, metal',usage:['Flamenco','Metal','Fusion'],used_by:['Tom Morello','Steve Vai','Metallica'],memo:'Natural minor dengan b2. Suara khas: dari root turun ke b2. I→bII motion = Phrygian.',when_to_use:'Di atas min7 dark/exotic. Flamenco dan metal.',
    licks:[
     {title:'Phrygian motion I→bII (Key E)',tab:`e|--0--1--0--1--0-------------|\nB|--0--1--0--1--0-------------|\nG|--1--2--1--2--1-------------|\nD|----------------------------|\nA|----------------------------|\nE|--0--1--0--1--0-------------|`,tip:'Gerak antara E (root) dan F (b2). Itu gerakan khas Phrygian — terasa dark seketika. Bisa dipakai sebagai pedal point.'},
     {title:'Metal descending run (Key E Phrygian)',tab:`e|--12--11--10--8-------------|\nB|----------------10--8-------|\nG|----------------------9--8--|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Turun dari E di fret 12, gunakan chromatic feel dari b2. Metallica / Megadeth sering pakai pola ini.'},
   ]},
-  {id:'lydian',name:'Lydian',tags:['major','mode'],formula:'W-W-W-H-W-W-H',steps:[0,2,4,6,7,9,11],degrees:['1','2','3','#4','5','6','7'],arp:[0,4,7,11],// 1,3,5,7character:'#4 menciptakan rasa dreamy, floating, magical.',mood:'Dreamy, magical, floating, wonder',usage:['Film Score','Jazz','Fusion'],used_by:['John Williams','Joe Satriani','Radiohead'],memo:'Major + naikkan nada ke-4. C Lydian = C-D-E-F#-G-A-B. F# itu yang bikin "floating".',when_to_use:'Di atas maj7 chords untuk rasa magical.',
+  {id:'lydian',name:'Lydian',tags:['major','mode'],formula:'W-W-W-H-W-W-H',steps:[0,2,4,6,7,9,11],degrees:['1','2','3','#4','5','6','7'],arp:[0,4,7,11],character:'#4 menciptakan rasa dreamy, floating, magical.',mood:'Dreamy, magical, floating, wonder',usage:['Film Score','Jazz','Fusion'],used_by:['John Williams','Joe Satriani','Radiohead'],memo:'Major + naikkan nada ke-4. C Lydian = C-D-E-F#-G-A-B. F# itu yang bikin "floating".',when_to_use:'Di atas maj7 chords untuk rasa magical.',
    licks:[
     {title:'Lydian floating phrase (Key G)',tab:`e|--7--9--11--12--11--9-------|\nB|---------------------------8|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik ke #4 (C# = fret 11 di B string area). Rasakan "lift" yang terjadi di sana — itu ciri Lydian.'},
     {title:'Satriani-style Lydian run (Key D)',tab:`e|--10--9--7------------------|\nB|----------10--9--7----------|\nG|------------------9--8--7---|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Run descending yang emphasize #4. Smooth, gunakan legato (hammer/pull-off).'},
   ]},
-  {id:'mixolydian',name:'Mixolydian',tags:['major','mode'],formula:'W-W-H-W-W-H-W',steps:[0,2,4,5,7,9,10],degrees:['1','2','3','4','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7character:'Major scale dengan b7. Blues tapi bright.',mood:'Groovy, rock, slightly bluesy',usage:['Rock','Blues','Funk','Country'],used_by:['Santana','Led Zeppelin','The Beatles'],memo:'Major dengan b7 yang diturunkan. C Mixolydian = C-D-E-F-G-A-Bb.',when_to_use:'Di atas dominant 7 chords. Blues rock dan funk riff.',
+  {id:'mixolydian',name:'Mixolydian',tags:['major','mode'],formula:'W-W-H-W-W-H-W',steps:[0,2,4,5,7,9,10],degrees:['1','2','3','4','5','6','b7'],arp:[0,4,7,10],character:'Major scale dengan b7. Blues tapi bright.',mood:'Groovy, rock, slightly bluesy',usage:['Rock','Blues','Funk','Country'],used_by:['Santana','Led Zeppelin','The Beatles'],memo:'Major dengan b7 yang diturunkan. C Mixolydian = C-D-E-F-G-A-Bb.',when_to_use:'Di atas dominant 7 chords. Blues rock dan funk riff.',
    licks:[
     {title:'Classic Mixolydian blues-rock lick (Key A)',tab:`e|----------------------------|\nB|--10--8---------------------|\nG|--------9--7--9--7----------|\nD|------------------10--8--7--|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize G natural (b7 dari A) di G string fret 7. Itu yang bikin Mixolydian terasa "bluesy" tapi tetap bright.'},
     {title:'Hendrix-style dominant riff (Key E)',tab:`e|----------------------------|\nB|--8--7----------------------|\nG|-------9--7-----------------|\nD|-----------9--7--9--7-------|\nA|---------------------9--7---|\nE|----------------------------|`,tip:'D natural (b7 dari E) adalah kunci karakter Mixolydian. Slide dari G ke D untuk feel dominant yang groovy.'},
   ]},
-  {id:'aeolian',name:'Aeolian (Natural Minor)',tags:['minor','mode'],formula:'W-H-W-W-H-W-W',steps:[0,2,3,5,7,8,10],degrees:['1','2','b3','4','5','b6','b7'],arp:[0,3,7,10],// 1,b3,5,b7character:'Minor "default". Sad, introspective, melancholic.',mood:'Sad, dark, introspective',usage:['Rock','Metal','Pop','Classical'],used_by:['Radiohead','Led Zeppelin'],memo:'A Aeolian = nada yang sama dengan C Major, hanya mulai dari A.',when_to_use:'Default untuk minor key.',
+  {id:'aeolian',name:'Aeolian (Natural Minor)',tags:['minor','mode'],formula:'W-H-W-W-H-W-W',steps:[0,2,3,5,7,8,10],degrees:['1','2','b3','4','5','b6','b7'],arp:[0,3,7,10],character:'Minor "default". Sad, introspective, melancholic.',mood:'Sad, dark, introspective',usage:['Rock','Metal','Pop','Classical'],used_by:['Radiohead','Led Zeppelin'],memo:'A Aeolian = nada yang sama dengan C Major, hanya mulai dari A.',when_to_use:'Default untuk minor key.',
    licks:[
     {title:'Emotional minor descent (Key Am)',tab:`e|--5--8--7--5----------------|\nB|------------8--6--5---------|\nG|-------------------7--5-----|\nD|---------------------------7|\nA|----------------------------|\nE|----------------------------|`,tip:'Turun dari Am chord tone ke D — b6 (F) memberi warna sad yang khas Aeolian. Tambah vibrato di akhir.'},
     {title:'Rock minor phrase (Key Am, fret 5)',tab:`e|----------------------------|\nB|--5--8b9--8--5--------------|\nG|---------------7--5---------|\nD|-------------------7--5--3--|\nA|----------------------------|\nE|----------------------------|`,tip:'Pola descending yang khas rock minor. Bend di B string untuk ekspresi emosional.'},
   ]},
-  {id:'locrian',name:'Locrian',tags:['minor','mode'],formula:'H-W-W-H-W-W-W',steps:[0,1,3,5,6,8,10],degrees:['1','b2','b3','4','b5','b6','b7'],arp:[0,3,6,10],// 1,b3,b5,b7 (dim7)character:'Mode paling dark. b5 membuat tonic chord diminished.',mood:'Extremely dark, unstable',usage:['Metal','Jazz (over m7b5)'],used_by:['Metal guitarists','Jazz players'],memo:'Hampir tidak dipakai sebagai "home scale". Kegunaan utama: di atas min7b5 dalam jazz.',when_to_use:'Di atas min7b5 chords.',
+  {id:'locrian',name:'Locrian',tags:['minor','mode'],formula:'H-W-W-H-W-W-W',steps:[0,1,3,5,6,8,10],degrees:['1','b2','b3','4','b5','b6','b7'],arp:[0,3,6,10],character:'Mode paling dark. b5 membuat tonic chord diminished.',mood:'Extremely dark, unstable',usage:['Metal','Jazz (over m7b5)'],used_by:['Metal guitarists','Jazz players'],memo:'Hampir tidak dipakai sebagai "home scale". Kegunaan utama: di atas min7b5 dalam jazz.',when_to_use:'Di atas min7b5 chords.',
    licks:[
     {title:'Half-dim jazz phrase (Key B Locrian, over Bm7b5)',tab:`e|----------------------------|\nB|--7--6--5-------------------|\nG|----------7--5--4--5--------|\nD|--------------------7-------|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize b5 (F, fret 6 B string) tapi segera resolve. Cocok sebagai passing phrase di atas Bm7b5.'},
   ]},
-  {id:'harmonic-minor',name:'Harmonic Minor',tags:['minor','jazz'],formula:'W-H-W-W-H-WH-H',steps:[0,2,3,5,7,8,11],degrees:['1','2','b3','4','5','b6','7'],arp:[0,3,7,11],// 1,b3,5,maj7character:'Natural minor dengan raised 7th. Interval augmented 2nd = sangat eksotik.',mood:'Dramatic, exotic, eastern, cinematic',usage:['Classical','Metal','Cinematic'],used_by:['Yngwie Malmsteen','Iron Maiden'],memo:'Natural minor + naikkan nada ke-7. A Harm. Minor: A-B-C-D-E-F-G#.',when_to_use:'Drama dan exoticism. V7 dalam minor key.',
+  {id:'harmonic-minor',name:'Harmonic Minor',tags:['minor','jazz'],formula:'W-H-W-W-H-WH-H',steps:[0,2,3,5,7,8,11],degrees:['1','2','b3','4','5','b6','7'],arp:[0,3,7,11],character:'Natural minor dengan raised 7th. Interval augmented 2nd = sangat eksotik.',mood:'Dramatic, exotic, eastern, cinematic',usage:['Classical','Metal','Cinematic'],used_by:['Yngwie Malmsteen','Iron Maiden'],memo:'Natural minor + naikkan nada ke-7. A Harm. Minor: A-B-C-D-E-F-G#.',when_to_use:'Drama dan exoticism. V7 dalam minor key.',
    licks:[
     {title:'Yngwie neoclassical sweep fragment (Key Am)',tab:`e|--12------------------12----|\nB|------13--12--10--12--------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'G# (major 7th, fret 13 B string) adalah nada "kunci" Harmonic Minor — interval augmented 2nd antara F dan G# itu yang terasa exotic.'},
     {title:'Eastern-sounding descending run (Key Am)',tab:`e|--17--16--13--12--13--12----|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Run di high e string. G# dan F berdampingan menciptakan augmented 2nd yang khas suara "Timur Tengah".'},
   ]},
-  {id:'phrygian-dominant',name:'Phrygian Dominant',tags:['minor','jazz','exotic'],formula:'H-WH-H-W-H-W-W',steps:[0,1,4,5,7,8,10],degrees:['1','b2','3','4','5','b6','b7'],arp:[0,4,7,10],// 1,3,5,b7 (dom7)character:'Mode 5 dari Harmonic Minor. Flamenco/Arabic yang sangat kuat.',mood:'Flamenco, arabic, epic, dominant tension',usage:['Flamenco','Metal','Film Score'],used_by:['Al Di Meola','Paco de Lucia'],memo:'Phrygian + naikkan nada ke-3. Di Am, V7 (E7) = mainkan E Phrygian Dominant.',when_to_use:'Di atas V7 dalam minor. V7→Im Flamenco.',
+  {id:'phrygian-dominant',name:'Phrygian Dominant',tags:['minor','jazz','exotic'],formula:'H-WH-H-W-H-W-W',steps:[0,1,4,5,7,8,10],degrees:['1','b2','3','4','5','b6','b7'],arp:[0,4,7,10],character:'Mode 5 dari Harmonic Minor. Flamenco/Arabic yang sangat kuat.',mood:'Flamenco, arabic, epic, dominant tension',usage:['Flamenco','Metal','Film Score'],used_by:['Al Di Meola','Paco de Lucia'],memo:'Phrygian + naikkan nada ke-3. Di Am, V7 (E7) = mainkan E Phrygian Dominant.',when_to_use:'Di atas V7 dalam minor. V7→Im Flamenco.',
    licks:[
     {title:'Flamenco rasqueado-style lick (Key E)',tab:`e|--0--1--4--1--0-------------|\nB|--0--1--0--1--0-------------|\nG|--1--2--1--2--1-------------|\nD|----------------------------|\nA|----------------------------|\nE|--0--1--0--1--0-------------|`,tip:'F natural (b2) dan G# (major 3rd) berdampingan. Itu interval khas Phrygian Dominant = suara Flamenco.'},
     {title:'Arabic ascending run (Key E)',tab:`e|--0--1--4--5--7--8----------|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik dari E ke C via augmented 2nd (F ke G#). Main lambat dengan vibrato untuk feel paling ekspresif.'},
   ]},
-  {id:'melodic-minor',name:'Melodic Minor',tags:['minor','jazz'],formula:'W-H-W-W-W-W-H',steps:[0,2,3,5,7,9,11],degrees:['1','2','b3','4','5','6','7'],arp:[0,3,7,11],// 1,b3,5,maj7character:'Natural minor dengan raised 6th AND 7th. Sangat penting dalam jazz modern.',mood:'Sophisticated, jazzy, flowing',usage:['Jazz','Fusion','Classical'],used_by:['Bill Evans','Pat Metheny','Chick Corea'],memo:'Major scale dengan b3. Mode-modenya (Lydian b7, Altered) = senjata jazz fusion.',when_to_use:'Di atas min(maj7) chords. Dasar mode jazz modern.',
+  {id:'melodic-minor',name:'Melodic Minor',tags:['minor','jazz'],formula:'W-H-W-W-W-W-H',steps:[0,2,3,5,7,9,11],degrees:['1','2','b3','4','5','6','7'],arp:[0,3,7,11],character:'Natural minor dengan raised 6th AND 7th. Sangat penting dalam jazz modern.',mood:'Sophisticated, jazzy, flowing',usage:['Jazz','Fusion','Classical'],used_by:['Bill Evans','Pat Metheny','Chick Corea'],memo:'Major scale dengan b3. Mode-modenya (Lydian b7, Altered) = senjata jazz fusion.',when_to_use:'Di atas min(maj7) chords. Dasar mode jazz modern.',
    licks:[
     {title:'Jazz melodic minor phrase (Key Cm)',tab:`e|----------------------------|\nB|--9--8--6-------------------|\nG|----------8--7--5--7--5-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Emphasize major 6th (A natural, fret 7 G string) dan major 7th (B, fret 8). Dua nada itulah yang membedakan Melodic Minor dari Natural Minor.'},
   ]},
-  {id:'lydian-b7',name:'Lydian b7 (Overtone)',tags:['jazz','mode'],formula:'W-W-W-H-W-H-W',steps:[0,2,4,6,7,9,10],degrees:['1','2','3','#4','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7character:'Mode ke-4 dari Melodic Minor. Mixolydian dengan #4. Sangat jazzy.',mood:'Jazzy, bright, dominant, sophisticated',usage:['Jazz','Fusion','Funk'],used_by:['Herbie Hancock','Wayne Shorter'],memo:'Mixolydian + naikkan nada 4. G Lydian b7 = G-A-B-C#-D-E-F.',when_to_use:'Di atas dominant 7 chords jazzy/sophisticated.',
+  {id:'lydian-b7',name:'Lydian b7 (Overtone)',tags:['jazz','mode'],formula:'W-W-W-H-W-H-W',steps:[0,2,4,6,7,9,10],degrees:['1','2','3','#4','5','6','b7'],arp:[0,4,7,10],character:'Mode ke-4 dari Melodic Minor. Mixolydian dengan #4. Sangat jazzy.',mood:'Jazzy, bright, dominant, sophisticated',usage:['Jazz','Fusion','Funk'],used_by:['Herbie Hancock','Wayne Shorter'],memo:'Mixolydian + naikkan nada 4. G Lydian b7 = G-A-B-C#-D-E-F.',when_to_use:'Di atas dominant 7 chords jazzy/sophisticated.',
    licks:[
     {title:'Lydian b7 jazz lick (Key G7)',tab:`e|----------------------------|\nB|--8--7--6--7--8-------------|\nG|----------------7--9--7-----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'C# (fret 6 B string = #4) adalah "money note" Lydian b7 — tension yang unik di atas G7, resolve ke G.'},
   ]},
-  {id:'altered',name:'Altered Scale (Super Locrian)',tags:['jazz'],formula:'H-W-H-W-W-W-W',steps:[0,1,3,4,6,8,10],degrees:['1','b9','#9','3','#11','#5','b7'],arp:[0,4,8,10],// 1,3,#5,b7character:'Mode ke-7 dari Melodic Minor. Semua nada "altered". Maximum tension.',mood:'Maximum tension, outside, jazz fusion',usage:['Jazz','Fusion'],used_by:['John Coltrane','Miles Davis','Pat Metheny'],memo:'G Altered = G-Ab-Bb-B-Db-Eb-F. Di atas G7alt sebelum resolve ke Cmaj7.',when_to_use:'Di atas V7alt chords dalam jazz. G7alt → Cmaj7.',
+  {id:'altered',name:'Altered Scale (Super Locrian)',tags:['jazz'],formula:'H-W-H-W-W-W-W',steps:[0,1,3,4,6,8,10],degrees:['1','b9','#9','3','#11','#5','b7'],arp:[0,4,8,10],character:'Mode ke-7 dari Melodic Minor. Semua nada "altered". Maximum tension.',mood:'Maximum tension, outside, jazz fusion',usage:['Jazz','Fusion'],used_by:['John Coltrane','Miles Davis','Pat Metheny'],memo:'G Altered = G-Ab-Bb-B-Db-Eb-F. Di atas G7alt sebelum resolve ke Cmaj7.',when_to_use:'Di atas V7alt chords dalam jazz. G7alt → Cmaj7.',
    licks:[
     {title:'Altered scale tension → resolve (Key G7alt → C)',tab:`e|--11--10--8--11--10---------|\nB|-------------------11--10---|\nG|-------------------------------7|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Semua nada "outside" di G7alt. Di beat terakhir resolve ke C (fret 8 E string atau fret 5 G). Tension yang ekstrem lalu resolusi = feel jazz fusion yang khas.'},
   ]},
-  {id:'whole-tone',name:'Whole Tone',tags:['jazz','exotic'],formula:'W-W-W-W-W-W',steps:[0,2,4,6,8,10],degrees:['1','2','3','#4','#5','b7'],arp:[0,4,8],// 1,3,#5character:'Semua interval sama. Dreamlike, floating, ambiguous.',mood:'Dreamy, ambiguous, floating',usage:['Jazz','Film Score','Impressionism'],used_by:['Claude Debussy','Joe Satriani'],memo:'Hanya ada 2 whole tone scales. Mudah dihafal karena semua intervalnya sama.',when_to_use:'Di atas augmented triads atau dominant 7#5.',
+  {id:'whole-tone',name:'Whole Tone',tags:['jazz','exotic'],formula:'W-W-W-W-W-W',steps:[0,2,4,6,8,10],degrees:['1','2','3','#4','#5','b7'],arp:[0,4,8],character:'Semua interval sama. Dreamlike, floating, ambiguous.',mood:'Dreamy, ambiguous, floating',usage:['Jazz','Film Score','Impressionism'],used_by:['Claude Debussy','Joe Satriani'],memo:'Hanya ada 2 whole tone scales. Mudah dihafal karena semua intervalnya sama.',when_to_use:'Di atas augmented triads atau dominant 7#5.',
    licks:[
     {title:'Whole tone ascending run (Key C)',tab:`e|----------------------------|\nB|--5--6--8--10---------------|\nG|-------------7--9--11-------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Setiap nada berjarak 2 fret. Karena interval seragam, pattern posisi jari selalu sama di setiap string. Mudah dipindah ke key apapun.'},
   ]},
-  {id:'diminished-hw',name:'Diminished (HW)',tags:['jazz','exotic'],formula:'H-W-H-W-H-W-H-W',steps:[0,1,3,4,6,7,9,10],degrees:['1','b2','b3','3','b5','5','6','b7'],arp:[0,4,7,10],// 1,3,5,b7 (dom7)character:'Scale 8 nada simetris. Untuk dominant 7 chords dalam jazz.',mood:'Tense, dominant, jazz, dark symmetry',usage:['Jazz','Film Score','Metal'],used_by:['John Coltrane','Herbie Hancock'],memo:'HW = Half-Whole untuk dom7. WH = Whole-Half untuk dim7. Hanya 3 transposisi unik.',when_to_use:'Di atas dominant 7 chords dalam jazz.',
+  {id:'diminished-hw',name:'Diminished (HW)',tags:['jazz','exotic'],formula:'H-W-H-W-H-W-H-W',steps:[0,1,3,4,6,7,9,10],degrees:['1','b2','b3','3','b5','5','6','b7'],arp:[0,4,7,10],character:'Scale 8 nada simetris. Untuk dominant 7 chords dalam jazz.',mood:'Tense, dominant, jazz, dark symmetry',usage:['Jazz','Film Score','Metal'],used_by:['John Coltrane','Herbie Hancock'],memo:'HW = Half-Whole untuk dom7. WH = Whole-Half untuk dim7. Hanya 3 transposisi unik.',when_to_use:'Di atas dominant 7 chords dalam jazz.',
    licks:[
     {title:'Diminished symmetrical lick (Key G7)',tab:`e|----------------------------|\nB|--8--7--6--5----------------|\nG|------------8--7--6--5------|\nD|----------------------8--7--|\nA|----------------------------|\nE|----------------------------|`,tip:'Pattern turun berulang 1-2 fret. Karena simetris, pattern jari selalu sama tiap minor 3rd (3 fret). Bisa dimulai dari fret manapun dan tetap dalam scale.'},
   ]},
-  {id:'diminished-wh',name:'Diminished (WH)',tags:['jazz','exotic'],formula:'W-H-W-H-W-H-W-H',steps:[0,2,3,5,6,8,9,11],degrees:['1','2','b3','4','b5','b6','6','7'],arp:[0,3,6,9],// 1,b3,b5,bb7 (dim7)character:'Octatonic versi untuk diminished 7 chords.',mood:'Dark, symmetric, tense, chromatic',usage:['Jazz','Classical','Film Score'],used_by:['Classical composers'],memo:'Versi WH dimulai dengan Whole step. Dipakai di atas dim7 chords.',when_to_use:'Di atas diminished 7 chords.',
+  {id:'diminished-wh',name:'Diminished (WH)',tags:['jazz','exotic'],formula:'W-H-W-H-W-H-W-H',steps:[0,2,3,5,6,8,9,11],degrees:['1','2','b3','4','b5','b6','6','7'],arp:[0,3,6,9],character:'Octatonic versi untuk diminished 7 chords.',mood:'Dark, symmetric, tense, chromatic',usage:['Jazz','Classical','Film Score'],used_by:['Classical composers'],memo:'Versi WH dimulai dengan Whole step. Dipakai di atas dim7 chords.',when_to_use:'Di atas diminished 7 chords.',
    licks:[
     {title:'Dim7 arpeggio phrase (Key Bdim7)',tab:`e|--7--6--5-------------------|\nB|----------8--7--6--5--------|\nG|--------------------8--7----|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Arpeggio dim7 chord (B-D-F-Ab) lalu sambung dengan nada WH scale. Semua nota berjarak minor 3rd.'},
   ]},
-  {id:'double-harmonic',name:'Double Harmonic Major',tags:['exotic'],formula:'H-WH-H-W-H-WH-H',steps:[0,1,4,5,7,8,11],degrees:['1','b2','3','4','5','b6','7'],arp:[0,4,7,11],// 1,3,5,maj7character:'Dua interval augmented 2nd = sangat eksotik. Byzantine/Arabic/Indian.',mood:'Byzantine, Arabic, exotic, dramatic',usage:['World Music','Metal','Film Score'],used_by:['Steve Vai','Al Di Meola'],memo:'"Byzantine scale". Dua augmented 2nd sangat tidak konvensional.',when_to_use:'Exoticism ekstrem. Berasa "ancient" atau "middle eastern".',
+  {id:'double-harmonic',name:'Double Harmonic Major',tags:['exotic'],formula:'H-WH-H-W-H-WH-H',steps:[0,1,4,5,7,8,11],degrees:['1','b2','3','4','5','b6','7'],arp:[0,4,7,11],character:'Dua interval augmented 2nd = sangat eksotik. Byzantine/Arabic/Indian.',mood:'Byzantine, Arabic, exotic, dramatic',usage:['World Music','Metal','Film Score'],used_by:['Steve Vai','Al Di Meola'],memo:'"Byzantine scale". Dua augmented 2nd sangat tidak konvensional.',when_to_use:'Exoticism ekstrem. Berasa "ancient" atau "middle eastern".',
    licks:[
     {title:'Byzantine exotic riff (Key C)',tab:`e|--8--9--12--13--12--9--8----|\nB|----------------------------|\nG|----------------------------|\nD|----------------------------|\nA|----------------------------|\nE|----------------------------|`,tip:'Naik dari C ke G di satu string saja. Dua augmented 2nd (C→Db→E dan Ab→B) terasa sangat "asing" tapi dramatis.'},
   ]},
-  {id:'locrian-2',name:'Locrian ♮2 (Half Diminished)',tags:['jazz','mode'],formula:'W-H-W-H-W-W-W',steps:[0,2,3,5,6,8,10],degrees:['1','2','b3','4','b5','b6','b7'],arp:[0,3,6,10],// 1,b3,b5,b7character:'Mode ke-6 dari Melodic Minor. Locrian dengan natural 2.',mood:'Dark but flowing, jazz minor',usage:['Jazz','Fusion'],used_by:['Scofield','Metheny'],memo:'Locrian ♮2 solve clash b2 di atas min7b5. Natural 2 lebih smooth.',when_to_use:'Di atas min7b5 chords dalam jazz.',
+  {id:'locrian-2',name:'Locrian ♮2 (Half Diminished)',tags:['jazz','mode'],formula:'W-H-W-H-W-W-W',steps:[0,2,3,5,6,8,10],degrees:['1','2','b3','4','b5','b6','b7'],arp:[0,3,6,10],character:'Mode ke-6 dari Melodic Minor. Locrian dengan natural 2.',mood:'Dark but flowing, jazz minor',usage:['Jazz','Fusion'],used_by:['Scofield','Metheny'],memo:'Locrian ♮2 solve clash b2 di atas min7b5. Natural 2 lebih smooth.',when_to_use:'Di atas min7b5 chords dalam jazz.',
    licks:[
     {title:'Half-dim smooth resolution (Key Bm7b5)',tab:`e|----------------------------|\nB|--7--5----------------------|\nG|-------7--6--4--6--4--------|\nD|--------------------7--5----|\nA|----------------------------|\nE|----------------------------|`,tip:'Natural 2 (C#, fret 6 G string) adalah perbedaan dari Locrian biasa. Terasa lebih "smooth" dan tidak clash di atas Bm7b5.'},
   ]},
@@ -1753,8 +1753,7 @@ const CURRICULUM={
         {title:"Free Application",blocks:[{t:"combine",d:"Pilih scale apapun + backing track apapun yang kamu suka"},{t:"free",d:"Main bebas, tidak ada target — eksplorasi adalah tujuannya"}]},
         {title:"Week 4 Check-in",blocks:[{t:"review",d:"Semua materi yang sudah dipelajari — coba tiap scale 1 menit"},{t:"free",d:"Catat 1 hal yang sudah terasa lebih natural dari minggu pertama"}]},
       ]},
-    ],
-    jazz:[
+    ],jazz:[
       {w:1,theme:"Foundation: Pentatonic + Ears",days:[
         {title:"Minor Pentatonic Intro",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"focus",d:"Minor Pentatonic box 1 — hafal 5 nada dengan sabar"},{t:"apply",d:"Main di atas Am blues, dengarkan tiap nada"}]},
         {title:"Basic Chord Tones",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio: A-C-E-G. Petik satu-satu, hafal posisinya"},{t:"apply",d:"Alternasi: arpeggio 2 bar, pentatonic 2 bar"}]},
@@ -1767,8 +1766,7 @@ const CURRICULUM={
         {title:"II-V-I First Pass",blocks:[{t:"combine",d:"Dm7 = Dorian, G7 = Mixolydian, Cmaj7 = Ionian — outline chords dulu"},{t:"apply",d:"II-V-I backing track, lambat"}]},
         {title:"Chord Tone Focus",blocks:[{t:"focus",d:"Am7 arpeggio full — semua posisi di neck"},{t:"combine",d:"Arpeggio ke scale ke arpeggio — jangan lepas dari chord tones"}]},
       ]},
-    ],
-    rhythm:[
+    ],rhythm:[
       {w:1,theme:"Strumming Foundation",days:[
         {title:"Downstroke Control",blocks:[{t:"warmup",d:"Muted strumming — 8 downstroke per bar, 60 BPM"},{t:"focus",d:"Perhatikan: tiap downstroke harus sama keras. Record dan dengar"},{t:"apply",d:"Am chord — downstroke pattern 5 menit"}]},
         {title:"Down-Up Motion",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"review",d:"Even downstroke, 65 BPM"},{t:"focus",d:"Tambahkan upstroke — tangan tidak berhenti. Gerakan pendulum"},{t:"apply",d:"Am - F dengan down-up pattern"}]},
@@ -1781,16 +1779,14 @@ const CURRICULUM={
         {title:"Combine Patterns",blocks:[{t:"warmup",d:"Warmup"},{t:"combine",d:"Verse: Pop ballad pattern. Chorus: full downstroke energi. Bridge: reggae feel"},{t:"apply",d:"Am-F-C-G, ganti pattern tiap 4 bar"}]},
         {title:"Record and Review",blocks:[{t:"apply",d:"Rekam dirimu 3 menit di atas backing track"},{t:"review",d:"Dengarkan — where does it feel locked? Where does it drift?"}]},
       ]},
-    ],
-    fingerstyle:[
+    ],fingerstyle:[
       {w:1,theme:"Right Hand Independence",days:[
         {title:"Thumb Independence",blocks:[{t:"warmup",d:"Jari kanan warmup — petik tiap string bergantian"},{t:"focus",d:"Ibu jari ke bass string E, A, D bergantian. Metronom 60 BPM"},{t:"apply",d:"Ibu jari bass G chord — E string fret 3, lalu A string"}]},
         {title:"Simple Arpeggio",blocks:[{t:"warmup",d:"Thumb warmup"},{t:"review",d:"Thumb pattern di G chord"},{t:"focus",d:"p-i-m-a pattern: thumb-index-middle-ring, Am chord"},{t:"apply",d:"p-i-m-a di Am - F - C - G perlahan"}]},
         {title:"Travis Pick Intro",blocks:[{t:"warmup",d:"p-i-m-a warmup"},{t:"review",d:"Basic arpeggio Am"},{t:"focus",d:"Travis: thumb bergantian bass (E string, A string) + jari treble"},{t:"apply",d:"Travis di G chord 5 menit non-stop"}]},
         {title:"Rest Day",blocks:[{t:"review",d:"Dengarkan fingerstyle player favoritmu, perhatikan thumb pattern"},{t:"free",d:"Main bebas tanpa target"}]},
       ]},
-    ],
-    general:[
+    ],general:[
       {w:1,theme:"All-Around Foundation",days:[
         {title:"Scale + Rhythm Day",blocks:[{t:"warmup",d:"Chromatic warmup"},{t:"focus",d:"Minor Pentatonic box 1 — 10 menit"},{t:"combine",d:"Down-Up strumming dengan chord progression"}]},
         {title:"Ears + Arpeggio",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio — petik satu-satu, dengarkan tiap nada"},{t:"apply",d:"Main arpeggio lalu scale di atas Am backing track"}]},
@@ -1831,8 +1827,7 @@ const CURRICULUM={
         {title:"Full II-V-I",blocks:[{t:"combine",d:"Dorian (Dm7) - Mixolydian (G7) - Ionian (Cmaj7) — full II-V-I"},{t:"apply",d:"15 menit di atas jazz backing track"}]},
         {title:"Consolidation",blocks:[{t:"review",d:"Semua dari 4 minggu ini"},{t:"free",d:"Improv bebas, rekam, dengar, identify apa yang sudah natural"}]},
       ]},
-    ],
-    jazz:[
+    ],jazz:[
       {w:1,theme:"Modes and Jazz Foundation",days:[
         {title:"Dorian Deep Dive",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"Dorian — hafal interval dan posisi fret. Main lambat, dengar tiap nada"},{t:"apply",d:"Am7 backing track"}]},
         {title:"Chord Tones First",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Am7 arpeggio full — semua posisi di neck"},{t:"combine",d:"Arpeggio ke scale ke arpeggio — jangan lepas dari chord tones"}]},
@@ -1845,24 +1840,21 @@ const CURRICULUM={
         {title:"Enclosure",blocks:[{t:"focus",d:"Enclosure: kelilingi chord tone dari atas DAN bawah sebelum resolusi"},{t:"combine",d:"Dm7: coba enclosure ke F (3rd) dan C (7th)"},{t:"apply",d:"Jazz backing track"}]},
         {title:"Full Progression",blocks:[{t:"combine",d:"Dm7 (Dorian + approach) - G7 (Mixolydian) - Cmaj7 (Ionian) — full II-V-I"},{t:"apply",d:"Full II-V-I jam, 15 menit"}]},
       ]},
-    ],
-    rhythm:[
+    ],rhythm:[
       {w:1,theme:"Groove and Texture",days:[
         {title:"Funk Chop",blocks:[{t:"warmup",d:"Muted strumming warmup"},{t:"focus",d:"Funk chop: muted strum sebagai perkusi. Tangan kanan constant, kiri kontrol mute"},{t:"apply",d:"Funk drum loop 90 BPM"}]},
         {title:"Partial Strum Technique",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Funk chop dari kemarin"},{t:"focus",d:"Partial strum: hanya 3 string atas, hanya 3 string bawah. Kontrol selektif"},{t:"apply",d:"Pop progression dengan partial strum"}]},
         {title:"Single Note Fills",blocks:[{t:"warmup",d:"Strumming warmup"},{t:"focus",d:"Fill 1-2 nada di akhir bar (beat 4). Pilih dari chord tone terdekat"},{t:"combine",d:"Strum 3 bar, fill di bar ke-4 — repeat"}]},
         {title:"Double Stops",blocks:[{t:"review",d:"Single note fills"},{t:"focus",d:"Double stops: 2 string sekaligus, G+B atau D+G. 3rd interval"},{t:"combine",d:"Strum + double stop fill dalam satu progression"}]},
       ]},
-    ],
-    fingerstyle:[
+    ],fingerstyle:[
       {w:1,theme:"Travis Pick + Melody",days:[
         {title:"Travis Pick Consolidation",blocks:[{t:"warmup",d:"p-i-m-a warmup"},{t:"focus",d:"Travis pick di G dan C chord — thumb bergantian bass strings"},{t:"apply",d:"Travis pick di G-C-D progression 10 menit"}]},
         {title:"Melody Layer",blocks:[{t:"warmup",d:"Travis warmup"},{t:"review",d:"Travis pick di G"},{t:"focus",d:"Tambahkan melodi di e string di atas Travis pattern — G chord dengan melody line"},{t:"apply",d:"Coba main lagu sederhana dengan bass + melody"}]},
         {title:"Thumb Independence Level 2",blocks:[{t:"focus",d:"Thumb bergantian bass 1-3-1-3 sementara jari treble main rhythm terpisah"},{t:"apply",d:"Folk backing atau practice alone 15 menit"}]},
         {title:"Full Song Application",blocks:[{t:"apply",d:"Pilih lagu fingerstyle sederhana (Dust in the Wind, Blackbird) — ngulik intro/verse"},{t:"free",d:"Eksplorasi bebas"}]},
       ]},
-    ],
-    general:[
+    ],general:[
       {w:1,theme:"Expand and Combine",days:[
         {title:"Dorian + Pentatonic",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Dorian review — F# adalah kunci"},{t:"combine",d:"Minor Pentatonic + Dorian di Am — main bergantian, rasakan bedanya"}]},
         {title:"Rhythm Expand",blocks:[{t:"warmup",d:"Strumming warmup"},{t:"focus",d:"Funk chop atau fingerpicking — pilih salah satu"},{t:"apply",d:"Progression Am-F-C-G dengan teknik baru"}]},
@@ -1885,8 +1877,7 @@ const CURRICULUM={
         {title:"Chromatic Lines",blocks:[{t:"focus",d:"Chromatic connecting notes antara scale tones. Tidak semua nada harus diatonic"},{t:"combine",d:"Scale yang sudah dikuasai + chromatic approach — masuk dari atas atau bawah chord tone"}]},
         {title:"Full Improv Session",blocks:[{t:"apply",d:"30 menit free improv di atas backing track pilihan — apply semua"},{t:"free",d:"Rekam dan review keesokan harinya"}]},
       ]},
-    ],
-    jazz:[
+    ],jazz:[
       {w:1,theme:"Altered Dominants and Outside Playing",days:[
         {title:"Altered Scale Deep",blocks:[{t:"warmup",d:"Scale warmup"},{t:"focus",d:"G Altered: G-Ab-Bb-B-Db-Eb-F. Identifikasi b9, #9, #11, #5, b7"},{t:"apply",d:"G7alt backing — masuk outside, resolve kuat ke Cmaj7"}]},
         {title:"Lydian b7 in Context",blocks:[{t:"warmup",d:"Warmup"},{t:"review",d:"Altered scale"},{t:"combine",d:"G7: Lydian b7 = bright dominant. G7alt: Altered = dark dominant. Latih switch dalam II-V-I"},{t:"apply",d:"Jazz backing track"}]},
@@ -1899,24 +1890,21 @@ const CURRICULUM={
         {title:"Outside Playing",blocks:[{t:"combine",d:"Intentionally play outside (wrong scale) lalu resolve back in — controlled tension"},{t:"apply",d:"Advanced jam track"}]},
         {title:"Full Session",blocks:[{t:"apply",d:"30 menit bebas di atas jazz backing track"},{t:"free",d:"Rekam dan analisis keesokan harinya"}]},
       ]},
-    ],
-    rhythm:[
+    ],rhythm:[
       {w:1,theme:"Advanced Groove and Hybrid",days:[
         {title:"16th Note Funk",blocks:[{t:"warmup",d:"8th note funk warmup"},{t:"focus",d:"16th note pattern — subdivisi lebih rapat, aksen di 2 dan 4"},{t:"apply",d:"Funk drum loop 90 BPM"}]},
         {title:"Hybrid Picking Intro",blocks:[{t:"warmup",d:"Warmup"},{t:"focus",d:"Hybrid picking: pick + middle finger. Banjo roll pattern"},{t:"apply",d:"Country/rock progression dengan hybrid"}]},
         {title:"Textural Layering",blocks:[{t:"combine",d:"Full strum chorus, arpeggio verse, single note fill pre-chorus — dalam satu lagu"},{t:"apply",d:"Rekam 2 menit mengisi backing track"}]},
         {title:"Free Groove",blocks:[{t:"free",d:"Improv rhythm bebas — tidak ada rule, play what sounds good"}]},
       ]},
-    ],
-    fingerstyle:[
+    ],fingerstyle:[
       {w:1,theme:"Arrangement and Chord-Melody",days:[
         {title:"Chord-Melody Concept",blocks:[{t:"focus",d:"Chord-melody: melody di string tertinggi, chord di bawahnya bersamaan"},{t:"apply",d:"Coba chord-melody simple: G chord dengan melodi Do di atas"}]},
         {title:"Jazz Standard Chord-Melody",blocks:[{t:"review",d:"Chord-melody konsep"},{t:"focus",d:"Autumn Leaves bar 1-4 dalam chord-melody arrangement"},{t:"apply",d:"Praktek perlahan dengan metronom"}]},
         {title:"Walking Bass",blocks:[{t:"focus",d:"Walking bass: ibu jari chromatic connecting chord roots"},{t:"combine",d:"Walking bass + chord stabs + melody — 3 layer"}]},
         {title:"Arrangement Practice",blocks:[{t:"apply",d:"Pilih lagu apapun, coba buat 4-bar arrangement dengan bass + chord + melody"},{t:"free",d:"Rekam hasilnya"}]},
       ]},
-    ],
-    general:[
+    ],general:[
       {w:1,theme:"Advanced Colour and Context",days:[
         {title:"Melodic Minor + Context",blocks:[{t:"focus",d:"Melodic Minor dan mode-modenya"},{t:"apply",d:"Terapkan di atas jam track"}]},
         {title:"Advanced Rhythm",blocks:[{t:"focus",d:"16th note subdivisi atau chord-melody concept"},{t:"apply",d:"Backing track dengan teknik baru"}]},
