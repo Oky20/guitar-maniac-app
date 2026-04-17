@@ -1246,20 +1246,31 @@ function toggleDetail(id,forceReopen){
           <div class="legend-item"><div class="legend-dot a"></div>Arpeggio (chord tone)</div>
           <div class="legend-item"><div class="legend-dot t"></div>Scale tone</div>
         </div>
-        ${s.arp&&s.arp.length?`<div style="margin-bottom:8px;"><span style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:#9b59b6;">Arpeggio notes: </span>${s.arp.map(st=>`<span style="background:rgba(155,89,182,.15);border:1px solid rgba(155,89,182,.35);color:#c39bd3;padding:2px 8px;font-size:.65rem;font-weight:700;margin:0 2px;">${NOTES[(selectedKey+st)%12]}</span>`).join('')}</div>`:''}
+        ${s.arp&&s.arp.length?(function(){
+          let arpHtml='<div style="margin-bottom:8px;"><span style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:#9b59b6;">Arpeggio notes: </span>';
+          s.arp.forEach(function(st){
+            arpHtml+='<span style="background:rgba(155,89,182,.15);border:1px solid rgba(155,89,182,.35);color:#c39bd3;padding:2px 8px;font-size:.65rem;font-weight:700;margin:0 2px;">'+NOTES[(selectedKey+st)%12]+'</span>';
+          });
+          arpHtml+='</div>';
+          return arpHtml;
+        })():''}
         ${renderFretboard(s,selectedKey)}
         <div class="memo-box">
           <div class="memo-title">💡 Tips Menghafal</div>
           <div class="memo-text">${s.memo}</div>
         </div>
-        ${s.licks&&s.licks.length?`<div style="margin-top:14px;">
-          <div class="info-label" style="margin-bottom:10px;">🎸 Contoh Lick</div>
-          ${s.licks.map(lk=>`<div style="background:#080a08;border:1px solid #1a2a1a;padding:12px;margin-bottom:8px;">
-            <div style="font-size:.56rem;letter-spacing:2px;color:var(--sp);text-transform:uppercase;margin-bottom:7px;">${lk.title}</div>
-            <div style="overflow-x:auto;"><pre style="font-family:'Space Mono',monospace;font-size:.75rem;line-height:2;color:#7ab87a;white-space:pre;margin:0;">${escHtml(lk.tab)}</pre></div>
-            <div style="font-family:'Crimson Pro',serif;font-size:.82rem;color:#777;margin-top:7px;line-height:1.5;">💬 ${lk.tip}</div>
-          </div>`).join('')}
-        </div>`:''}
+        ${s.licks&&s.licks.length?(function(){
+          let lickHtml='<div style="margin-top:14px;"><div class="info-label" style="margin-bottom:10px;">🎸 Contoh Lick</div>';
+          s.licks.forEach(function(lk){
+            lickHtml+='<div style="background:#080a08;border:1px solid #1a2a1a;padding:12px;margin-bottom:8px;">';
+            lickHtml+='<div style="font-size:.56rem;letter-spacing:2px;color:var(--sp);text-transform:uppercase;margin-bottom:7px;">'+lk.title+'</div>';
+            lickHtml+='<div style="overflow-x:auto;"><pre style="font-family:Space Mono,monospace;font-size:.75rem;line-height:2;color:#7ab87a;white-space:pre;margin:0;">'+escHtml(lk.tab)+'</pre></div>';
+            lickHtml+='<div style="font-family:Crimson Pro,serif;font-size:.82rem;color:#777;margin-top:7px;line-height:1.5;">💬 '+lk.tip+'</div>';
+            lickHtml+='</div>';
+          });
+          lickHtml+='</div>';
+          return lickHtml;
+        })():''}
       </div>
     </div>`;
   detail.classList.add('open');
@@ -1654,9 +1665,13 @@ function showPage(id){
 }
 
 function switchTab(id,e){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+  // Scope to the currently active main page only
+  const activePage=document.querySelector('main.active, .hero.active');
+  const scope=activePage||document;
+  scope.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  scope.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const target=document.getElementById('tab-'+id);
+  if(target) target.classList.add('active');
   if(e&&e.target) e.target.classList.add('active');
 }
 
